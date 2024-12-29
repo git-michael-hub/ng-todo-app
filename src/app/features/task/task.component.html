@@ -1,0 +1,11 @@
+<div cdkDropList class="example-list" (cdkDropListDropped)="drop($event)">
+  @for (task of TASKS; track task) {
+    <div class="example-box" cdkDrag>
+      <div class="example-custom-placeholder" *cdkDragPlaceholder></div>
+      <div>
+        <p>{{task.title}}</p>
+        <p>{{ task.description | slice:0:100 }}{{ task.description.length > 100 ? '...' : '' }}</p>
+      </div>
+    </div>
+  }
+</div>

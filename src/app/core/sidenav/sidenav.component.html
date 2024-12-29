@@ -1,0 +1,55 @@
+<div class="example-container" [class.example-is-mobile]="mobileQuery.matches">
+  <mat-toolbar class="example-toolbar">
+    <button mat-icon-button (click)="snav.toggle()"><mat-icon>menu</mat-icon></button>
+    <h1 class="example-app-name">TODO APP</h1>
+  </mat-toolbar>
+
+  <mat-sidenav-container
+    class="example-sidenav-container"
+    [style.marginTop.px]="mobileQuery.matches ? 56 : 0"
+  >
+    <mat-sidenav
+      #snav
+      [mode]="mobileQuery.matches ? 'over' : 'side'"
+      [opened]="true"
+      [fixedInViewport]="mobileQuery.matches" fixedTopGap="56"
+      class="!tw-w-[220px]"
+    >
+      <mat-nav-list class="tw-h-full">
+        <div class="tw-flex tw-flex-col tw-h-full">
+          <div class="tw-flex-1">
+            @for (nav of navigations; track nav) {
+              @if (nav.position === 'top') {
+                <div>
+                  <a mat-list-item routerLink="{{nav.page}}">
+                    {{ nav.name | titlecase }}
+                  </a>
+                </div>
+              }
+            }
+          </div>
+          <div class="tw-mt-auto tw-pb-[40px]">
+            @for (nav of navigations; track nav) {
+              @if (nav.position === 'bottom') {
+                <div>
+                  <a mat-list-item routerLink="{{nav.page}}">
+                    {{ nav.name | titlecase }}
+                  </a>
+                </div>
+              }
+            }
+          </div>
+        </div>
+      </mat-nav-list>
+    </mat-sidenav>
+
+    <mat-sidenav-content [ngClass]="{
+      '!tw-ml-[225px]': snav.opened
+    }">
+      <!-- @for (content of fillerContent; track content) {
+        <p>{{content}}</p>
+      } -->
+      <ng-content />
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>
