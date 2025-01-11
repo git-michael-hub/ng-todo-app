@@ -1,7 +1,12 @@
 <div class="example-container" [class.example-is-mobile]="mobileQuery.matches">
   <mat-toolbar class="example-toolbar">
+  <div class="tw-w-[218px] tw-inline-flex tw-items-center">
     <button mat-icon-button (click)="snav.toggle()"><mat-icon>menu</mat-icon></button>
-    <h1 class="example-app-name">TODO APP</h1>
+    <h1 class="example-app-name">Workie-Work</h1>
+
+  </div>
+
+    <app-ui-widget-summary></app-ui-widget-summary>
   </mat-toolbar>
 
   <mat-sidenav-container

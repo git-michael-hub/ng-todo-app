@@ -18,6 +18,14 @@ export interface IState {
     sort: {
       status: WritableSignal<'asc' | 'desc'>,
       listComputed: Signal<TTask[]>
+    },
+    filter: {
+      status: WritableSignal<'today' | 'upcoming' | 'high-priority' | 'complete' | 'archive' >,
+      listComputed: Signal<TTask[]>
+    },
+    count: {
+      status: WritableSignal<'all' | 'complete' | 'todo' | 'high-priority'>,
+      listComputed: Signal<number>
     }
   },
   error?: TError // a global error data

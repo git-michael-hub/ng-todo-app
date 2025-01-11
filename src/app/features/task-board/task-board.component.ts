@@ -12,14 +12,14 @@ import { STORE } from '../../data-access/state/state.store';
 import { TTask } from '../../utils/models/task.model';
 
 @Component({
-  selector: 'app-feature-task',
-  templateUrl: './task.component.html',
-  styleUrls: ['./task.component.scss'],
+  selector: 'app-feature-task-board',
+  templateUrl: './task-board.component.html',
+  styleUrls: ['./task-board.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   imports: [CdkDropList, CdkDrag, CdkDragPlaceholder, SlicePipe],
 })
-export class TaskComponent implements OnInit {
+export class TaskBoardComponent implements OnInit {
 
   TASKS: TTask[] = TASKS;
 

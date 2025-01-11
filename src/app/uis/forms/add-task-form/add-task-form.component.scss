@@ -1,0 +1,43 @@
+input {
+  height: 40px;
+  font-size: large;
+  background-color: unset;
+  border-color: unset;
+}
+
+input:focus-visible {
+  outline: none;
+  border: none;
+}
+
+input::after {
+  // color: red; /* Optional: Customize placeholder color */
+}
+
+// button {
+//   width: 40px;
+// }
+
+:host ::ng-deep .ql-container {
+  border: none !important;
+  box-shadow: none !important;
+}
+
+
+:host ::ng-deep .ql-editor {
+  font-size: 14px !important; /* Set default font size */
+  padding: 12px 0;
+}
+
+:host ::ng-deep .ql-editor::before {
+  font-style: normal; /* Removes italic from placeholder */
+  color: #999;; /* Optional: Customize placeholder color */
+  // content: attr(data-placeholder); /* Retains the placeholder text */
+  // padding: 0 !important;
+  // margin: 0 !important;
+  // white-space: normal !important; /* Remove extra spaces and ensure proper text wrapping */
+}
+
+:host ::ng-deep .ql-editor.ql-blank::before {
+  left: 0;
+}

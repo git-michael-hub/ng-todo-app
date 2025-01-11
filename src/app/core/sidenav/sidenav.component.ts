@@ -9,6 +9,7 @@ import { TMenu } from './sidenav.model';
 import { CommonModule, TitleCasePipe } from '@angular/common';
 import { SidenavService } from './sidenav.service';
 import { RouterModule } from '@angular/router';
+import { SummaryComponent } from '../../uis/widgets/summary/summary.component';
 
 
 @Component({
@@ -25,7 +26,8 @@ import { RouterModule } from '@angular/router';
     MatIconModule,
     MatSidenavModule,
     MatListModule,
-    TitleCasePipe
+    TitleCasePipe,
+    SummaryComponent
   ],
 })
 export class SidenavComponent implements OnInit {

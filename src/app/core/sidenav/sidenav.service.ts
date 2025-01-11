@@ -35,7 +35,13 @@ export class SidenavService {
       page: '/upcoming',
     },
     {
-      name: 'priority',
+      name: 'watching',
+      isSelected: false,
+      position: 'top',
+      page: '/watching',
+    },
+    {
+      name: 'high priority',
       isSelected: false,
       position: 'top',
       page: '/priority',

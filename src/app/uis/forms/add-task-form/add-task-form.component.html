@@ -1,0 +1,38 @@
+<div class="!tw-bg-[#ffffff] tw-flex tw-flex-row tw-w-full tw-justify-between ">
+  <h2 mat-dialog-title class="">Add a New Task</h2>
+  <div class="tw-flex tw-items-center">
+    <button mat-button mat-dialog-close>Cancel</button>
+    <button
+      mat-flat-button
+      cdkFocusInitial
+      class="!tw-px-[50px] tw-mx-[20px]"
+      (click)="save()"
+      [disabled]="taskForm.invalid"
+    >
+      Add
+    </button>
+  </div>
+</div>
+
+
+
+<mat-dialog-content class="mat-typography">
+  <form [formGroup]="taskForm" class="tw-flex tw-flex-col tw-w-full">
+    <input formControlName="title" type="text" placeholder="Task Title">
+    <quill-editor
+      (onContentChanged)="onContentChanged($event)"
+      [modules]="editorModules"
+      [placeholder]="'Task description here...'"
+      [theme]="'snow'"
+    ></quill-editor>
+  </form>
+
+<!-- <button (click)="saveContent()">Save</button> -->
+
+
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <!-- <div>Today</div> -->
+</mat-dialog-actions>
+
