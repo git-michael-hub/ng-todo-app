@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, input, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, input, Input, OnInit, Signal } from '@angular/core';
 import {
   CdkDrag,
   CdkDragDrop,
@@ -20,7 +20,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
   selector: 'app-feature-task-list',
   templateUrl: './task-list.component.html',
   styleUrls: ['./task-list.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   imports: [
     SlicePipe,
@@ -30,8 +29,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
   ],
 })
 export class TaskListComponent implements OnInit {
-  // @Input() TASKS!: TTask[];
-  TASKS = input<TTask[]>([] as unknown as TTask[]);
+  @Input() TASKS!: TTask[];
+  // TASKS = input<TTask[]>([] as unknown as TTask[]);
+  // TASKS = input<Signal<TTask[]>>();
 
   private taskAPIDI = inject(TaskAPI);
 

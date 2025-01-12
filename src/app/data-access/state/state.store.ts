@@ -17,6 +17,7 @@ export const STORE: WritableSignal<IState> = signal({
   id: 'main_store',
   task: {
     list: signal([]),
+    added: signal(null),
     sort: {
       status: signal('asc'),
       listComputed: computed(() => {

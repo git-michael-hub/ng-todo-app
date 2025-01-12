@@ -6,6 +6,8 @@ import { MAT_DIALOG_DEFAULT_OPTIONS, MatDialogConfig, MatDialogModule } from '@a
 import { QuillEditorComponent, QuillModule } from 'ngx-quill'
 import { TaskAPI } from '../../../data-access/apis/task.api';
 import { TTask } from '../../../utils/models/task.model';
+import { STORE } from '../../../data-access/state/state.store';
+import { TASKS } from '../../../utils/values/dataTask.value';
 
 
 @Component({
@@ -24,6 +26,8 @@ import { TTask } from '../../../utils/models/task.model';
 export class AddTaskFormComponent implements OnInit {
   private formBuilderDI = inject(FormBuilder);
   private taskAPIDI = inject(TaskAPI);
+
+  TASKS = TASKS;
 
   editorModules = {
     toolbar: false, // Disable toolbar
@@ -96,14 +100,24 @@ export class AddTaskFormComponent implements OnInit {
     //   content: this.editorContent,
     // };
 
+
+
+
     if (this.taskForm.valid) {
+      // STORE().task.list.update(value => [...this.TASKS, this.taskForm.value as any]);
+      // return;
+
       this.taskAPIDI.addTask(JSON.stringify(this.taskForm.value) as unknown as TTask)
         .subscribe({
           next: (response) => {
             console.log('Task created successfully:', response);
+            STORE().task.added.set(null);
+            STORE().task.list.update(value => [...value, response]);
+            STORE().task.added.set(response || null);
           },
           error: (error) => {
             console.error('Error creating task:', error);
+            STORE().task.added.set(null);
           },
         });
     }

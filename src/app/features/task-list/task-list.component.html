@@ -16,11 +16,14 @@
     <div
       class="list-container">
     <cdk-virtual-scroll-viewport itemSize="0" autosize class="viewport">
-      <div *cdkVirtualFor="let task of TASKS(); trackBy: trackById; let i = index" class="list-item tw-pb-[12px]">
+      <div *cdkVirtualFor="let task of TASKS; trackBy: trackById; let i = index" class="list-item tw-pb-[12px]">
         <!-- {{ item }} -->
         <!-- <div class=""> -->
           <div class="tw-bg-[#fff] tw-rounded-lg tw-p-[12px]">
-            <p class="tw-text-lg">{{task.id}}+{{task.title  | slice:0:100 }}</p>
+            <p class="tw-text-lg">
+              <!-- {{task.id}}+ -->
+              {{task.title  | slice:0:100 }}
+            </p>
             <span class="tw-text-sm" [innerHTML]="task.description  | slice:0:350"></span>
             <span>{{ task.description.length > 350 ? '...' : '' }}</span>
           </div>

@@ -15,6 +15,7 @@ export interface IState {
   },
   task: TAPI & {
     list: WritableSignal<TTask[]>, // the data content of the list
+    added: WritableSignal<TTask | null>, // new added task
     sort: {
       status: WritableSignal<'asc' | 'desc'>,
       listComputed: Signal<TTask[]>
