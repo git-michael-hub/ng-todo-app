@@ -1,16 +1,54 @@
 <div class="!tw-bg-[#ffffff] tw-flex tw-flex-row tw-w-full tw-justify-between ">
-  <h2 mat-dialog-title class="">Add a New Task</h2>
+  <h2 mat-dialog-title class="">
+    @if (status === 'view') {
+      <span>Task Detail</span>
+    }
+    @else if (status === 'update') {
+      <span>Update Task</span>
+    }
+    @else if (status === 'add') {
+     <span>Add a New Task</span>
+    }
+  </h2>
   <div class="tw-flex tw-items-center">
-    <button mat-button mat-dialog-close>Cancel</button>
-    <button
-      mat-flat-button
-      cdkFocusInitial
-      class="!tw-px-[50px] tw-mx-[20px]"
-      (click)="save()"
-      [disabled]="taskForm.invalid"
-    >
-      Add
-    </button>
+    @if (status === 'view') {
+      <button mat-button mat-dialog-close class="tw-mx-[20px]">
+        <span>Close</span>
+      </button>
+    }
+    @else if (status === 'update') {
+      <button mat-button class="tw-mx-[20px]" (click)="cancelUpdate()">
+        <span>Cancel</span>
+      </button>
+    }
+    @else if (status === 'add') {
+      <button mat-button mat-dialog-close class="tw-mx-[20px]">
+        <span>Cancel</span>
+      </button>
+    }
+
+    @if (status === 'update') {
+      <button
+        mat-flat-button
+        cdkFocusInitial
+        class="!tw-px-[50px] tw-mx-[20px]"
+        (click)="updateTask()"
+        [disabled]="taskForm.invalid"
+      >
+        Update
+      </button>
+    }
+    @else if (status === 'add') {
+      <button
+        mat-flat-button
+        cdkFocusInitial
+        class="!tw-px-[50px] tw-mx-[20px]"
+        (click)="addTask()"
+        [disabled]="taskForm.invalid"
+      >
+        Add
+      </button>
+    }
   </div>
 </div>
 
@@ -19,8 +57,9 @@
 <mat-dialog-content class="mat-typography">
   <form [formGroup]="taskForm" class="tw-flex tw-flex-col tw-w-full">
     <input formControlName="title" type="text" placeholder="Task Title">
+    <!-- (onContentChanged)="onContentChanged($event)" -->
     <quill-editor
-      (onContentChanged)="onContentChanged($event)"
+      formControlName="description"
       [modules]="editorModules"
       [placeholder]="'Task description here...'"
       [theme]="'snow'"

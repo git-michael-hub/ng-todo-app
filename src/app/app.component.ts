@@ -10,6 +10,7 @@ import { AddTaskFormComponent } from './uis/forms/add-task-form/add-task-form.co
 import { TaskAPI } from './data-access/apis/task.api';
 import { STORE } from './data-access/state/state.store';
 import { TASKS } from './utils/values/dataTask.value';
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 
 @Component({
@@ -20,7 +21,9 @@ import { TASKS } from './utils/values/dataTask.value';
   styleUrl: './app.component.scss',
 })
 export class AppComponent {
-  readonly dialog = inject(MatDialog);
+  readonly _dialog = inject(MatDialog);
+  private readonly _taskAPI = inject(TaskAPI);
+  private readonly _snackBar = inject(MatSnackBar);
 
   TASKS = TASKS;
 
@@ -32,7 +35,7 @@ export class AppComponent {
 
   mode: 'list' | 'board' = 'list';
 
-  private taskAPIDI = inject(TaskAPI);
+
 
   dialogRef!: MatDialogRef<AddTaskFormComponent, any>;
 
@@ -40,7 +43,7 @@ export class AppComponent {
     @Inject(PLATFORM_ID) private platformId: any,
     private http: HttpClient
   ) {
-    this.taskAPIDI.getTasks()
+    this._taskAPI.getTasks()
       .subscribe({
         next: (response) => {
           console.log('List of task:', response);
@@ -61,14 +64,54 @@ export class AppComponent {
     //   console.log(`[STORE]2: ${TASKS}`);
 
     effect(() => {
-      STORE().task.sort.status.set('asc');
-      console.log('[STORE]', STORE().task.sort.listComputed());
+      // STORE().task.sort.status.set('asc');
+      console.log('[STORE]', STORE().task.toString());
 
-      console.log('[STORE: ADDED]',  STORE().task.added());
+      if (STORE().task.added()) console.log('[STORE: ADDED]',  STORE().task.added());
+      if (STORE().task.updated()) console.log('[STORE: UPDATED]',  STORE().task.updated());
 
       if (STORE().task.added()?.id) {
         console.log('Successfully added new task!', STORE().task.added()?.title);
         this.dialogRef?.close();
+
+        this._snackBar.open(
+          `Successfully added new task: ${ STORE().task.added()?.title.slice(0, 20)}`,
+          'close',
+          {
+            horizontalPosition: 'end',
+            verticalPosition: 'bottom',
+            duration: 3000
+          }
+        );
+      }
+
+      if (STORE().task.updated()?.id) {
+        console.log('Successfully upadted the task!', STORE().task.updated()?.title);
+        this.dialogRef?.close();
+
+        this._snackBar.open(
+          `Successfully upadted the task: ${STORE().task.updated()?.title.slice(0, 20)}`,
+          'close',
+          {
+            horizontalPosition: 'end',
+            verticalPosition: 'bottom',
+            duration: 3000
+          }
+        );
+      }
+
+      if (STORE().task.deleted()?.id) {
+        console.log('Successfully deleted the task!', STORE().task.deleted()?.title);
+
+        this._snackBar.open(
+          `Successfully deleted the task: ${STORE().task.deleted()?.title.slice(0, 20)}`,
+          'close',
+          {
+            horizontalPosition: 'end',
+            verticalPosition: 'bottom',
+            duration: 3000
+          }
+        );
       }
     });
   }
@@ -141,7 +184,7 @@ export class AppComponent {
   }
 
   addTask(): void {
-    this.dialogRef = this.dialog.open(
+    this.dialogRef = this._dialog.open(
       AddTaskFormComponent,
       {
         maxWidth: '50vw',

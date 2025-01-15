@@ -15,7 +15,12 @@ export interface IState {
   },
   task: TAPI & {
     list: WritableSignal<TTask[]>, // the data content of the list
+
     added: WritableSignal<TTask | null>, // new added task
+    updated: WritableSignal<TTask | null>, // latest updated task
+    viewed: WritableSignal<TTask | null>, // current viewed task
+    deleted: WritableSignal<TTask | null>, // latest deleted task
+
     sort: {
       status: WritableSignal<'asc' | 'desc'>,
       listComputed: Signal<TTask[]>
@@ -27,7 +32,9 @@ export interface IState {
     count: {
       status: WritableSignal<'all' | 'complete' | 'todo' | 'high-priority'>,
       listComputed: Signal<number>
-    }
+    },
+
+    toString: () => any
   },
   error?: TError // a global error data
 }

@@ -18,6 +18,10 @@ export const STORE: WritableSignal<IState> = signal({
   task: {
     list: signal([]),
     added: signal(null),
+    updated: signal(null),
+    viewed: signal(null),
+    deleted: signal(null),
+
     sort: {
       status: signal('asc'),
       listComputed: computed(() => {
@@ -66,11 +70,21 @@ export const STORE: WritableSignal<IState> = signal({
           case 'todo': return [...TASKS].filter(task => !task.isCompleted)?.length;
         }
       })
-    }
+    },
     // all
     // iscompleted
     // left
     // high prio
 
-  }
+    toString: () => {
+      return {
+        list: STORE().task.list(),
+        added: STORE().task.added(),
+        updated: STORE().task.updated(),
+        viewed: STORE().task.viewed(),
+        deleted: STORE().task.deleted()
+      }
+    }
+
+  },
 });

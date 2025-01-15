@@ -23,11 +23,11 @@ export class TaskAPI {
     return this.http.post<T>(this.apiUrl, task);
   }
 
-  updateTask<T extends TTask>(id: number, task: T): Observable<T> {
+  updateTask<T extends TTask>(id: string, task: T): Observable<T> {
     return this.http.put<T>(`${this.apiUrl}/${id}`, task);
   }
 
-  deleteTask<T extends TTask>(id: number): Observable<T> {
+  deleteTask<T extends TTask>(id: string): Observable<T> {
     return this.http.delete<T>(`${this.apiUrl}/${id}`);
   }
 }

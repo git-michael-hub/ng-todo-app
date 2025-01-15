@@ -20,12 +20,25 @@
         <!-- {{ item }} -->
         <!-- <div class=""> -->
           <div class="tw-bg-[#fff] tw-rounded-lg tw-p-[12px]">
-            <p class="tw-text-lg">
-              <!-- {{task.id}}+ -->
-              {{task.title  | slice:0:100 }}
-            </p>
-            <span class="tw-text-sm" [innerHTML]="task.description  | slice:0:350"></span>
-            <span>{{ task.description.length > 350 ? '...' : '' }}</span>
+            <div class="tw-text-lg tw-flex tw-justify-between">
+              <div>
+                <mat-checkbox class="example-margin"></mat-checkbox>
+
+                <!-- {{task.id}}+ -->
+                {{task.title | titlecase | slice:0:100 }}
+              </div>
+
+              <div>
+                <button mat-button (click)="deleteTask(task.id)">Delete</button>
+                <button mat-button (click)="viewTask(task)">View</button>
+              </div>
+            </div>
+
+            <div class="tw-text-sm tw-pl-[45px]">
+              <span [innerHTML]="task.description  | slice:0:350"></span>
+             <span>{{ task.description.length > 350 ? '...' : '' }}</span>
+            </div>
+
           </div>
         <!-- </div> -->
       </div>
