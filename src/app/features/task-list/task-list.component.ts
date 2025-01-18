@@ -7,7 +7,7 @@ import {
   moveItemInArray,
 } from '@angular/cdk/drag-drop';
 import { TASKS } from '../../utils/values/dataTask.value';
-import { SlicePipe } from '@angular/common';
+import { DatePipe, SlicePipe } from '@angular/common';
 import { STORE } from '../../data-access/state/state.store';
 import { TTask } from '../../utils/models/task.model';
 import { TaskAPI } from '../../data-access/apis/task.api';
@@ -19,6 +19,7 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
 import { TitleCasePipe } from '@angular/common';
 import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material/dialog';
 import { AddTaskFormComponent } from '../../uis/forms/add-task-form/add-task-form.component';
+import { PriorityPipe } from '../../utils/pipes/priority.pipe';
 
 
 @Component({
@@ -33,7 +34,9 @@ import { AddTaskFormComponent } from '../../uis/forms/add-task-form/add-task-for
     MatButtonModule,
     ScrollingModule,
     MatCheckboxModule,
-    TitleCasePipe
+    TitleCasePipe,
+    PriorityPipe,
+    DatePipe
   ],
 })
 export class TaskListComponent implements OnInit {

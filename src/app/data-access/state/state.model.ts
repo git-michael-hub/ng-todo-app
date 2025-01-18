@@ -21,6 +21,7 @@ export interface IState {
     viewed: WritableSignal<TTask | null>, // current viewed task
     deleted: WritableSignal<TTask | null>, // latest deleted task
 
+
     sort: {
       status: WritableSignal<'asc' | 'desc'>,
       listComputed: Signal<TTask[]>
@@ -30,8 +31,11 @@ export interface IState {
       listComputed: Signal<TTask[]>
     },
     count: {
-      status: WritableSignal<'all' | 'complete' | 'todo' | 'high-priority'>,
-      listComputed: Signal<number>
+      // status: WritableSignal<'all' | 'complete' | 'todo' | 'high-priority'>,
+      allListComputed: Signal<number>,
+      completeListComputed: Signal<number>,
+      todoListComputed: Signal<number>,
+      highPriorityListComputed: Signal<number>
     },
 
     toString: () => any

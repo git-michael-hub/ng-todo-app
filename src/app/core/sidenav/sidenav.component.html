@@ -1,7 +1,7 @@
-<div class="example-container" [class.example-is-mobile]="mobileQuery.matches">
+<section class="example-container side-nav" [class.example-is-mobile]="mobileQuery.matches">
   <mat-toolbar class="example-toolbar">
   <div class="tw-w-[218px] tw-inline-flex tw-items-center">
-    <button mat-icon-button (click)="snav.toggle()"><mat-icon>menu</mat-icon></button>
+    <!-- <button mat-icon-button (click)="snav.toggle()"><mat-icon>menu</mat-icon></button> -->
     <h1 class="example-app-name">Workie-Work</h1>
 
   </div>
@@ -26,7 +26,7 @@
             @for (nav of navigations; track nav) {
               @if (nav.position === 'top') {
                 <div>
-                  <a mat-list-item routerLink="{{nav.page}}">
+                  <a mat-list-item routerLink="{{nav.page}}" routerLinkActive="active">
                     {{ nav.name | titlecase }}
                   </a>
                 </div>
@@ -57,4 +57,4 @@
       <ng-content />
     </mat-sidenav-content>
   </mat-sidenav-container>
-</div>
+</section>

@@ -8,6 +8,30 @@ import { TaskAPI } from '../../../data-access/apis/task.api';
 import { TTask } from '../../../utils/models/task.model';
 import { STORE } from '../../../data-access/state/state.store';
 import { TASKS } from '../../../utils/values/dataTask.value';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import { provideNativeDateAdapter } from '@angular/material/core';
+import {MatButtonToggleModule} from '@angular/material/button-toggle';
+import {provideMomentDateAdapter} from '@angular/material-moment-adapter';
+import {MatInputModule} from '@angular/material/input';
+
+import * as _moment from 'moment';
+import {default as _rollupMoment} from 'moment';
+
+const moment = _rollupMoment || _moment;
+
+
+
+export const MY_FORMATS = {
+  parse: {
+    dateInput: 'LL',
+  },
+  display: {
+    dateInput: 'LL',
+    monthYearLabel: 'MMM YYYY',
+    dateA11yLabel: 'LL',
+    monthYearA11yLabel: 'MMMM YYYY',
+  },
+};
 
 
 @Component({
@@ -16,11 +40,18 @@ import { TASKS } from '../../../utils/values/dataTask.value';
   styleUrls: ['./add-task-form.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
+  providers: [
+    // provideNativeDateAdapter()
+    provideMomentDateAdapter(MY_FORMATS),
+  ],
   imports: [
     MatDialogModule,
     MatButtonModule,
     QuillModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatDatepickerModule,
+    MatButtonToggleModule,
+    MatInputModule,
   ],
 })
 export class AddTaskFormComponent implements OnInit {
@@ -48,14 +79,16 @@ export class AddTaskFormComponent implements OnInit {
   taskForm = this._formBuilder.group({
     title: ['', Validators.required],
     description: ['', Validators.required],
-    date: [new Date(Date.now()), Validators.required],
+    date: [moment(Date.now()), Validators.required],
     priority: ["low", Validators.required],
   });
 
   // isViewTask = false;
   // toUpdate = false;
 
-  status: 'view' | 'add' | 'update' = 'view';
+  status: 'view' | 'add' | 'update' | 'close' = 'view';
+
+  // taskForTimeout: any;
 
 
   imageHandler() {
@@ -96,30 +129,45 @@ export class AddTaskFormComponent implements OnInit {
 
     if (this.status === 'view') {
       this.taskForm.setValue({
-        title: this._data.title,
+        title: this._data.title, // titlecase
         description: this._data.description,
-        date: new Date(this._data.date),
+        date: moment(this._data.date),
         priority: this._data.priority
       });
     }
 
+    this.taskForm.valueChanges.subscribe(data => {
+      // console.log('title:', title);
+      // console.log('status:', this.status);
+
+      if (this.status === 'close') return;
+
+      if (this.status === 'view') this.status = 'update';
+
+      // if (this.taskForTimeout) this.taskForTimeout = undefined;
+      // this.taskForTimeout = setTimeout(() => {
+      //   if (this.status === 'view') this.status = 'update';
+      // }, 2000);
+    });
+
     this.taskForm.controls.title.valueChanges.subscribe(title => {
-      console.log('title:', title);
-      console.log('status:', this.status);
+    //   console.log('title:', title);
+    //   console.log('status:', this.status);
 
-      if (this.status === 'view') this.status = 'update';
+    //   if (this.status === 'view') this.status = 'update';
 
-      // if (isViewTask)
-      // this.toUpdate = true;
+    //   // if (isViewTask)
+    //   // this.toUpdate = true;
+    // titlecase
     });
 
-    this.taskForm.controls.description.valueChanges.subscribe(description => {
-      console.log('description:', description);
-      console.log('status:', this.status);
+    // this.taskForm.controls.description.valueChanges.subscribe(description => {
+    //   console.log('description:', description);
+    //   console.log('status:', this.status);
 
-      if (this.status === 'view') this.status = 'update';
-      // this.toUpdate = true;
-    });
+    //   if (this.status === 'view') this.status = 'update';
+    //   // this.toUpdate = true;
+    // });
 
 
   }
@@ -132,7 +180,7 @@ export class AddTaskFormComponent implements OnInit {
     this.taskForm.setValue({
       title: this._data.title,
       description: this._data.description,
-      date: new Date(this._data.date),
+      date: moment(this._data.date),
       priority: this._data.priority
     });
 
@@ -154,6 +202,7 @@ export class AddTaskFormComponent implements OnInit {
   // Save the content to the database
   addTask(): void {
     console.log('save: taskForm.value:', this.taskForm.value);
+    // return;
     if (this.taskForm.valid) {
       const data = JSON.stringify(this.taskForm.value) as unknown as TTask;
       this._taskAPI.addTask(data)
@@ -186,6 +235,9 @@ export class AddTaskFormComponent implements OnInit {
               ]
             );
             STORE().task.updated.set(response || null);
+
+            this.status = 'view';
+            this._cd.markForCheck();
           },
           error: (error) => {
             console.error('Error updating task:', error);

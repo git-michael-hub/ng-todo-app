@@ -12,6 +12,7 @@ const NOT_TODAY = (taskDate: string): boolean => {
   return taskDate !== today;
 }
 
+// TODO: create a logger like redux with current value of state and the difference from previous state
 
 export const STORE: WritableSignal<IState> = signal({
   id: 'main_store',
@@ -58,17 +59,21 @@ export const STORE: WritableSignal<IState> = signal({
     // complete, asc
     // archive, asc
     count: {
-      status: signal('all'),
-      listComputed: computed(() => {
-        const STATUS = STORE().task.count.status();
+      allListComputed: computed(() => {
         const TASKS = STORE().task.list();
-
-        switch (STATUS) {
-          case 'all': return [...TASKS]?.length;
-          case 'complete': return [...TASKS].filter(task => task.isCompleted)?.length;
-          case 'high-priority': return [...TASKS].filter(task => task.priority === 'high')?.length;
-          case 'todo': return [...TASKS].filter(task => !task.isCompleted)?.length;
-        }
+        return [...TASKS]?.length;
+      }),
+      completeListComputed: computed(() => {
+        const TASKS = STORE().task.list();
+        return [...TASKS].filter(task => task.isCompleted)?.length;
+      }),
+      todoListComputed: computed(() => {
+        const TASKS = STORE().task.list();
+        return [...TASKS].filter(task => !task.isCompleted)?.length;
+      }),
+      highPriorityListComputed: computed(() => {
+        const TASKS = STORE().task.list();
+        return [...TASKS].filter(task => task.priority === 'high')?.length;
       })
     },
     // all
@@ -76,15 +81,13 @@ export const STORE: WritableSignal<IState> = signal({
     // left
     // high prio
 
-    toString: () => {
-      return {
-        list: STORE().task.list(),
-        added: STORE().task.added(),
-        updated: STORE().task.updated(),
-        viewed: STORE().task.viewed(),
-        deleted: STORE().task.deleted()
-      }
-    }
+    toString: () => ({
+      list: STORE().task.list(),
+      added: STORE().task.added(),
+      updated: STORE().task.updated(),
+      viewed: STORE().task.viewed(),
+      deleted: STORE().task.deleted()
+    }),
 
   },
 });

@@ -39,6 +39,8 @@ export class AppComponent {
 
   dialogRef!: MatDialogRef<AddTaskFormComponent, any>;
 
+  private __DATA__: any[]  = [];
+
   constructor(
     @Inject(PLATFORM_ID) private platformId: any,
     private http: HttpClient
@@ -64,11 +66,14 @@ export class AppComponent {
     //   console.log(`[STORE]2: ${TASKS}`);
 
     effect(() => {
+
+
+
       // STORE().task.sort.status.set('asc');
       console.log('[STORE]', STORE().task.toString());
 
-      if (STORE().task.added()) console.log('[STORE: ADDED]',  STORE().task.added());
-      if (STORE().task.updated()) console.log('[STORE: UPDATED]',  STORE().task.updated());
+      // if (STORE().task.added()) console.log('[STORE: ADDED]',  STORE().task.added());
+      // if (STORE().task.updated()) console.log('[STORE: UPDATED]',  STORE().task.updated());
 
       if (STORE().task.added()?.id) {
         console.log('Successfully added new task!', STORE().task.added()?.title);
@@ -80,9 +85,12 @@ export class AppComponent {
           {
             horizontalPosition: 'end',
             verticalPosition: 'bottom',
-            duration: 3000
+            duration: 5000
           }
         );
+
+        this.recordData('[STORE: ADDED]');
+        STORE().task.added.set(null);
       }
 
       if (STORE().task.updated()?.id) {
@@ -95,9 +103,12 @@ export class AppComponent {
           {
             horizontalPosition: 'end',
             verticalPosition: 'bottom',
-            duration: 3000
+            duration: 5000
           }
         );
+
+        this.recordData('[STORE: UPDATED]');
+        STORE().task.updated.set(null);
       }
 
       if (STORE().task.deleted()?.id) {
@@ -109,9 +120,11 @@ export class AppComponent {
           {
             horizontalPosition: 'end',
             verticalPosition: 'bottom',
-            duration: 3000
+            duration: 5000
           }
         );
+        this.recordData('[STORE: DELETED]');
+        STORE().task.deleted.set(null);
       }
     });
   }
@@ -202,6 +215,22 @@ export class AppComponent {
     });
 
 
+  }
+
+
+  recordData(action: string): void {
+    // TODO: duplication of action
+
+
+    this.__DATA__ = [
+      ...this.__DATA__,
+      {
+        action,
+        state: STORE().task.toString()
+      }
+    ];
+
+    console.log('[RECORD_DATA]:', this.__DATA__);
   }
 
 }

@@ -1,13 +1,8 @@
-
-
-
-
-
 <section class="page">
-  <p>
-    completed works!
+  <p class="tw-pb-3">
+    <span class="tw-text-xl">{{page.name | titlecase}}.&nbsp;</span>
+    <span class="tw-text-sm">{{page.description}}</span>
   </p>
 
-  <app-feature-task-list [TASKS]="TASKS"></app-feature-task-list>
-
+  <app-feature-task-list [TASKS]="TASKS()"></app-feature-task-list>
 </section>

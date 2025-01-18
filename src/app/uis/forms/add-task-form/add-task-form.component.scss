@@ -1,3 +1,24 @@
+
+// ::ng-deep .cdk-overlay-pane {
+//   left: 75px !important; /* Adjust only for this datepicker */
+// }
+
+.datepicker {
+  input:hover {
+    color: #005cbb;
+  }
+}
+
+::ng-deep .add-form-btn-toggle.mat-button-toggle-group-appearance-standard {
+  border: unset !important;
+  border-radius: unset !important;
+
+  .mat-button-toggle-appearance-standard {
+    border: unset !important;
+  }
+}
+
+
 input {
   height: 40px;
   font-size: large;

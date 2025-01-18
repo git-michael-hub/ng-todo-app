@@ -51,8 +51,40 @@
 
 
 
+.list-item {
+  &:hover {
+    cursor: pointer;
+
+    .item-head {
+      border-bottom-color: #005cbb;
+    }
+
+    .item-content-buttons {
+      display: block !important;
+    }
+  }
+
+  .item-content-buttons {
+    button {
+      height: 25px;
+    }
+  }
+}
 
 
+.item-head {
+  margin-bottom: 8px;
+  border-bottom-style: solid;
+  border-bottom-color: #fff;
+  border-bottom-width: thin;
+
+  // &:hover {
+  //   border-bottom-style: solid;
+  //   border-bottom-color: #005cbb;
+  //   border-bottom-width: thin;
+  // }
+
+}
 
 
 cdk-virtual-scroll-viewport {

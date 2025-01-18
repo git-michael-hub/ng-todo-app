@@ -11,6 +11,40 @@
 // // }
 
 
+// a:hover {
+//   background-color: unset !important;
+// }
+
+
+.active {
+  // border-bottom: #689cd5 !important;
+  // border-style: solid !important;
+  // border-bottom-right-radius: unset !important;
+  // border-bottom-left-radius: unset !important;
+  // border-bottom-width: thin !important;
+}
+
+
+::ng-deep .mat-mdc-nav-list {
+  .mat-mdc-list-item {
+    border-radius: 0.5rem !important;
+  }
+
+  .mat-mdc-list-item:focus {
+    background-color: #fff !important;
+  }
+
+  .mat-mdc-list-item:hover {
+    background-color: #fff !important;
+  }
+}
+
+::ng-deep a.active {
+  span.mdc-list-item__primary-text  {
+    color: #006ad7 !important;
+  }
+}
+
 
 .example-container {
   display: flex;
@@ -28,9 +62,9 @@
   z-index: 2;
 }
 
-h1.example-app-name {
-  margin-left: 8px;
-}
+// h1.example-app-name {
+//   margin-left: 8px;
+// }
 
 .example-sidenav-container {
   /* When the sidenav is not fixed, stretch the sidenav container to fill the available space. This

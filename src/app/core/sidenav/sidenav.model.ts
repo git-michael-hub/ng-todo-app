@@ -3,4 +3,5 @@ export type TMenu = {
   isSelected: boolean,
   position: 'top' | 'bottom',
   page: string,
+  description: string
 }
