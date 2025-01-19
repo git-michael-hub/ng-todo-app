@@ -20,6 +20,7 @@ import { TitleCasePipe } from '@angular/common';
 import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material/dialog';
 import { AddTaskFormComponent } from '../../uis/forms/add-task-form/add-task-form.component';
 import { PriorityPipe } from '../../utils/pipes/priority.pipe';
+import { FormsModule } from '@angular/forms';
 
 
 @Component({
@@ -36,7 +37,8 @@ import { PriorityPipe } from '../../utils/pipes/priority.pipe';
     MatCheckboxModule,
     TitleCasePipe,
     PriorityPipe,
-    DatePipe
+    DatePipe,
+    FormsModule
   ],
 })
 export class TaskListComponent implements OnInit {
@@ -65,6 +67,13 @@ export class TaskListComponent implements OnInit {
 
     effect(() => {
       if (STORE().task.updated()?.id) {
+        this.dialogRef?.close();
+      }
+
+      // console.log('X:', STORE().task.deleted())
+
+      // TODO:
+      if (STORE().task.deleted()?.id) {
         this.dialogRef?.close();
       }
     });
@@ -96,6 +105,40 @@ export class TaskListComponent implements OnInit {
 
   trackById(index: number, item: any): number {
     return item.id; // Use the item's unique identifier
+  }
+
+  markAsComplete(task: TTask): void {
+    if (!task || !task.id) return;
+
+    // console.log('task:', task)
+
+    // task = {
+    //   ...task,
+    //   isCompleted: !task.isCompleted
+    // };
+
+    // console.log('task2:', task)
+
+    // return;
+
+    this._taskAPI.updateTask(task.id || '', task)
+      .subscribe({
+        next: (response) => {
+          console.log('Task updated successfully: completed', response);
+          // STORE().task.list.update(
+          //   tasks => [
+          //     ...(() => tasks.filter(task => task.id !== task.id))(),
+          //     response
+          //   ]
+          // );
+          STORE().task.updated.set(response || null);
+        },
+        error: (error) => {
+          console.error('Error updating task:', error);
+          STORE().task.updated.set(null);
+        },
+      });
+
   }
 
   viewTask(task: TTask): void {

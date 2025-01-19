@@ -2,6 +2,9 @@
   <h2 mat-dialog-title class="">
     @if (status === 'view') {
       <span>Task Detail</span>
+      @if (_data.isCompleted) {
+        <span class="tw-px-[12px] tw-ml-[4px] tw-text-md tw-text-[#1aa318]">DONE</span>
+      }
     }
     @else if (status === 'update') {
       <span>Update Task</span>
@@ -56,7 +59,7 @@
 <form [formGroup]="taskForm" class="tw-flex tw-flex-col tw-w-full">
 
 
-  <mat-dialog-content class="mat-typography tw-h-screen !tw-max-h-[68vh]">
+  <mat-dialog-content class="mat-typography tw-h-screen !tw-max-h-[66vh]">
     <!-- <form [formGroup]="taskForm" class="tw-flex tw-flex-col tw-w-full"> -->
     <div class="tw-flex tw-flex-col tw-w-full">
       <input formControlName="title" type="text" placeholder="Task Title">
@@ -77,6 +80,12 @@
   </mat-dialog-content>
 
   <mat-dialog-actions align="end" class="!tw-py-[0]">
+    @if ((status === 'update' || status === 'view') && !_data.isCompleted) {
+      <div class="tw-absolute tw-left-[12px]">
+        <button mat-button (click)="deleteTask(_data.id)" class="!tw-text-[#cb2929]">Delete</button>
+      </div>
+    }
+
     <div class="datepicker">
       <span class="tw-mr-[4px]">Set Date:</span>
       <!-- <mat-form-field class="datepicker"> -->

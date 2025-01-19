@@ -57,7 +57,7 @@ export const MY_FORMATS = {
 export class AddTaskFormComponent implements OnInit {
   private readonly _formBuilder = inject(FormBuilder);
   private readonly _taskAPI = inject(TaskAPI);
-  private readonly _data: TTask = inject(MAT_DIALOG_DATA);
+  readonly _data: TTask = inject(MAT_DIALOG_DATA);
   private readonly _cd = inject(ChangeDetectorRef);
 
   TASKS = TASKS;
@@ -174,6 +174,27 @@ export class AddTaskFormComponent implements OnInit {
 
   ngOnDestroy() {
 
+  }
+
+  deleteTask(id?: string): void {
+    if (!id) return;
+
+    this._taskAPI.deleteTask(id)
+      .subscribe({
+        next: (response) => {
+          console.log('Task deleted successfully:', response);
+          STORE().task.list.update(
+            tasks => [
+              ...(() => tasks.filter(task => task.id !== id))()
+            ]
+          );
+          STORE().task.deleted.set(response || null);
+        },
+        error: (error) => {
+          console.error('Error updating task:', error);
+          STORE().task.deleted.set(null);
+        },
+      });
   }
 
   cancelUpdate(): void {

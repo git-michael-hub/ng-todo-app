@@ -86,6 +86,20 @@
 
 }
 
+.task-description {
+  // width: 200px; /* Limit the width */
+  white-space: nowrap; /* Prevent text from wrapping */
+  overflow: hidden; /* Hide overflow text */
+  text-overflow: ellipsis; /* Add an ellipsis at the end */
+  // hyphens: auto;
+  // word-break: break-all;
+  // white-space: pre-line;
+
+  & > div {
+    display: ruby-text;
+  }
+}
+
 
 cdk-virtual-scroll-viewport {
   scrollbar-width: none; /* Firefox */
@@ -95,6 +109,10 @@ cdk-virtual-scroll-viewport {
 cdk-virtual-scroll-viewport::-webkit-scrollbar {
   display: none; /* Chrome, Safari, and Edge */
 }
+
+// ::ng-ddep .cdk-virtual-scroll-orientation-vertical .cdk-virtual-scroll-content-wrapper  {
+//   width: 100% !important;
+// }
 
 .list-container {
   display: block;
