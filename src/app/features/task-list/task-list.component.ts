@@ -28,6 +28,7 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './task-list.component.html',
   styleUrls: ['./task-list.component.scss'],
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     SlicePipe,
     // BrowserModule,

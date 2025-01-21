@@ -1,8 +1,28 @@
 <section class="page">
-  <p class="tw-pb-3">
-    <span class="tw-text-xl">{{page.name | titlecase}}.&nbsp;</span>
-    <span class="tw-text-sm tw-text-[#4d4d4d]">{{page.description}}</span>
-  </p>
+  <div class="tw-pb-3 tw-flex">
+    <div class="tw-w-[50%]">
+      @if (isSearch()) {
+        <div>
+          <ui-search (searchTermFn)="toSearch($event)"></ui-search>
+        </div>
+      }
+      @else {
+        <div>
+          <span class="tw-text-xl">{{page.name | titlecase}}.&nbsp;</span>
+          <span class="tw-text-sm tw-text-[#4d4d4d]">{{page.description}}</span>
+        </div>
+      }
+    </div>
+
+    <div class="tw-w-[50%] tw-pl-[12px]">
+      @if (isSearch()) {
+        <button mat-button (click)="closeSearch()">Close</button>
+      }
+      @else {
+        <button mat-button (click)="isSearch.set(true)">Search</button>
+      }
+    </div>
+  </div>
 
   <app-feature-task-list [TASKS]="TASKS()"></app-feature-task-list>
 </section>

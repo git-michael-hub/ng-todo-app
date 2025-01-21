@@ -33,6 +33,11 @@
               }
             }
           </div>
+          <div>
+            <button mat-raised-button class="tw-w-[7rem] tw-ml-[4px] tw-mb-[4px] !tw-px-0" (click)="addTask()">
+              Add task +
+            </button>
+          </div>
           <div class="tw-mt-auto tw-pb-[40px]">
             @for (nav of navigations; track nav) {
               @if (nav.position === 'bottom') {

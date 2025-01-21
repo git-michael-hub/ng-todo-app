@@ -75,30 +75,42 @@ export class AppComponent {
       // if (STORE().task.added()) console.log('[STORE: ADDED]',  STORE().task.added());
       // if (STORE().task.updated()) console.log('[STORE: UPDATED]',  STORE().task.updated());
 
-      if (STORE().task.added()?.id) {
-        console.log('Successfully added new task!', STORE().task.added()?.title);
-        this.dialogRef?.close();
+      // if (STORE().task.added()?.id) {
+      //   console.log('Successfully added new task!', STORE().task.added()?.title);
+      //   this.dialogRef?.close();
 
-        this._snackBar.open(
-          `Successfully added new task: ${ STORE().task.added()?.title.slice(0, 20)}`,
-          'close',
-          {
-            horizontalPosition: 'end',
-            verticalPosition: 'bottom',
-            duration: 5000
-          }
-        );
+      //   this._snackBar.open(
+      //     `Added:
+      //     ${
+      //       STORE().task.added()?.title.slice(0, 20)
+      //     }
+      //     ${
+      //       (() => ((STORE().task.added()?.title.slice(0, 20) as any).length >= 20 ? '...': ''))()
+      //     }`,
+      //     'close',
+      //     {
+      //       horizontalPosition: 'end',
+      //       verticalPosition: 'bottom',
+      //       duration: 5000
+      //     }
+      //   );
 
-        this.recordData('[STORE: ADDED]');
-        STORE().task.added.set(null);
-      }
+      //   this.recordData('[STORE: ADDED]');
+      //   STORE().task.added.set(null);
+      // }
 
       if (STORE().task.updated()?.id) {
-        console.log('Successfully upadted the task!', STORE().task.updated()?.title);
+        console.log('Updated:', STORE().task.updated()?.title);
         this.dialogRef?.close();
 
         this._snackBar.open(
-          `Successfully upadted the task: ${STORE().task.updated()?.title.slice(0, 20)}`,
+          `Updated:
+          ${
+            STORE().task.updated()?.title.slice(0, 20)
+          }
+          ${
+            (() => ((STORE().task.updated()?.title.slice(0, 20) as any).length >= 20 ? '...': ''))()
+          }`,
           'close',
           {
             horizontalPosition: 'end',
@@ -115,7 +127,13 @@ export class AppComponent {
         console.log('Successfully deleted the task!', STORE().task.deleted()?.title);
 
         this._snackBar.open(
-          `Successfully deleted the task: ${STORE().task.deleted()?.title.slice(0, 20)}`,
+          `Deleted:
+          ${
+            STORE().task.deleted()?.title.slice(0, 20)
+          }
+          ${
+            (() => ((STORE().task.deleted()?.title.slice(0, 20) as any).length >= 20 ? '...': ''))()
+          }`,
           'close',
           {
             horizontalPosition: 'end',
@@ -196,26 +214,26 @@ export class AppComponent {
     });
   }
 
-  addTask(): void {
-    this.dialogRef = this._dialog.open(
-      AddTaskFormComponent,
-      {
-        maxWidth: '50vw',
-        width: '50vw',
-        maxHeight: '80vh',
-        height: '80vh',
-        disableClose: true,
-      } as MatDialogConfig
-    );
+  // addTask(): void {
+  //   this.dialogRef = this._dialog.open(
+  //     AddTaskFormComponent,
+  //     {
+  //       maxWidth: '50vw',
+  //       width: '50vw',
+  //       maxHeight: '80vh',
+  //       height: '80vh',
+  //       disableClose: true,
+  //     } as MatDialogConfig
+  //   );
 
-    // dialogRef.close();
+  //   // dialogRef.close();
 
-    this.dialogRef.afterClosed().subscribe(result => {
-      console.log(`Dialog result: ${result}`);
-    });
+  //   this.dialogRef.afterClosed().subscribe(result => {
+  //     console.log(`Dialog result: ${result}`);
+  //   });
 
 
-  }
+  // }
 
 
   recordData(action: string): void {

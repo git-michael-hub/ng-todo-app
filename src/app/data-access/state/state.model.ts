@@ -37,6 +37,10 @@ export interface IState {
       todoListComputed: Signal<number>,
       highPriorityListComputed: Signal<number>
     },
+    search: {
+      term: WritableSignal<string>,
+      filteredListByTitle: Signal<TTask[]>
+    },
 
     toString: () => any
   },

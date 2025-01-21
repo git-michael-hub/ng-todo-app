@@ -1,15 +1,18 @@
 import { computed, signal, WritableSignal } from "@angular/core";
 import { IState } from "./state.model";
+import { TTask } from "../../utils/models/task.model";
 
 
 const IS_TODAY = (taskDate: string): boolean => {
   const today = new Date().toISOString().split('T')[0];
-  return taskDate === today;
+  console.log('taskDate:', taskDate)
+  console.log('today:', today)
+  return taskDate.split('T')[0] === today;
 }
 
 const NOT_TODAY = (taskDate: string): boolean => {
   const today = new Date().toISOString().split('T')[0];
-  return taskDate !== today;
+  return taskDate.split('T')[0] !== today;
 }
 
 // TODO: create a logger like redux with current value of state and the difference from previous state
@@ -46,7 +49,27 @@ export const STORE: WritableSignal<IState> = signal({
 
         switch (FILTER) {
           case 'today': return [...TASKS].filter(task => IS_TODAY(task.date));
-          case 'upcoming': return [...TASKS].filter(task => NOT_TODAY(task.date));
+          case 'upcoming': {
+            // Convert the dates to Date objects
+            const withDateObject = TASKS.map(task => ({
+              ...task,
+              date: new Date(task.date)
+            }));
+
+            // Get the current date
+            const today = new Date();
+
+            // Filter upcoming dates
+            let upcomingDates: any = withDateObject.filter(task => task.date >= today);
+            upcomingDates = upcomingDates.map((task: { date: { toDateString: () => any; }; }) => ({
+              ...task,
+              date: task.date?.toDateString()
+            }));
+
+            return upcomingDates
+              .sort((a: { date: string | number | Date; }, b: { date: string | number | Date; }) => new Date(b.date).getTime() - new Date(a.date).getTime()) as unknown as TTask[]; // desc
+
+          }
           case 'high-priority': return [...TASKS].filter(task => task.priority === 'high');
           case 'complete': return [...TASKS].filter(task => task.isCompleted);
           case 'archive': return [...TASKS].filter(task => task.isArchive);
@@ -80,6 +103,17 @@ export const STORE: WritableSignal<IState> = signal({
     // iscompleted
     // left
     // high prio
+
+
+    search: {
+      term: signal(''),
+      filteredListByTitle: computed(() => {
+        const TERM = STORE().task.search.term();
+        const TASKS = STORE().task.list();
+
+        return TASKS.filter(task => task.title.toLowerCase().includes(TERM.toLowerCase()));
+      })
+    },
 
     toString: () => ({
       list: STORE().task.list(),
