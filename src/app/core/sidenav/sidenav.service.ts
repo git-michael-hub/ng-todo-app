@@ -1,14 +1,7 @@
 import { Injectable } from '@angular/core';
 import { TMenu } from './sidenav.model';
-import { RecentComponent } from '../../pages/recent/recent.component';
-import { TodayComponent } from '../../pages/today/today.component';
-import { UpcomingComponent } from '../../pages/upcoming/upcoming.component';
-import { PriorityComponent } from '../../pages/priority/priority.component';
-import { ListComponent } from '../../pages/list/list.component';
-import { CompletedComponent } from '../../pages/completed/completed.component';
-import { ArchiveComponent } from '../../pages/archive/archive.component';
-import { CalendarComponent } from '../../pages/calendar/calendar.component';
-import { HomeComponent } from '../../pages/home/home.component';
+
+
 
 @Injectable({
   providedIn: 'root'
@@ -65,13 +58,13 @@ export class SidenavService {
       page: '/completed',
       description: 'Tasks that are completed.'
     },
-    {
-      name: 'archive',
-      isSelected: false,
-      position: 'top',
-      page: '/archive',
-      description: 'Tasks that are requested for deletion.'
-    },
+    // {
+    //   name: 'archive',
+    //   isSelected: false,
+    //   position: 'top',
+    //   page: '/archive',
+    //   description: 'Tasks that are requested for deletion.'
+    // },
     {
       name: 'calendar',
       isSelected: false,
@@ -87,7 +80,5 @@ export class SidenavService {
       description: 'Home page where is the default page.'
     },
   ];
-
-  constructor() { }
 
 }

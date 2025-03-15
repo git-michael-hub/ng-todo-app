@@ -1,0 +1,35 @@
+<section class="page">
+  <div class="tw-pb-3 tw-flex">
+    <div class="tw-w-[50%]">
+      @if (isSearch()) {
+        <div>
+          <ui-search (searchTermFn)="toSearch($event)"></ui-search>
+        </div>
+      }
+      @else {
+        <div>
+          <span class="tw-text-xl">
+            {{ PAGE.name | titlecase }}.&nbsp;
+          </span>
+          <span class="tw-text-sm tw-text-[#4d4d4d]">
+            {{ PAGE.description }}
+          </span>
+        </div>
+      }
+    </div>
+
+    <div class="tw-w-[50%] tw-pl-[12px]">
+      @if (isSearch()) {
+        <button mat-button (click)="closeSearch()">Close</button>
+      }
+      @else {
+        <button mat-button (click)="isSearch.set(true)">Search</button>
+      }
+    </div>
+  </div>
+
+  <app-feature-task-list
+    [tasks]="tasks()"
+    [SERVICE]="_TASK_SERVICE"
+  ></app-feature-task-list>
+</section>

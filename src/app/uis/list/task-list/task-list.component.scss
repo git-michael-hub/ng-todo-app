@@ -1,0 +1,59 @@
+.list-item {
+  &:hover {
+    cursor: pointer;
+
+    .item-head {
+      border-bottom-color: #005cbb !important;
+    }
+
+    .item-content-buttons {
+      display: block !important;
+    }
+  }
+
+  .item-content-buttons {
+    button {
+      height: 25px;
+    }
+  }
+}
+
+.item-head {
+  margin-bottom: 8px;
+  border-bottom-style: solid;
+  border-bottom-color: #f3f3f3;
+  border-bottom-width: thin;
+  background-color: #f3f3f3;
+}
+
+.task-description {
+  white-space: nowrap; /* Prevent text from wrapping */
+  overflow: hidden; /* Hide overflow text */
+  text-overflow: ellipsis; /* Add an ellipsis at the end */
+
+  & > div {
+    display: ruby-text;
+  }
+}
+
+.list-container {
+  display: block;
+  height: 88vh;
+  border: unset;
+  overflow: hidden;
+}
+
+.viewport {
+  height: 100%;
+  width: 100%;
+}
+
+
+cdk-virtual-scroll-viewport {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+}
+
+cdk-virtual-scroll-viewport::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, and Edge */
+}

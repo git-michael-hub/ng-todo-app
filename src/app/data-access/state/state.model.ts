@@ -2,11 +2,15 @@ import { Signal, WritableSignal } from "@angular/core";
 import { TError } from "../../utils/models/common.model"
 import { TTask } from "../../utils/models/task.model"
 
+
+
 type TAPI = {
   isRequestingAPI?: boolean, // checking for API request
   response?: boolean, // response data from the request
   hasError?: TError // error from the request
 };
+
+export type TPage = 'recent' | 'today' | 'upcoming' | 'high-priority' | 'list' | 'complete' | 'archive';
 
 export interface IState {
   id: string,
@@ -38,8 +42,10 @@ export interface IState {
       highPriorityListComputed: Signal<number>
     },
     search: {
+      page: WritableSignal<TPage>,
       term: WritableSignal<string>,
-      filteredListByTitle: Signal<TTask[]>
+      filteredListByTitle: Signal<TTask[]>,
+      list: WritableSignal<TTask[]>
     },
 
     toString: () => any
