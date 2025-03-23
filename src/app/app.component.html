@@ -1,59 +1,11 @@
-
-
-
-
-
-
 <app-sidenav>
+  <section class="tw-inline-flex tw-w-full tw-h-[88vh]">
+    <div class="tw-flex tw-grow tw-flex-col">
+      <router-outlet></router-outlet>
+    </div>
 
-    <!-- <app-nx-welcome></app-nx-welcome> -->
-
-    <section class="tw-inline-flex tw-w-full tw-h-[88vh]">
-      <div class="tw-flex tw-grow tw-flex-col">
-        <router-outlet></router-outlet>
-      </div>
-
-      <div class="tw-flex tw-w-[200px] tw-items-end">
-
-        <!-- <button mat-raised-button class="tw-w-full" (click)="addTask()">
-          Add task +
-        </button> -->
-      </div>
-
-    </section>
-
-
-
-
-
-
-    <!-- create new user -->
-    <!-- <input #inputname name="enter-user">
-    <button (click)="addUser(inputname)" class="tw-bg-blue-500">Add task</button>
-
-    @for (user of users; track user.id) {
-      <p >
-        <span #viewName>Name: {{ user.name }}</span>
-        <input #editname hidden value="{{user.name}}">
-
-        <button #btnDelete
-
-          (click)="
-          deleteUser(user.id)">Delete</button>
-
-        <button #btnEdit
-          (click)="editname.hidden = false;viewName.hidden = true;btnSave.hidden = false;btnClose.hidden = false; btnEdit.hidden = true;"
-        >Edit</button>
-        <button #btnClose
-          (click)="editname.hidden = true;viewName.hidden = false;btnSave.hidden = true;btnClose.hidden = true;btnEdit.hidden = false;" hidden
-        >Close</button>
-        <button #btnSave
-          hidden
-          (click)="
-          editUser(user.id, editname);
-          editname.hidden = true;viewName.hidden = false;btnSave.hidden = true;btnClose.hidden = true;btnEdit.hidden = false;"
-        >Save</button>
-      </p>
-    } -->
+    <div class="tw-flex tw-w-[200px] tw-items-end">
+    </div>
+  </section>
 </app-sidenav>
 

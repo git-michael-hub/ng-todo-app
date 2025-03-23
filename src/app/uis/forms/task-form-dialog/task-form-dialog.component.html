@@ -1,0 +1,135 @@
+<div class="!tw-bg-[#ffffff] tw-flex tw-flex-row tw-w-full tw-justify-between ">
+  <h2 mat-dialog-title data-test="dialog-title">
+    @if (status === 'view') {
+      <span>Task Detail</span>
+      @if (_DATA.isCompleted) {
+        <span class="tw-px-[12px] tw-ml-[4px] tw-text-md tw-text-[#1aa318]">DONE</span>
+      }
+    }
+    @else if (status === 'update') {
+      <span>Update Task</span>
+    }
+    @else if (status === 'add') {
+     <span>Add a New Task</span>
+    }
+  </h2>
+  <div class="tw-flex tw-items-center">
+    @if (status === 'view') {
+      <button
+        mat-button mat-dialog-close
+        class="tw-mx-[20px]"
+        (click)="status = 'close'"
+        data-test="dialog-action-close"
+      >
+        <span>Close</span>
+      </button>
+    }
+    @else if (status === 'update') {
+      <button
+        mat-button
+        class="tw-mx-[20px]"
+        (click)="cancelUpdate()"
+        data-test="dialog-action-cancel-update"
+      >
+        <span>Cancel</span>
+      </button>
+    }
+    @else if (status === 'add') {
+      <button
+        mat-button mat-dialog-close
+        class="tw-mx-[20px]"
+        data-test="dialog-action-cancel"
+      >
+        <span>Cancel</span>
+      </button>
+    }
+
+    @if (status === 'update') {
+      <button
+        mat-flat-button
+        class="!tw-px-[50px] tw-mx-[20px]"
+        (click)="updateTask()"
+        [disabled]="taskForm.invalid"
+        data-test="dialog-action-update"
+      >
+        Update
+      </button>
+    }
+    @else if (status === 'add') {
+      <button
+        mat-flat-button
+        class="!tw-px-[50px] tw-mx-[20px]"
+        (click)="addTask()"
+        [disabled]="taskForm.invalid"
+        data-test="dialog-action-add"
+      >
+        Add
+      </button>
+    }
+  </div>
+</div>
+
+<form [formGroup]="taskForm" class="tw-flex tw-flex-col tw-w-full">
+  <mat-dialog-content class="mat-typography tw-h-screen !tw-max-h-[66vh]">
+    <div class="tw-flex tw-flex-col tw-w-full">
+      <input
+        formControlName="title"
+        type="text"
+        placeholder="Task Title"
+        data-test="task-title-input"
+      >
+      <quill-editor
+        formControlName="description"
+        [modules]="editorModules"
+        [placeholder]="'Task description here...'"
+        [theme]="'snow'"
+        class="tw-h-[58vh]"
+        data-test="task-description-input"
+      ></quill-editor>
+    </div>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end" class="!tw-py-[0]">
+    @if ((status === 'update' || status === 'view') && !_DATA.isCompleted) {
+      <div class="tw-absolute tw-left-[12px]">
+        <button
+          mat-button
+          (click)="deleteTask(_DATA.id)"
+          class="!tw-text-[#cb2929]"
+          data-test="dialog-action-delete"
+        >
+          Delete
+        </button>
+      </div>
+    }
+
+    <div class="datepicker">
+      <span class="tw-mr-[4px]" data-test="due-date-label">Due Date:</span>
+        <input
+          matInput
+          [matDatepicker]="picker"
+          formControlName="date"
+          readonly
+          (click)="picker.open()"
+          class="!tw-rounded-lg !tw-cursor-pointer !tw-h-[55px] !tw-text-sm !tw-hover:!tw-text-red-50"
+          data-test="due-date-input"
+        >
+        <mat-datepicker #picker></mat-datepicker>
+    </div>
+
+    <div>
+      <span class="tw-mr-[4px]" data-test="priority-label">Priority:</span>
+      <mat-button-toggle-group formControlName="priority" class="!tw-rounded-lg add-form-btn-toggle">
+        <mat-button-toggle value="low" data-test="priority-selection-low">
+          Low
+        </mat-button-toggle>
+        <mat-button-toggle value="medium" data-test="priority-selection-medium">
+          Medium ⚠️
+        </mat-button-toggle>
+        <mat-button-toggle value="high" data-test="priority-selection-high">
+          High ❗️
+        </mat-button-toggle>
+      </mat-button-toggle-group>
+    </div>
+  </mat-dialog-actions>
+</form>

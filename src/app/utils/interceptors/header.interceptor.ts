@@ -1,6 +1,8 @@
 import { HttpRequest, HttpHandler, HttpEvent, HttpHandlerFn } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
+
+
 export function headerInterceptor(req: HttpRequest<any>, next: HttpHandlerFn): Observable<HttpEvent<any>> {
   // const authToken = localStorage.getItem('authToken'); // Get the token from local storage
 

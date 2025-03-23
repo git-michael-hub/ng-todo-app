@@ -3,10 +3,11 @@ import { IState } from "./state.model";
 import { TTask } from "../../utils/models/task.model";
 
 
+
 const IS_TODAY = (taskDate: string): boolean => {
   const today = new Date().toISOString().split('T')[0];
-  console.log('taskDate:', taskDate)
-  console.log('today:', today)
+  // console.log('taskDate:', taskDate)
+  // console.log('today:', today)
   return taskDate.split('T')[0] === today;
 }
 
@@ -15,7 +16,7 @@ const NOT_TODAY = (taskDate: string): boolean => {
   return taskDate.split('T')[0] !== today;
 }
 
-// TODO: create a logger like redux with current value of state and the difference from previous state
+
 
 export const STORE: WritableSignal<IState> = signal({
   id: 'main_store',
@@ -31,8 +32,6 @@ export const STORE: WritableSignal<IState> = signal({
       listComputed: computed(() => {
         const ORDER = STORE().task.sort.status();
         const TASKS = STORE().task.list();
-
-        // recently added , asc
 
         return [...TASKS].sort((a, b) =>
           ORDER === 'asc'
@@ -50,6 +49,7 @@ export const STORE: WritableSignal<IState> = signal({
         switch (FILTER) {
           case 'today': return [...TASKS].filter(task => IS_TODAY(task.date));
           case 'upcoming': {
+
             // Convert the dates to Date objects
             const withDateObject = TASKS.map(task => ({
               ...task,
@@ -67,7 +67,8 @@ export const STORE: WritableSignal<IState> = signal({
             }));
 
             return upcomingDates
-              .sort((a: { date: string | number | Date; }, b: { date: string | number | Date; }) => new Date(b.date).getTime() - new Date(a.date).getTime()) as unknown as TTask[]; // desc
+              .sort((a: { date: string | number | Date; }, b: { date: string | number | Date; }) =>
+                new Date(b.date).getTime() - new Date(a.date).getTime()) as unknown as TTask[]; // desc
 
           }
           case 'high-priority': return [...TASKS].filter(task => task.priority === 'high');
@@ -76,11 +77,6 @@ export const STORE: WritableSignal<IState> = signal({
         }
       })
     },
-    // today , asc
-    // upcoming, asc
-    // high priority, by high prio and asc date
-    // complete, asc
-    // archive, asc
     count: {
       allListComputed: computed(() => {
         const TASKS = STORE().task.list();
@@ -99,22 +95,18 @@ export const STORE: WritableSignal<IState> = signal({
         return [...TASKS].filter(task => task.priority === 'high')?.length;
       })
     },
-    // all
-    // iscompleted
-    // left
-    // high prio
-
-
     search: {
+      page: signal('list'),
       term: signal(''),
+      list: signal([]),
+
       filteredListByTitle: computed(() => {
         const TERM = STORE().task.search.term();
-        const TASKS = STORE().task.list();
+        const LIST = STORE().task.search.list();
 
-        return TASKS.filter(task => task.title.toLowerCase().includes(TERM.toLowerCase()));
+        return LIST.filter(task => task.title.toLowerCase().includes(TERM.toLowerCase()));
       })
     },
-
     toString: () => ({
       list: STORE().task.list(),
       added: STORE().task.added(),
@@ -122,6 +114,5 @@ export const STORE: WritableSignal<IState> = signal({
       viewed: STORE().task.viewed(),
       deleted: STORE().task.deleted()
     }),
-
   },
 });

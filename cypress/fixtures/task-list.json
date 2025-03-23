@@ -1,0 +1,79 @@
+[
+  {
+      "id": "c2a6acdd-dedc-423a-851e-6a85a7dd1ddb",
+      "title": "Cypress",
+      "description": "<p>To&nbsp;create&nbsp;a&nbsp;task&nbsp;number&nbsp;1.</p>",
+      "date": "2025-03-09T15:25:24.077Z",
+      "priority": "low",
+      "isCompleted": false,
+      "isArchive": false,
+      "createdAt": "2025-03-09T15:25:25.779Z",
+      "updatedAt": "2025-03-09T15:25:25.779Z"
+  },
+  {
+      "id": "b0255d20-1f76-4cdd-b5ba-fecd9db5e549",
+      "title": "Test Feature Task: Develop Search Functionality (3 hours)",
+      "description": "<ul><li>Implement&nbsp;a&nbsp;robust&nbsp;search&nbsp;feature&nbsp;with&nbsp;filters&nbsp;for&nbsp;the&nbsp;product&nbsp;catalog.</li><li>Include&nbsp;fuzzy&nbsp;search&nbsp;and&nbsp;autocomplete&nbsp;to&nbsp;enhance&nbsp;user&nbsp;experience.</li><li>Write&nbsp;initial&nbsp;integration&nbsp;tests&nbsp;to&nbsp;validate&nbsp;core&nbsp;functionality.</li></ul>",
+      "date": "2025-01-19T10:42:24.429Z",
+      "priority": "medium",
+      "isCompleted": false,
+      "isArchive": false,
+      "createdAt": "2025-01-19T10:42:44.396Z",
+      "updatedAt": "2025-01-21T16:30:52.020Z"
+  },
+  {
+      "id": "065428a3-8ddf-448a-82da-4fb1f99a7ec3",
+      "title": "Morning Stand-Up Meeting (15 minutes)",
+      "description": "<p>Join&nbsp;the&nbsp;daily&nbsp;stand-up&nbsp;with&nbsp;the&nbsp;team&nbsp;to&nbsp;provide&nbsp;updates&nbsp;on&nbsp;your&nbsp;progress,&nbsp;highlight&nbsp;any&nbsp;roadblocks,&nbsp;and&nbsp;outline&nbsp;tasks&nbsp;for&nbsp;the&nbsp;day.&nbsp;Ensure&nbsp;alignment&nbsp;with&nbsp;team&nbsp;goals&nbsp;and&nbsp;address&nbsp;dependencies&nbsp;with&nbsp;other&nbsp;team&nbsp;members.</p>",
+      "date": "2025-01-20T16:00:00.000Z",
+      "priority": "high",
+      "isCompleted": false,
+      "isArchive": false,
+      "createdAt": "2025-01-19T10:44:13.634Z",
+      "updatedAt": "2025-01-21T16:41:33.332Z"
+  },
+  {
+      "id": "a8ffa3bf-1742-4555-a6a6-60603e46fd08",
+      "title": "Deploy Search Feature to Staging Environment (2 hours)",
+      "description": "<p>Prepare&nbsp;the&nbsp;staging&nbsp;environment&nbsp;for&nbsp;deployment&nbsp;by&nbsp;merging&nbsp;the&nbsp;latest&nbsp;changes&nbsp;and&nbsp;running&nbsp;pre-deployment&nbsp;checks.&nbsp;</p><p></p><p>Deploy&nbsp;the&nbsp;search&nbsp;feature&nbsp;and&nbsp;perform&nbsp;end-to-end&nbsp;testing&nbsp;with&nbsp;real&nbsp;data.&nbsp;Ensure&nbsp;the&nbsp;feature&nbsp;integrates&nbsp;seamlessly&nbsp;with&nbsp;other&nbsp;components&nbsp;and&nbsp;identify&nbsp;any&nbsp;issues&nbsp;before&nbsp;the&nbsp;production&nbsp;release.</p>",
+      "date": "2025-01-19T10:44:25.667Z",
+      "priority": "low",
+      "isCompleted": true,
+      "isArchive": false,
+      "createdAt": "2025-01-19T10:44:48.704Z",
+      "updatedAt": "2025-01-21T16:41:35.134Z"
+  },
+  {
+      "id": "c8eb2e4f-4ced-47cb-a37c-0eb82eede44d",
+      "title": "This a recent project",
+      "description": "<p>ok</p>",
+      "date": "2025-01-21T20:23:24.181Z",
+      "priority": "medium",
+      "isCompleted": false,
+      "isArchive": false,
+      "createdAt": "2025-01-21T20:23:35.859Z",
+      "updatedAt": "2025-01-21T20:23:35.859Z"
+  },
+  {
+      "id": "cce031da-ef0a-452a-a837-ace7f876f1d6",
+      "title": "tomorrow",
+      "description": "<p>task</p>",
+      "date": "2025-01-22T16:00:00.000Z",
+      "priority": "low",
+      "isCompleted": false,
+      "isArchive": false,
+      "createdAt": "2025-01-21T20:49:47.962Z",
+      "updatedAt": "2025-01-21T20:49:47.962Z"
+  },
+  {
+      "id": "00d65ed9-7b1a-4181-82fd-79f9a9f6ba56",
+      "title": "Evening Reflection and Planning (15 minutes)",
+      "description": "<p>Reflect&nbsp;on&nbsp;the&nbsp;day’s&nbsp;accomplishments,&nbsp;identify&nbsp;areas&nbsp;for&nbsp;improvement,&nbsp;and&nbsp;prepare&nbsp;a&nbsp;to-do&nbsp;list&nbsp;for&nbsp;tomorrow.</p>",
+      "date": "2025-01-19T10:41:25.061Z",
+      "priority": "low",
+      "isCompleted": false,
+      "isArchive": false,
+      "createdAt": "2025-01-19T10:41:35.288Z",
+      "updatedAt": "2025-01-21T16:41:32.084Z"
+  }
+]

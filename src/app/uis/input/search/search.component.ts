@@ -1,5 +1,7 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+
+
 
 @Component({
   selector: 'ui-search',
@@ -7,33 +9,15 @@ import { FormsModule } from '@angular/forms';
   styleUrls: ['./search.component.scss'],
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [
-    FormsModule
-  ]
+  imports: [FormsModule]
 })
-export class SearchComponent implements OnInit {
-
+export class SearchComponent {
   @Input() isDisabled: boolean = false;
-  @Output() searchTermFn = new EventEmitter();
-
   @Input() searchTerm: string = '';
-  // get searchTerm(): string {
-  //   return this.searchTerm;
-  // };
-  // set searchTerm(term: string) {
-  //   this.searchTerm_ = term;
-  //   this.searchTermFn.emit(term);
-  // search
-  // }
+
+  @Output() searchTermFn = new EventEmitter();
 
   search(term: string) {
     this.searchTermFn.emit(term);
-    console.log('SEARCH:', term);
   }
-
-  constructor() { }
-
-  ngOnInit() {
-  }
-
 }

@@ -1,10 +1,9 @@
 <section class="example-container side-nav" [class.example-is-mobile]="mobileQuery.matches">
   <mat-toolbar class="example-toolbar">
-  <div class="tw-w-[218px] tw-inline-flex tw-items-center">
-    <!-- <button mat-icon-button (click)="snav.toggle()"><mat-icon>menu</mat-icon></button> -->
-    <h1 class="example-app-name">Workie-Work</h1>
-
-  </div>
+    <div class="tw-w-[218px] tw-inline-flex tw-items-center">
+      <!-- <button mat-icon-button (click)="snav.toggle()"><mat-icon>menu</mat-icon></button> -->
+      <h1 class="example-app-name">Workie-Work</h1>
+    </div>
 
     <app-ui-widget-summary></app-ui-widget-summary>
   </mat-toolbar>
@@ -23,9 +22,9 @@
       <mat-nav-list class="tw-h-full">
         <div class="tw-flex tw-flex-col tw-h-full">
           <div class="tw-flex-1">
-            @for (nav of navigations; track nav) {
+            @for (nav of NAVIGATIONS; track nav) {
               @if (nav.position === 'top') {
-                <div>
+                <div [attr.data-test]="'nav-' + nav.id">
                   <a mat-list-item routerLink="{{nav.page}}" routerLinkActive="active">
                     {{ nav.name | titlecase }}
                   </a>
@@ -34,12 +33,17 @@
             }
           </div>
           <div>
-            <button mat-raised-button class="tw-w-[7rem] tw-ml-[4px] tw-mb-[4px] !tw-px-0" (click)="addTask()">
+            <button
+              mat-raised-button
+              class="tw-w-[7rem] tw-ml-[4px] tw-mb-[4px] !tw-px-0"
+              (click)="_TASK_SERVICE.addTaskUI()"
+              data-test="add-task-button"
+            >
               Add task +
             </button>
           </div>
           <div class="tw-mt-auto tw-pb-[40px]">
-            @for (nav of navigations; track nav) {
+            @for (nav of NAVIGATIONS; track nav) {
               @if (nav.position === 'bottom') {
                 <div>
                   <a mat-list-item routerLink="{{nav.page}}">
