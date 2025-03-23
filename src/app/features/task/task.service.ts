@@ -32,88 +32,40 @@ export class TaskService {
     effect(() => {
       console.log("TASK SERVICE: ", STORE().task.toString());
 
-      if (STORE().task.added()?.id) {
-        console.log('Successfully added new task!', STORE().task.added()?.title);
-        this.dialogRef?.close();
+      this.checkAdded();
+      this.checkUpdated();
+      this.checkDeleted();
 
-        this._SNACK_BAR.open(
-          `Added:
-          ${STORE().task.added()?.title.slice(0, 20)}
-          ${
-            (() => ((STORE().task.added()?.title.slice(0, 20) as any).length >= 20 ? '...': ''))()
-          }`,
-          'close',
-          {
-            horizontalPosition: 'end',
-            verticalPosition: 'bottom',
-            duration: 5000
-          }
-        );
-
-        // this.recordData('[STORE: ADDED]');
-        STORE().task.added.set(null);
-      }
-
-      if (STORE().task.updated()?.id) {
-        console.log('Successfully updated task!', STORE().task.added()?.title);
-        this.dialogRef?.close();
-
-        this._SNACK_BAR.open(
-          `Updated:
-          ${STORE().task.updated()?.title.slice(0, 20)}
-          ${
-            (() => ((STORE().task.updated()?.title.slice(0, 20) as any).length >= 20 ? '...': ''))()
-          }`,
-          'close',
-          {
-            horizontalPosition: 'end',
-            verticalPosition: 'bottom',
-            duration: 5000
-          }
-        );
-
-        // this.recordData('[STORE: UPDATED]');
-        STORE().task.updated.set(null);
-      }
-
-      if (STORE().task.deleted()?.id) {
-        console.log('Successfully deleted task!', STORE().task.deleted()?.title);
-        this.dialogRef?.close();
-
-        this._SNACK_BAR.open(
-          `Deleted:
-          ${STORE().task.deleted()?.title.slice(0, 20)}
-          ${
-            (() => ((STORE().task.deleted()?.title.slice(0, 20) as any).length >= 20 ? '...': ''))()
-          }`,
-          'close',
-          {
-            horizontalPosition: 'end',
-            verticalPosition: 'bottom',
-            duration: 5000
-          }
-        );
-        // this.recordData('[STORE: DELETED]');
-        STORE().task.deleted.set(null);
-      }
     });
   }
 
   getTask(): void {
     this._TASK_API.getTasks()
-      .subscribe({
-        next: (response) => {
-          console.log('List of task:', response);
+    .subscribe(
+      (response) => {
+        console.log('List of task:', response);
 
-          STORE().task.list.set(response);
-          // STORE().task.list.set(response.splice(0, 500));
+        STORE().task.list.set(response);
+        // STORE().task.list.set(response.splice(0, 500));
 
-          this._LOG.recordData('getTask');
-        },
-        error: (error) => {
-          console.error('Error getting the list of task:', error);
-        },
-      });
+        this._LOG.recordData('getTask');
+      },
+    );
+
+    // this._TASK_API.getTasks()
+    //   .subscribe({
+    //     next: (response) => {
+    //       console.log('List of task:', response);
+
+    //       STORE().task.list.set(response);
+    //       // STORE().task.list.set(response.splice(0, 500));
+
+    //       this._LOG.recordData('getTask');
+    //     },
+    //     error: (error) => {
+    //       console.error('Error getting the list of task:', error);
+    //     },
+    //   });
   }
 
   addTask(task: TTask) {
@@ -202,6 +154,8 @@ export class TaskService {
 
 
   addTaskUI(): void {
+    if (this.dialogRef) this.dialogRef.close();
+
     this.dialogRef = this._DIALOG.open(
       TaskFormDialogComponent,
       {
@@ -216,11 +170,11 @@ export class TaskService {
     this.dialogRef.afterClosed().subscribe(result => {
       console.log(`Dialog result: ${result}`);
     });
-
-
   }
 
   viewTaskUI(task: TTask): void {
+    if (this.dialogRef) this.dialogRef.close();
+
     this.dialogRef = this._DIALOG.open(
       TaskFormDialogComponent,
       {
@@ -248,5 +202,78 @@ export class TaskService {
     }
 
     return list;
+  }
+
+  checkAdded(): void {
+    if (STORE().task.toString().added?.id) {
+      console.log('Successfully added new task!', STORE().task.added()?.title);
+      this.dialogRef?.close();
+
+      console.log(this._SNACK_BAR)
+
+      this._SNACK_BAR.open(
+        `Added:
+        ${STORE().task.added()?.title.slice(0, 20)}
+        ${
+          (() => ((STORE().task.added()?.title.slice(0, 20) as any).length >= 20 ? '...': ''))()
+        }`,
+        'close',
+        {
+          horizontalPosition: 'end',
+          verticalPosition: 'bottom',
+          duration: 50000
+        }
+      );
+
+      // this.recordData('[STORE: ADDED]');
+      STORE().task.added.set(null);
+    }
+  }
+
+  checkUpdated(): void {
+    if (STORE().task.toString().updated?.id) {
+      console.log('Successfully updated task!', STORE().task.added()?.title);
+      this.dialogRef?.close();
+
+      this._SNACK_BAR.open(
+        `Updated:
+        ${STORE().task.updated()?.title.slice(0, 20)}
+        ${
+          (() => ((STORE().task.updated()?.title.slice(0, 20) as any).length >= 20 ? '...': ''))()
+        }`,
+        'close',
+        {
+          horizontalPosition: 'end',
+          verticalPosition: 'bottom',
+          duration: 5000
+        }
+      );
+
+      // this.recordData('[STORE: UPDATED]');
+      STORE().task.updated.set(null);
+    }
+  }
+
+  checkDeleted(): void {
+    if (STORE().task.toString().deleted?.id) {
+      console.log('Successfully deleted task!', STORE().task.deleted()?.title);
+      this.dialogRef?.close();
+
+      this._SNACK_BAR.open(
+        `Deleted:
+        ${STORE().task.deleted()?.title.slice(0, 20)}
+        ${
+          (() => ((STORE().task.deleted()?.title.slice(0, 20) as any).length >= 20 ? '...': ''))()
+        }`,
+        'close',
+        {
+          horizontalPosition: 'end',
+          verticalPosition: 'bottom',
+          duration: 5000
+        }
+      );
+      // this.recordData('[STORE: DELETED]');
+      STORE().task.deleted.set(null);
+    }
   }
 }

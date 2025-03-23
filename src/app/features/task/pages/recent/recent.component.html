@@ -8,7 +8,7 @@
       }
       @else {
         <div>
-          <span class="tw-text-xl">
+          <span class="tw-text-xl" [attr.data-test]="'page-title-' + PAGE.id">
             {{ PAGE.name | titlecase }}.&nbsp;
           </span>
           <span class="tw-text-sm tw-text-[#4d4d4d]">

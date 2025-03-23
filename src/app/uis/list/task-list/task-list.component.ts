@@ -41,4 +41,14 @@ export class TaskListComponent {
   SERVICE!: TaskService;
 
   readonly TRACK_BY = TRACK_BY;
+
+  // FOR CYPRESS PURPOSES
+  showButtons(): void {
+    document.querySelectorAll(".item-content-buttons").forEach(el => {
+      if (el.classList.contains("tw-hidden"))
+        el.classList.remove("tw-hidden");
+      else
+        el.classList.add("tw-hidden");
+    });
+  }
 }

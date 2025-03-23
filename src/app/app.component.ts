@@ -9,6 +9,8 @@ import { MatDialogModule } from '@angular/material/dialog';
 
 // Local
 import { SidenavComponent } from './core/sidenav/sidenav.component';
+import { STORE } from "../app/data-access/state/state.store";
+import { TaskService } from './features/task/task.service';
 
 
 
@@ -21,11 +23,15 @@ import { SidenavComponent } from './core/sidenav/sidenav.component';
 })
 export class AppComponent {
   private readonly _PLATFORM_ID = inject(PLATFORM_ID);
+  private readonly _TASK_SERVICE = inject(TaskService);
 
 
   ngOnInit(): void {
     if (isPlatformBrowser(this._PLATFORM_ID)) {
-      (window as any).NG_APP_ROOT = this;
+      (window as any).NG_APP = {
+        STORE: STORE,
+        TASK_SERVICE: this._TASK_SERVICE
+      }
     }
   }
 }

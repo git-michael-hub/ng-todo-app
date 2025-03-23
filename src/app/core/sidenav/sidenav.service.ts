@@ -11,6 +11,7 @@ export class SidenavService {
   navigations: TMenu[] = [
     {
       name: 'recently added',
+      id: 'recently_added',
       isSelected: false,
       position: 'top',
       page: '/recent',
@@ -18,6 +19,7 @@ export class SidenavService {
     },
     {
       name: 'today',
+      id: 'today',
       isSelected: true,
       position: 'top',
       page: '/today',
@@ -25,6 +27,7 @@ export class SidenavService {
     },
     {
       name: 'upcoming',
+      id: 'upcoming',
       isSelected: false,
       position: 'top',
       page: '/upcoming',
@@ -39,6 +42,7 @@ export class SidenavService {
     // },
     {
       name: 'high priority',
+      id: 'high_priority',
       isSelected: false,
       position: 'top',
       page: '/priority',
@@ -46,6 +50,7 @@ export class SidenavService {
     },
     {
       name: 'all list',
+      id: 'all_list',
       isSelected: false,
       position: 'top',
       page: '/list',
@@ -53,6 +58,7 @@ export class SidenavService {
     },
     {
       name: 'completed',
+      id: 'completed',
       isSelected: false,
       position: 'top',
       page: '/completed',
@@ -67,6 +73,7 @@ export class SidenavService {
     // },
     {
       name: 'calendar',
+      id: 'calendar',
       isSelected: false,
       position: 'bottom',
       page: '/calendar',
@@ -74,6 +81,7 @@ export class SidenavService {
     },
     {
       name: 'home',
+      id: 'home',
       isSelected: false,
       position: 'bottom',
       page: '/home',

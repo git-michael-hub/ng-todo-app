@@ -6,8 +6,8 @@ import { TTask } from "../../utils/models/task.model";
 
 const IS_TODAY = (taskDate: string): boolean => {
   const today = new Date().toISOString().split('T')[0];
-  console.log('taskDate:', taskDate)
-  console.log('today:', today)
+  // console.log('taskDate:', taskDate)
+  // console.log('today:', today)
   return taskDate.split('T')[0] === today;
 }
 

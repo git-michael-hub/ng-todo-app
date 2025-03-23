@@ -24,7 +24,7 @@
           <div class="tw-flex-1">
             @for (nav of NAVIGATIONS; track nav) {
               @if (nav.position === 'top') {
-                <div>
+                <div [attr.data-test]="'nav-' + nav.id">
                   <a mat-list-item routerLink="{{nav.page}}" routerLinkActive="active">
                     {{ nav.name | titlecase }}
                   </a>
