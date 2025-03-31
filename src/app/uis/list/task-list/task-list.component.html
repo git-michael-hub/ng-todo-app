@@ -15,8 +15,13 @@
               <div>
                 <mat-checkbox
                   [(ngModel)]="task.isCompleted"
-                  (click)="SERVICE.markAsComplete(task)"
+                  (click)="markAsComplete(task)"
                   class="example-margin"
+                  aria-label="Mark {{ task.title }} as {{ task.isCompleted }}
+                    ? 'Not completed yet'
+                    : 'Completed Task'
+                  "
+                  data-test="list-checkbox-complete"
                 ></mat-checkbox>
 
                 <span class="tw-text-[16px]">
@@ -52,15 +57,21 @@
                 @if (!task.isCompleted) {
                   <button
                     mat-button
-                    (click)="SERVICE.deleteTask(task.id)"
+                    (click)="deleteTask(task.id || '')"
                     class="!tw-text-[#cb2929]"
                     data-test="list-btn-delete"
+                    [attr.aria-label]="'Delete ' + task.title"
                   >
                     Delete
                   </button>
                 }
 
-                <button mat-button (click)="SERVICE.viewTaskUI(task)" data-test="list-btn-view">
+                <button
+                  mat-button
+                  (click)="viewTaskUI(task)"
+                  data-test="list-btn-view"
+                  [attr.aria-label]="'View ' + task.title"
+                >
                   View
                 </button>
               </div>

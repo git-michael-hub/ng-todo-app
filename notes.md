@@ -33,3 +33,8 @@ Testing
 - Functionality
 - Visual
 - Behavior
+
+
+
+Run specific test on Jasmine
+ npx ng test --include=**/task-list.component.spec.ts

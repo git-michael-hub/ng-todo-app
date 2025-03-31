@@ -22,6 +22,7 @@ import { TaskService } from './features/task/task.service';
   styleUrl: './app.component.scss',
 })
 export class AppComponent {
+  title = "Workie Work";
   private readonly _PLATFORM_ID = inject(PLATFORM_ID);
   private readonly _TASK_SERVICE = inject(TaskService);
 

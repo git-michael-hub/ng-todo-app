@@ -1,17 +1,18 @@
 /* tslint:disable:no-unused-variable */
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 
 import { TodayComponent } from './today.component';
+import { HttpClientModule } from '@angular/common/http'; // ✅ Import HttpClientModule
 
 describe('TodayComponent', () => {
   let component: TodayComponent;
   let fixture: ComponentFixture<TodayComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ TodayComponent ]
+      imports: [ TodayComponent, HttpClientModule ]
     })
     .compileComponents();
   }));
