@@ -1,6 +1,6 @@
 import { PriorityPipe } from './priority.pipe';
 
-describe('PriorityPipe', () => {
+describe('# PriorityPipe - Pipe', () => {
   let pipe: PriorityPipe;
 
   beforeEach(() => {

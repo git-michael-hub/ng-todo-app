@@ -40,7 +40,7 @@ export class TaskService {
   }
 
   initProcess(): void {
-    this.getTask();
+    this.getTasks();
 
     effect(() => {
       // console.log("TASK SERVICE: ", STORE().task.toString());
@@ -51,7 +51,7 @@ export class TaskService {
     });
   }
 
-  getTask(): void {
+  getTasks(): void {
     this._TASK_API.getTasks()
       .subscribe({
         next: (response) => {
@@ -66,7 +66,7 @@ export class TaskService {
       });
   }
 
-  addTask(task: TTask) {
+  addTask(task: TTask): void {
     if (!task) return;
 
     this._TASK_API.addTask(task)
@@ -84,7 +84,7 @@ export class TaskService {
       });
   }
 
-  updateTask(task: TTask, update_task_id: string, callback: () => void) {
+  updateTask(task: TTask, update_task_id: string, callback: () => void): void {
     if (!task || !update_task_id) return;
 
     this._TASK_API.updateTask(update_task_id, task)
@@ -109,21 +109,7 @@ export class TaskService {
   }
 
   markAsComplete(task: TTask): void {
-    if (!task || !task.id) return;
-
-    this._TASK_API.updateTask(task.id || '', task)
-      .subscribe({
-        next: (response) => {
-          console.log('Task updated successfully: completed', response);
-          this._STORE().task.updated.set(response || null);
-
-          this._LOG.recordData('markAsComplete');
-        },
-        error: (error) => {
-          console.error('Error updating task:', error);
-          this._STORE().task.updated.set(null);
-        },
-      });
+    this.updateTask(task, task.id || '', () => {});
   }
 
   deleteTask(id?: string): void {
