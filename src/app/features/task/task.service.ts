@@ -6,7 +6,7 @@ import { MatDialog, MatDialogConfig, MatDialogRef } from "@angular/material/dial
 import { MatSnackBar } from "@angular/material/snack-bar";
 
 // Local
-import { STORE } from "../../data-access/state/state.store";
+import { STORE_TOKEN } from "../../data-access/state/state.store";
 import { TaskFormDialogComponent } from "../../uis/forms/task-form-dialog/task-form-dialog.component";
 import { TTask } from "../../utils/models/task.model";
 import { TaskAPI } from "../../data-access/apis/task.api";
@@ -23,6 +23,7 @@ export class TaskService {
   private readonly _DIALOG = inject(MatDialog);
   private readonly _SNACK_BAR = inject(MatSnackBar);
   private readonly _LOG = inject(LoggingService);
+  private readonly _STORE = inject(STORE_TOKEN);
 
   private dialogRef!: MatDialogRef<TaskFormDialogComponent, any>;
 
@@ -55,12 +56,12 @@ export class TaskService {
       .subscribe({
         next: (response) => {
           console.log('List of task:', response);
-          STORE().task.list.set(response);
+          this._STORE().task.list.set(response);
           this._LOG.recordData('getTask');
         },
         error: (error) => {
           console.error('Error fetching tasks:', error);
-          STORE().task.list.set([]);
+          this._STORE().task.list.set([]);
         }
       });
   }
@@ -72,13 +73,13 @@ export class TaskService {
       .subscribe({
         next: (response) => {
           console.log('Task created successfully:', response);
-          STORE().task.list.update(tasks => [...tasks, response]);
-          STORE().task.added.set(response || null);
+          this._STORE().task.list.update(tasks => [...tasks, response]);
+          this._STORE().task.added.set(response || null);
           this._LOG.recordData('addTask');
         },
         error: (error) => {
           console.error('Error creating task:', error);
-          STORE().task.added.set(null);
+          this._STORE().task.added.set(null);
         }
       });
   }
@@ -90,19 +91,19 @@ export class TaskService {
       .subscribe({
         next: (response) => {
           console.log('Task updated successfully:', response);
-          STORE().task.list.update(
+          this._STORE().task.list.update(
             tasks => [
               ...tasks.filter(t => t.id !== update_task_id),
               response
             ]
           );
-          STORE().task.updated.set(response || null);
+          this._STORE().task.updated.set(response || null);
           callback();
           this._LOG.recordData('updateTask');
         },
         error: (error) => {
           console.error('Error updating task:', error);
-          STORE().task.updated.set(null);
+          this._STORE().task.updated.set(null);
         }
       });
   }
@@ -114,13 +115,13 @@ export class TaskService {
       .subscribe({
         next: (response) => {
           console.log('Task updated successfully: completed', response);
-          STORE().task.updated.set(response || null);
+          this._STORE().task.updated.set(response || null);
 
           this._LOG.recordData('markAsComplete');
         },
         error: (error) => {
           console.error('Error updating task:', error);
-          STORE().task.updated.set(null);
+          this._STORE().task.updated.set(null);
         },
       });
   }
@@ -132,26 +133,26 @@ export class TaskService {
       .subscribe({
         next: (response) => {
           console.log('Task deleted successfully:', response);
-          STORE().task.list.update(
+          this._STORE().task.list.update(
             tasks => tasks.filter(task => task.id !== id)
           );
-          STORE().task.deleted.set(response || null);
+          this._STORE().task.deleted.set(response || null);
           this._LOG.recordData('deleteTask');
         },
         error: (error) => {
           console.error('Error deleting task:', error);
-          STORE().task.deleted.set(null);
+          this._STORE().task.deleted.set(null);
         }
       });
   }
 
   toSearch(term: string, page: TPage, list: Signal<TTask[]>): Signal<TTask[]> {
     if (term) {
-      STORE().task.search.list.set(list());
-      STORE().task.search.term.set(term);
-      STORE().task.search.page.set(page);
+      this._STORE().task.search.list.set(list());
+      this._STORE().task.search.term.set(term);
+      this._STORE().task.search.page.set(page);
 
-      return STORE().task.search.filteredListByTitle;
+      return this._STORE().task.search.filteredListByTitle;
     }
 
     return list;
@@ -209,16 +210,16 @@ export class TaskService {
    */
 
   checkAdded(): void {
-    if (STORE().task.toString().added?.id) {
-      console.log('Successfully added new task!', STORE().task.added()?.title);
+    if (this._STORE().task.toString().added?.id) {
+      console.log('Successfully added new task!', this._STORE().task.added()?.title);
 
       this.dialogRef?.close();
 
       this._SNACK_BAR.open(
         `Added:
-        ${STORE().task.added()?.title.slice(0, 20)}
+        ${this._STORE().task.added()?.title.slice(0, 20)}
         ${
-          (() => ((STORE().task.added()?.title.slice(0, 20) as any).length >= 20 ? '...': ''))()
+          (() => ((this._STORE().task.added()?.title.slice(0, 20) as any).length >= 20 ? '...': ''))()
         }`,
         'close',
         {
@@ -228,21 +229,21 @@ export class TaskService {
         }
       );
 
-      STORE().task.added.set(null);
+      this._STORE().task.added.set(null);
     }
   }
 
   checkUpdated(): void {
-    if (STORE().task.toString().updated?.id) {
-      console.log('Successfully updated task!', STORE().task.updated()?.title);
+    if (this._STORE().task.toString().updated?.id) {
+      console.log('Successfully updated task!', this._STORE().task.updated()?.title);
 
       this.dialogRef?.close();
 
       this._SNACK_BAR.open(
         `Updated:
-        ${STORE().task.updated()?.title.slice(0, 20)}
+        ${this._STORE().task.updated()?.title.slice(0, 20)}
         ${
-          (() => ((STORE().task.updated()?.title.slice(0, 20) as any).length >= 20 ? '...': ''))()
+          (() => ((this._STORE().task.updated()?.title.slice(0, 20) as any).length >= 20 ? '...': ''))()
         }`,
         'close',
         {
@@ -252,21 +253,21 @@ export class TaskService {
         }
       );
 
-      STORE().task.updated.set(null);
+      this._STORE().task.updated.set(null);
     }
   }
 
   checkDeleted(): void {
-    if (STORE().task.toString().deleted?.id) {
-      console.log('Successfully deleted task!', STORE().task.deleted()?.title);
+    if (this._STORE().task.toString().deleted?.id) {
+      console.log('Successfully deleted task!', this._STORE().task.deleted()?.title);
 
       this.dialogRef?.close();
 
       this._SNACK_BAR.open(
         `Deleted:
-        ${STORE().task.deleted()?.title.slice(0, 20)}
+        ${this._STORE().task.deleted()?.title.slice(0, 20)}
         ${
-          (() => ((STORE().task.deleted()?.title.slice(0, 20) as any).length >= 20 ? '...': ''))()
+          (() => ((this._STORE().task.deleted()?.title.slice(0, 20) as any).length >= 20 ? '...': ''))()
         }`,
         'close',
         {
@@ -276,7 +277,7 @@ export class TaskService {
         }
       );
       // this.recordData('[STORE: DELETED]');
-      STORE().task.deleted.set(null);
+      this._STORE().task.deleted.set(null);
     }
   }
 }

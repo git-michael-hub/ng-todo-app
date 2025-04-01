@@ -8,6 +8,7 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { loggingInterceptor } from './utils/interceptors/logging.interceptor';
 import { headerInterceptor } from './utils/interceptors/header.interceptor';
 import { errorInterceptor } from './utils/interceptors/error.interceptor';
+import { STORE_TOKEN, STORE } from './data-access/state/state.store';
 
 
 const INTERCEPTORS = [
@@ -27,5 +28,6 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideClientHydration(withEventReplay()),
     provideHttpClient(withFetch()), provideAnimationsAsync(),
+    { provide: STORE_TOKEN, useValue: STORE }
   ]
 };

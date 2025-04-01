@@ -1,11 +1,13 @@
-import { Injectable } from "@angular/core";
-import { STORE } from "../../data-access/state/state.store";
+import { inject, Injectable } from "@angular/core";
+import { STORE_TOKEN } from "../../data-access/state/state.store";
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class LoggingService {
+  private readonly _STORE = inject(STORE_TOKEN);
+
   private __DATA__: any[]  = [];
 
   recordData(action: string): void {
@@ -13,7 +15,7 @@ export class LoggingService {
       ...this.__DATA__,
       {
         action,
-        state: STORE().task.toString()
+        state: this._STORE().task.toString()
       }
     ];
 

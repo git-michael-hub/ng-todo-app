@@ -4,7 +4,7 @@ import { TitleCasePipe } from '@angular/common';
 
 // Local
 import { TTask } from '../../../../utils/models/task.model';
-import { STORE } from '../../../../data-access/state/state.store';
+import { STORE_TOKEN } from '../../../../data-access/state/state.store';
 import { TaskListComponent } from '../../../../uis/list/task-list/task-list.component';
 import { SidenavService } from '../../../../core/sidenav/sidenav.service';
 import { SearchComponent } from '../../../../uis/input/search/search.component';
@@ -21,6 +21,7 @@ import { TaskService } from '../../task.service';
   imports: [TaskListComponent, TitleCasePipe, SearchComponent]
 })
 export class UpcomingComponent implements OnInit {
+  private readonly _STORE = inject(STORE_TOKEN);
   readonly _TASK_SERVICE = inject(TaskService);
 
   private readonly _SIDE_NAV_SERVICE = inject(SidenavService);
@@ -31,18 +32,18 @@ export class UpcomingComponent implements OnInit {
 
 
   ngOnInit(): void {
-    STORE().task.filter.status.set('upcoming');
-    this.tasks = STORE().task.filter.listComputed;
+    this._STORE().task.filter.status.set('upcoming');
+    this.tasks = this._STORE().task.filter.listComputed;
   }
 
   toSearch(term: string): void {
-    this.tasks = this._TASK_SERVICE.toSearch(term, 'upcoming', STORE().task.filter.listComputed);
+    this.tasks = this._TASK_SERVICE.toSearch(term, 'upcoming', this._STORE().task.filter.listComputed);
   }
 
   closeSearch(): void {
     this.isSearch.set(false);
-    STORE().task.search.term.set('');
-    this.tasks = STORE().task.filter.listComputed;
+    this._STORE().task.search.term.set('');
+    this.tasks = this._STORE().task.filter.listComputed;
   }
 
 }
