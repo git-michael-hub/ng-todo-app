@@ -2,17 +2,51 @@
 import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
-
+import { signal } from '@angular/core';
+import { STORE_TOKEN } from '../../../../data-access/state/state.store';
+import { TaskService } from '../../task.service';
+import { SidenavService } from '../../../../core/sidenav/sidenav.service';
 import { TodayComponent } from './today.component';
-import { HttpClientModule } from '@angular/common/http'; // ✅ Import HttpClientModule
 
 describe('TodayComponent', () => {
   let component: TodayComponent;
   let fixture: ComponentFixture<TodayComponent>;
+  let mockTaskService: jasmine.SpyObj<TaskService>;
+  let mockSidenavService: jasmine.SpyObj<SidenavService>;
+  let mockStore: any;
 
   beforeEach(waitForAsync(() => {
+    // Create mock services
+    mockTaskService = jasmine.createSpyObj('TaskService', ['toSearch']);
+    mockSidenavService = jasmine.createSpyObj('SidenavService', [], {
+      navigations: [{
+        id: 'today',
+        name: 'Today',
+        description: 'Today\'s Tasks',
+        page: '/today'
+      }]
+    });
+
+    // Create mock store with all required signals
+    mockStore = {
+      task: {
+        filter: {
+          status: signal('today'),
+          listComputed: signal([])
+        },
+        search: {
+          term: signal('')
+        }
+      }
+    };
+
     TestBed.configureTestingModule({
-      imports: [ TodayComponent, HttpClientModule ]
+      imports: [TodayComponent],
+      providers: [
+        { provide: TaskService, useValue: mockTaskService },
+        { provide: SidenavService, useValue: mockSidenavService },
+        { provide: STORE_TOKEN, useValue: signal(mockStore) }
+      ]
     })
     .compileComponents();
   }));
