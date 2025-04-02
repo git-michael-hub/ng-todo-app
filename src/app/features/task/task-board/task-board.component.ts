@@ -9,10 +9,8 @@ import {
   CdkDropList,
   moveItemInArray,
 } from '@angular/cdk/drag-drop';
-import { TASKS } from '../../../utils/values/dataTask.value';
+// import { TASKS } from '../../../utils/values/dataTask.value';
 import { SlicePipe } from '@angular/common';
-import { STORE } from '../../../data-access/state/state.store';
-import { TTask } from '../../../utils/models/task.model';
 
 @Component({
   selector: 'app-feature-task-board',

@@ -1,4 +1,4 @@
-import { computed, signal, WritableSignal } from "@angular/core";
+import { computed, InjectionToken, signal, WritableSignal } from "@angular/core";
 import { IState } from "./state.model";
 import { TTask } from "../../utils/models/task.model";
 
@@ -17,7 +17,10 @@ const NOT_TODAY = (taskDate: string): boolean => {
 }
 
 
+// Define the STORE Injection Token
+export const STORE_TOKEN = new InjectionToken<WritableSignal<IState>>('STORE');
 
+// Create the STORE signal
 export const STORE: WritableSignal<IState> = signal({
   id: 'main_store',
   task: {

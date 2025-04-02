@@ -1,6 +1,17 @@
 import { TTask } from "../models/task.model";
 
-export const TASKS: TTask[] = [
+export const TASK_DATA_TEST: TTask = {
+  "id": "1",
+  "title": "Task 1",
+  "description": "This is a long description for task 1. Extra details to make it longer. ",
+  "date": "2024-11-06",
+  "priority": "medium",
+  "isCompleted": false,
+  "isArchive": true
+};
+
+
+export const TASKS_DATA_TEST: TTask[] = [
   {
     "id": "1",
     "title": "Task 1",

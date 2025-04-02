@@ -51,4 +51,22 @@ export class TaskListComponent {
         el.classList.add("tw-hidden");
     });
   }
+
+  viewTaskUI(task: TTask): void {
+    if (!task || !task.id) return;
+
+    this.SERVICE.viewTaskUI(task);
+  }
+
+  markAsComplete(task: TTask): void {
+    if (!task || !task.id) return;
+
+    this.SERVICE.markAsComplete(task);
+  }
+
+  deleteTask(id: string): void {
+    if (!id) return;
+
+    this.SERVICE.deleteTask(id);
+  }
 }

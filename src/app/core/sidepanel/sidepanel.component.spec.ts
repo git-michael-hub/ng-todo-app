@@ -1,17 +1,16 @@
 /* tslint:disable:no-unused-variable */
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
-
 import { SidepanelComponent } from './sidepanel.component';
 
 describe('SidepanelComponent', () => {
   let component: SidepanelComponent;
   let fixture: ComponentFixture<SidepanelComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ SidepanelComponent ]
+      imports: [SidepanelComponent]
     })
     .compileComponents();
   }));
