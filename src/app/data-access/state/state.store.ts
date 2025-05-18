@@ -38,8 +38,8 @@ export const STORE: WritableSignal<IState> = signal({
 
         return [...TASKS].sort((a, b) =>
           ORDER === 'asc'
-            ? new Date(a.date).getTime() - new Date(b.date).getTime() // asc
-            : new Date(b.date).getTime() - new Date(a.date).getTime() // desc
+            ? new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime() // asc
+            : new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime() // desc
         );
       })
     },
@@ -50,33 +50,44 @@ export const STORE: WritableSignal<IState> = signal({
         const TASKS = STORE().task.list();
 
         switch (FILTER) {
-          case 'today': return [...TASKS].filter(task => IS_TODAY(task.date));
+          case 'today': return [...TASKS].filter(task => IS_TODAY(task.dueDate));
           case 'upcoming': {
 
             // Convert the dates to Date objects
             const withDateObject = TASKS.map(task => ({
               ...task,
-              date: new Date(task.date)
+              dueDate: new Date(task.dueDate)
             }));
 
             // Get the current date
             const today = new Date();
 
             // Filter upcoming dates
-            let upcomingDates: any = withDateObject.filter(task => task.date >= today);
-            upcomingDates = upcomingDates.map((task: { date: { toDateString: () => any; }; }) => ({
+            let upcomingDates: any = withDateObject.filter(task => task.dueDate >= today);
+            upcomingDates = upcomingDates.map((task: { dueDate: { toDateString: () => any; }; }) => ({
               ...task,
-              date: task.date?.toDateString()
+              dueDate: task.dueDate?.toDateString()
             }));
 
             return upcomingDates
-              .sort((a: { date: string | number | Date; }, b: { date: string | number | Date; }) =>
-                new Date(b.date).getTime() - new Date(a.date).getTime()) as unknown as TTask[]; // desc
-
+              .sort((a: { dueDate: string | number | Date; }, b: { dueDate: string | number | Date; }) =>
+                new Date(a.dueDate).getTime() - new Date(b.dueDate).getTime()) as unknown as TTask[]; // asc
           }
-          case 'high-priority': return [...TASKS].filter(task => task.priority === 'high');
-          case 'complete': return [...TASKS].filter(task => task.isCompleted);
-          case 'archive': return [...TASKS].filter(task => task.isArchive);
+          case 'high-priority': return [...TASKS]
+            .filter(task => task.priority === 'high')
+            .sort((a: { dueDate: string | number | Date; }, b: { dueDate: string | number | Date; }) =>
+              new Date(a.dueDate).getTime() - new Date(b.dueDate).getTime()) as unknown as TTask[]; // asc
+          ;
+          case 'complete': return [...TASKS]
+            .filter(task => task.isCompleted)
+            .sort((a: { dueDate: string | number | Date; }, b: { dueDate: string | number | Date; }) =>
+              new Date(a.dueDate).getTime() - new Date(b.dueDate).getTime()) as unknown as TTask[]; // asc
+          ;
+          case 'archive': return [...TASKS]
+            .filter(task => task.isArchive)
+            .sort((a: { updatedAt: string | number | Date; }, b: { updatedAt: string | number | Date; }) =>
+              new Date(a.updatedAt).getTime() - new Date(b.updatedAt).getTime()) as unknown as TTask[]; // asc
+          ;
         }
       })
     },

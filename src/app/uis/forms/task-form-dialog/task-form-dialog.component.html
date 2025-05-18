@@ -108,7 +108,7 @@
         <input
           matInput
           [matDatepicker]="picker"
-          formControlName="date"
+          formControlName="dueDate"
           readonly
           (click)="picker.open()"
           class="!tw-rounded-lg !tw-cursor-pointer !tw-h-[55px] !tw-text-sm !tw-hover:!tw-text-red-50"
@@ -133,3 +133,18 @@
     </div>
   </mat-dialog-actions>
 </form>
+
+@if (_DATA?.createdAt) {
+  <div class="tw-flex tw-flex-row tw-w-full tw-justify-start tw-text-sm">
+    <div class="tw-ml-[24px]">
+      <span>
+        Created: {{ _DATA.createdAt | date: 'mediumDate' }}
+      </span>
+    </div>
+    <div class="tw-ml-[24px]">
+      <span>
+        Updated: {{ _DATA.updatedAt | date: 'mediumDate' }}
+      </span>
+    </div>
+  </div>
+}

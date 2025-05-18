@@ -2,8 +2,10 @@ export type TTask = {
   id?: string,
   title: string,
   description: string,
-  date: string,
+  dueDate: string,
   priority: 'low' | 'medium' | 'high',
   isCompleted?: boolean,
-  isArchive?: boolean
+  isArchive: boolean,
+  createdAt: string,
+  updatedAt: string
 }

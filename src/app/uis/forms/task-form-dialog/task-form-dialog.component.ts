@@ -3,6 +3,7 @@ import {
   Component, OnInit, ChangeDetectionStrategy, inject, ChangeDetectorRef
 } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { DatePipe } from '@angular/common';
 
 // Material
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -54,6 +55,7 @@ const MY_FORMATS = {
     MatDatepickerModule,
     MatButtonToggleModule,
     MatInputModule,
+    DatePipe
   ],
 })
 export class TaskFormDialogComponent implements OnInit {
@@ -79,7 +81,7 @@ export class TaskFormDialogComponent implements OnInit {
   taskForm = this._FORM_BUILDER.group({
     title: ['', Validators.required],
     description: ['', Validators.required],
-    date: [MOMENT(Date.now()), Validators.required],
+    dueDate: [MOMENT(Date.now()), Validators.required],
     priority: ["low", Validators.required],
   });
 
@@ -93,7 +95,7 @@ export class TaskFormDialogComponent implements OnInit {
       this.taskForm.setValue({
         title: this._DATA.title,
         description: this._DATA.description,
-        date: MOMENT(this._DATA.date),
+        dueDate: MOMENT(this._DATA.dueDate),
         priority: this._DATA.priority
       });
     }
@@ -133,7 +135,7 @@ export class TaskFormDialogComponent implements OnInit {
     this.taskForm.setValue({
       title: this._DATA.title,
       description: this._DATA.description,
-      date: MOMENT(this._DATA.date),
+      dueDate: MOMENT(this._DATA.dueDate),
       priority: this._DATA.priority
     });
 

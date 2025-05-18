@@ -64,3 +64,7 @@ For more information on using the Angular CLI, including detailed command refere
 node 22.11.0
 
 npx @angular/cli@19 new ng-todo-app
+npm run start
+
+cypress@14.1.0
+npx cypress@14.1.0 open 

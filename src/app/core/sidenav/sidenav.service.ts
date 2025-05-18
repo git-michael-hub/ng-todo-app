@@ -31,7 +31,7 @@ export class SidenavService {
       isSelected: false,
       position: 'top',
       page: '/upcoming',
-      description: 'Tasks for the next day and so on.'
+      description: 'Tasks for the next day due and so on.'
     },
     // {
     //   name: 'watching',
