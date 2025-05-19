@@ -1,5 +1,5 @@
 // Angular
-import { ChangeDetectionStrategy, Component, inject, OnInit, signal, Signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, OnInit, signal, Signal } from '@angular/core';
 import { TitleCasePipe } from '@angular/common';
 
 // Local
@@ -33,7 +33,9 @@ export class RecentComponent implements OnInit {
 
   ngOnInit(): void {
     this._STORE().task.sort.status.set('desc');
-    this.tasks = this._STORE().task.sort.listComputed;
+    this.tasks = computed(() =>
+      this._STORE().task.sort.listComputed().filter(task => !task.isCompleted)
+    );
   }
 
   toSearch(term: string): void {

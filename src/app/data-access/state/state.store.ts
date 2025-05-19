@@ -16,6 +16,16 @@ const NOT_TODAY = (taskDate: string): boolean => {
   return taskDate.split('T')[0] !== today;
 }
 
+const SORT_FN = <K extends keyof Pick<TTask, 'createdAt' | 'updatedAt' | 'dueDate'>>(
+  list: TTask[],
+  status: 'asc' | 'desc' = 'asc',
+  field: K = 'createdAt' as K
+): TTask[] =>
+  list.sort((a, b) =>
+    status === 'asc'
+      ? new Date(a[field]).getTime() - new Date(b[field]).getTime() // asc
+      : new Date(b[field]).getTime() - new Date(a[field]).getTime() // desc
+  );
 
 // Define the STORE Injection Token
 export const STORE_TOKEN = new InjectionToken<WritableSignal<IState>>('STORE');
@@ -36,21 +46,19 @@ export const STORE: WritableSignal<IState> = signal({
         const ORDER = STORE().task.sort.status();
         const TASKS = STORE().task.list();
 
-        return [...TASKS].sort((a, b) =>
-          ORDER === 'asc'
-            ? new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime() // asc
-            : new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime() // desc
-        );
+        return SORT_FN(TASKS, ORDER);
       })
     },
     filter: {
-      status: signal('today'),
+      status: signal('list'),
+      sort: signal('asc'),
       listComputed: computed(() => {
         const FILTER = STORE().task.filter.status();
+        const SORT = STORE().task.filter.sort();
         const TASKS = STORE().task.list();
 
         switch (FILTER) {
-          case 'today': return [...TASKS].filter(task => IS_TODAY(task.dueDate));
+          case 'today': return SORT_FN(TASKS.filter(task => IS_TODAY(task.dueDate)), SORT);
           case 'upcoming': {
 
             // Convert the dates to Date objects
@@ -88,6 +96,7 @@ export const STORE: WritableSignal<IState> = signal({
             .sort((a: { updatedAt: string | number | Date; }, b: { updatedAt: string | number | Date; }) =>
               new Date(a.updatedAt).getTime() - new Date(b.updatedAt).getTime()) as unknown as TTask[]; // asc
           ;
+          default: return TASKS;
         }
       })
     },

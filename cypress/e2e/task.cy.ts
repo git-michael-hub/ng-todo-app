@@ -404,10 +404,10 @@ context('Functionality', () => {
   });
 });
 
-context('Visual', () => {
+// context('Visual', () => {
 
-});
+// });
 
-context('Behavior', () => {
+// context('Behavior', () => {
 
-});
+// });

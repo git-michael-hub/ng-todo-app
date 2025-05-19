@@ -31,8 +31,9 @@ export interface IState {
       listComputed: Signal<TTask[]>
     },
     filter: {
-      status: WritableSignal<'today' | 'upcoming' | 'high-priority' | 'complete' | 'archive' >,
-      listComputed: Signal<TTask[]>
+      status: WritableSignal<'today' | 'upcoming' | 'high-priority' | 'complete' | 'archive' | 'list' >,
+      listComputed: Signal<TTask[]>,
+      sort: WritableSignal<'asc' | 'desc'>,
     },
     count: {
       // status: WritableSignal<'all' | 'complete' | 'todo' | 'high-priority'>,
