@@ -39,13 +39,22 @@ export class RecentComponent implements OnInit {
   }
 
   toSearch(term: string): void {
-    this.tasks = this._TASK_SERVICE.toSearch(term, 'recent', this._STORE().task.sort.listComputed);
+    this.tasks = this._TASK_SERVICE.toSearch(
+      term,
+      'recent',
+      computed(() =>
+        this._STORE().task.sort.listComputed().filter(task => !task.isCompleted)
+      )
+    );
   }
 
   closeSearch(): void {
     this.isSearch.set(false);
     this._STORE().task.search.term.set('');
-    this.tasks = this._STORE().task.sort.listComputed;
+
+    this.tasks = computed(() =>
+      this._STORE().task.sort.listComputed().filter(task => !task.isCompleted)
+    );
   }
 
 }

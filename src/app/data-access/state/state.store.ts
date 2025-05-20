@@ -27,6 +27,8 @@ const SORT_FN = <K extends keyof Pick<TTask, 'createdAt' | 'updatedAt' | 'dueDat
       : new Date(b[field]).getTime() - new Date(a[field]).getTime() // desc
   );
 
+
+
 // Define the STORE Injection Token
 export const STORE_TOKEN = new InjectionToken<WritableSignal<IState>>('STORE');
 
@@ -77,25 +79,23 @@ export const STORE: WritableSignal<IState> = signal({
               dueDate: task.dueDate?.toDateString()
             }));
 
-            return upcomingDates
-              .sort((a: { dueDate: string | number | Date; }, b: { dueDate: string | number | Date; }) =>
-                new Date(a.dueDate).getTime() - new Date(b.dueDate).getTime()) as unknown as TTask[]; // asc
+            return SORT_FN(upcomingDates, SORT, 'dueDate');
           }
-          case 'high-priority': return [...TASKS]
-            .filter(task => task.priority === 'high')
-            .sort((a: { dueDate: string | number | Date; }, b: { dueDate: string | number | Date; }) =>
-              new Date(a.dueDate).getTime() - new Date(b.dueDate).getTime()) as unknown as TTask[]; // asc
-          ;
-          case 'complete': return [...TASKS]
-            .filter(task => task.isCompleted)
-            .sort((a: { dueDate: string | number | Date; }, b: { dueDate: string | number | Date; }) =>
-              new Date(a.dueDate).getTime() - new Date(b.dueDate).getTime()) as unknown as TTask[]; // asc
-          ;
-          case 'archive': return [...TASKS]
-            .filter(task => task.isArchive)
-            .sort((a: { updatedAt: string | number | Date; }, b: { updatedAt: string | number | Date; }) =>
-              new Date(a.updatedAt).getTime() - new Date(b.updatedAt).getTime()) as unknown as TTask[]; // asc
-          ;
+          case 'high-priority': return SORT_FN(
+            TASKS.filter(task => task.priority === 'high'),
+            SORT,
+            'dueDate'
+          );
+          case 'complete': return SORT_FN(
+            TASKS.filter(task => task.isCompleted),
+            SORT,
+            'dueDate'
+          );
+          case 'archive': return SORT_FN(
+            TASKS.filter(task => task.isArchive),
+            SORT,
+            'updatedAt'
+          );
           default: return TASKS;
         }
       })
@@ -103,19 +103,19 @@ export const STORE: WritableSignal<IState> = signal({
     count: {
       allListComputed: computed(() => {
         const TASKS = STORE().task.list();
-        return [...TASKS]?.length;
+        return TASKS?.length;
       }),
       completeListComputed: computed(() => {
         const TASKS = STORE().task.list();
-        return [...TASKS].filter(task => task.isCompleted)?.length;
+        return TASKS.filter(task => task.isCompleted)?.length;
       }),
       todoListComputed: computed(() => {
         const TASKS = STORE().task.list();
-        return [...TASKS].filter(task => !task.isCompleted)?.length;
+        return TASKS.filter(task => !task.isCompleted)?.length;
       }),
       highPriorityListComputed: computed(() => {
         const TASKS = STORE().task.list();
-        return [...TASKS].filter(task => task.priority === 'high')?.length;
+        return TASKS.filter(task => task.priority === 'high' && !task.isCompleted)?.length;
       })
     },
     search: {

@@ -39,13 +39,22 @@ export class UpcomingComponent implements OnInit {
   }
 
   toSearch(term: string): void {
-    this.tasks = this._TASK_SERVICE.toSearch(term, 'upcoming', this._STORE().task.filter.listComputed);
+    this.tasks = this._TASK_SERVICE.toSearch(
+      term,
+      'upcoming',
+      this.tasks = computed(() =>
+        this._STORE().task.filter.listComputed().filter(task => !task.isCompleted)
+      )
+    );
   }
 
   closeSearch(): void {
     this.isSearch.set(false);
     this._STORE().task.search.term.set('');
-    this.tasks = this._STORE().task.filter.listComputed;
+
+    this.tasks = computed(() =>
+      this._STORE().task.filter.listComputed().filter(task => !task.isCompleted)
+    );
   }
 
 }
