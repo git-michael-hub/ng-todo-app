@@ -1,4 +1,4 @@
-import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
+import { ApplicationConfig, isDevMode, provideZoneChangeDetection } from '@angular/core';
 import { provideRouter } from '@angular/router';
 
 import { ROUTES as routes } from './app.routes';
@@ -26,7 +26,9 @@ export const appConfig: ApplicationConfig = {
     ...INTERCEPTORS,
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
-    provideClientHydration(withEventReplay()),
+    // hydration is not reflecting some code changes, only use hydration on prod
+    provideClientHydration(),
+    // provideClientHydration(withEventReplay()),
     provideHttpClient(withFetch()), provideAnimationsAsync(),
     { provide: STORE_TOKEN, useValue: STORE }
   ]

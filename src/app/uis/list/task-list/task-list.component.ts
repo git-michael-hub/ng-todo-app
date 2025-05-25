@@ -1,5 +1,5 @@
 // Angular
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, effect, input, Input, signal, Signal } from '@angular/core';
 import { DatePipe, SlicePipe, TitleCasePipe } from '@angular/common';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { FormsModule } from '@angular/forms';
@@ -9,10 +9,13 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 
 // Local
-import { TTask } from '../../../utils/models/task.model';
+import { TSORT, TTask } from '../../../utils/models/task.model';
 import { PriorityPipe } from '../../../utils/pipes/priority.pipe';
 import { TaskService } from '../../../features/task/task.service';
 import { TRACK_BY } from '../../../utils/services/template.service';
+import { SearchPipe } from '../../../utils/pipes/search.pipe';
+import { SortPipe } from '../../../utils/pipes/sort.pipe';
+import { FilterPipe } from '../../../utils/pipes/filter.pipe';
 
 
 
@@ -30,17 +33,28 @@ import { TRACK_BY } from '../../../utils/services/template.service';
     TitleCasePipe,
     PriorityPipe,
     DatePipe,
-    FormsModule
+    FormsModule,
+    SearchPipe,
+    SortPipe,
+    FilterPipe
   ],
 })
 export class TaskListComponent {
-  @Input()
-  tasks!: TTask[];
+  tasks = input.required<TTask[]>();
+  filterValue = input.required<Signal<string>>();
+  sortValue = input.required<Signal<{sort: TSORT, sortBy: string}>>();
+  searchTerm = input.required<Signal<string>>();
 
-  @Input()
-  SERVICE!: TaskService;
+  @Input() SERVICE!: TaskService;
 
   readonly TRACK_BY = TRACK_BY;
+
+
+  constructor() {
+    effect(() => {
+      console.log('Tasks updated:', this.tasks());
+    });
+  }
 
   // FOR CYPRESS PURPOSES
   showButtons(): void {

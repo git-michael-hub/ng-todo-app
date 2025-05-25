@@ -14,39 +14,25 @@ export type TPage = 'recent' | 'today' | 'upcoming' | 'high-priority' | 'list' |
 
 export interface IState {
   id: string,
+  currentPage: WritableSignal<string>,
   authentication?: TAPI & {
     status: 'login' | 'logout'
   },
   task: TAPI & {
     list: WritableSignal<TTask[]>, // the data content of the list
+    getList: Signal<TTask[]>,
 
     added: WritableSignal<TTask | null>, // new added task
     updated: WritableSignal<TTask | null>, // latest updated task
     viewed: WritableSignal<TTask | null>, // current viewed task
     deleted: WritableSignal<TTask | null>, // latest deleted task
 
-
-    sort: {
-      status: WritableSignal<'asc' | 'desc'>,
-      listComputed: Signal<TTask[]>
-    },
-    filter: {
-      status: WritableSignal<'today' | 'upcoming' | 'high-priority' | 'complete' | 'archive' | 'list' >,
-      listComputed: Signal<TTask[]>,
-      sort: WritableSignal<'asc' | 'desc'>,
-    },
     count: {
       // status: WritableSignal<'all' | 'complete' | 'todo' | 'high-priority'>,
       allListComputed: Signal<number>,
       completeListComputed: Signal<number>,
       todoListComputed: Signal<number>,
       highPriorityListComputed: Signal<number>
-    },
-    search: {
-      page: WritableSignal<TPage>,
-      term: WritableSignal<string>,
-      filteredListByTitle: Signal<TTask[]>,
-      list: WritableSignal<TTask[]>
     },
 
     toString: () => any

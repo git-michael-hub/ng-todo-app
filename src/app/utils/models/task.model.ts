@@ -9,3 +9,6 @@ export type TTask = {
   createdAt: string,
   updatedAt: string
 }
+
+
+export type TSORT = 'asc' | 'desc';

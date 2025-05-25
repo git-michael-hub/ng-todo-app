@@ -49,20 +49,20 @@ export class SidenavService {
       description: 'Tasks that are high priority that needed to be done ASAP.'
     },
     {
-      name: 'all list',
-      id: 'all_list',
-      isSelected: false,
-      position: 'top',
-      page: '/list',
-      description: 'Tasks that are all listed regardless of the status.'
-    },
-    {
       name: 'completed',
       id: 'completed',
       isSelected: false,
       position: 'top',
       page: '/completed',
       description: 'Tasks that are completed.'
+    },
+    {
+      name: 'all list',
+      id: 'all_list',
+      isSelected: false,
+      position: 'top',
+      page: '/list',
+      description: 'Tasks that are all listed regardless of the status.'
     },
     // {
     //   name: 'archive',

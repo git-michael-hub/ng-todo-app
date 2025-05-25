@@ -12,32 +12,38 @@ export const ROUTES: Routes = [
       {
         path: 'recent',
         title: 'Recent tasks',
-        loadComponent: () => import('./features/task/pages/recent/recent.component').then(c => c.RecentComponent)
+        // loadComponent: () => import('./features/task/pages/recent/recent.component').then(c => c.RecentComponent)
+        loadComponent: () => import('./features/task/pages/task-page-list/task-page-list.component').then(c => c.TaskBaseListComponent)
       },
       {
         path: 'today',
         title: 'Todays tasks',
-        loadComponent: () => import('./features/task/pages/today/today.component').then(c => c.TodayComponent)
+        loadComponent: () => import('./features/task/pages/task-page-list/task-page-list.component').then(c => c.TaskBaseListComponent)
+        // loadComponent: () => import('./features/task/pages/today/today.component').then(c => c.TodayComponent)
       },
       {
         path: 'upcoming',
         title: 'Upcoming tasks',
-        loadComponent: () => import('./features/task/pages/upcoming/upcoming.component').then(c => c.UpcomingComponent)
+        loadComponent: () => import('./features/task/pages/task-page-list/task-page-list.component').then(c => c.TaskBaseListComponent)
+        // loadComponent: () => import('./features/task/pages/upcoming/upcoming.component').then(c => c.UpcomingComponent)
       },
       {
         path: 'priority',
         title: 'Priority tasks',
-        loadComponent: () => import('./features/task/pages/priority/priority.component').then(c => c.PriorityComponent)
+        loadComponent: () => import('./features/task/pages/task-page-list/task-page-list.component').then(c => c.TaskBaseListComponent)
+        // loadComponent: () => import('./features/task/pages/priority/priority.component').then(c => c.PriorityComponent)
       },
       {
         path: 'list',
         title: 'List of all tasks',
-        loadComponent: () => import('./features/task/pages/list/list.component').then(c => c.ListComponent)
+        loadComponent: () => import('./features/task/pages/task-page-list/task-page-list.component').then(c => c.TaskBaseListComponent)
+        // loadComponent: () => import('./features/task/pages/list/list.component').then(c => c.ListComponent)
       },
       {
         path: 'completed',
         title: 'Completed tasks',
-        loadComponent: () => import('./features/task/pages/completed/completed.component').then(c => c.CompletedComponent)
+        loadComponent: () => import('./features/task/pages/task-page-list/task-page-list.component').then(c => c.TaskBaseListComponent)
+        // loadComponent: () => import('./features/task/pages/completed/completed.component').then(c => c.CompletedComponent)
       },
       // {
       //   path: 'archive',

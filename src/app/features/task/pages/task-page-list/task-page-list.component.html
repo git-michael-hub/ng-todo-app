@@ -1,0 +1,64 @@
+<section class="page">
+  <div class="tw-pb-3 tw-flex">
+    <div class="tw-w-[50%]">
+      @if (isSearch()) {
+        <div>
+          <ui-search (searchTermFn)="toSearch($event)"></ui-search>
+        </div>
+      }
+      @else {
+        <div>
+          <span class="tw-text-xl" [attr.data-test]="'page-title-' + PAGE?.id">
+            {{ PAGE?.name | titlecase }}.&nbsp;
+          </span>
+          <span class="tw-text-sm tw-text-[#4d4d4d]">
+            {{ PAGE?.description }}
+          </span>
+        </div>
+      }
+    </div>
+
+    <div class="tw-w-[50%] tw-pl-[12px] tw-flex tw-flex-row tw-items-center">
+      <div class="tw-flex">
+        @if (isSearch()) {
+          <button
+            mat-button
+            class="tw-w-[7rem] tw-ml-[4px] tw-mb-[4px] !tw-px-2 tw-h-[46px]"
+            (click)="closeSearch()"
+          >
+            Close
+          </button>
+        }
+        @else {
+          <button
+            mat-button
+            class="tw-w-[7rem] tw-ml-[4px] tw-mb-[4px] !tw-px-2 tw-h-[46px]"
+            (click)="isSearch.set(true)"
+          >
+            Search
+          </button>
+        }
+      </div>
+
+      <div class="tw-flex">
+        <filter-btn [value]="getFilterValue" (filter)="filter($event)"></filter-btn>
+        <sort-btn [value]="getSortValue" (sort)="sort($event)"></sort-btn>
+        <button
+          mat-button
+          class="tw-w-[7rem] tw-ml-[4px] tw-mb-[4px] !tw-px-2 tw-h-[46px] tw-cursor-pointer"
+          (click)="setDefaultData()"
+        >
+          Reset
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <app-feature-task-list
+    [tasks]="getTasks()"
+    [SERVICE]="_TASK_SERVICE"
+    [searchTerm]="getSearchTerm"
+    [filterValue]="getFilterValue"
+    [sortValue]="getSortValue"
+  ></app-feature-task-list>
+</section>

@@ -26,7 +26,6 @@ export class TaskService {
   private readonly _STORE = inject(STORE_TOKEN);
 
   private dialogRef!: MatDialogRef<TaskFormDialogComponent, any>;
-
   private DIALOG_SETTINGS: MatDialogConfig = {
     maxWidth: '60vw',
     width: '60vw',
@@ -34,6 +33,9 @@ export class TaskService {
     height: '80vh',
     disableClose: true,
   };
+
+  private filterValue = 'none';
+  private sortValue: 'asc' | 'desc' = 'desc';
 
   constructor() {
     this.initProcess();
@@ -50,6 +52,10 @@ export class TaskService {
       this.checkDeleted();
     });
   }
+
+  /**
+   * Task
+   */
 
   getTasks(): void {
     this._TASK_API.getTasks()
@@ -130,18 +136,6 @@ export class TaskService {
           this._STORE().task.deleted.set(null);
         }
       });
-  }
-
-  toSearch(term: string, page: TPage, list: Signal<TTask[]>): Signal<TTask[]> {
-    if (term) {
-      this._STORE().task.search.list.set(list());
-      this._STORE().task.search.term.set(term);
-      this._STORE().task.search.page.set(page);
-
-      return this._STORE().task.search.filteredListByTitle;
-    }
-
-    return list;
   }
 
 
