@@ -78,9 +78,9 @@ export class TaskListComponent {
     this.SERVICE.markAsComplete(task);
   }
 
-  deleteTask(id: string): void {
-    if (!id) return;
+  deleteTask(task: TTask, id: string): void {
+    if (!task || !id) return;
 
-    this.SERVICE.deleteTask(id);
+    this.SERVICE.deleteTask(task, id);
   }
 }

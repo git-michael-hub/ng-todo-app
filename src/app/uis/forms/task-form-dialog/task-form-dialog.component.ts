@@ -109,26 +109,24 @@ export class TaskFormDialogComponent implements OnInit {
   addTask(): void {
     if (this.taskForm.invalid) return;
 
-    const DATA = JSON.stringify(this.taskForm.value) as unknown as TTask;
-    this._TASK_SERVICE.addTask(DATA);
+    this._TASK_SERVICE.addTask(this.taskForm.value as unknown as TTask);
   }
 
   updateTask(): void {
     if (this.taskForm.invalid || !this._DATA?.id) return;
 
-    const DATA = JSON.stringify(this.taskForm.value) as unknown as TTask;
     const CALLBACK = () => {
       this.status = 'view';
       this._CD.markForCheck();
     };
 
-    this._TASK_SERVICE.updateTask(DATA, this._DATA?.id, CALLBACK);
+    this._TASK_SERVICE.updateTask(this.taskForm.value as unknown as TTask, this._DATA?.id, CALLBACK);
   }
 
-  deleteTask(id?: string): void {
-    if (!id) return;
+  deleteTask(task: TTask, id?: string): void {
+    if (!task || !id) return;
 
-    this._TASK_SERVICE.deleteTask(id);
+    this._TASK_SERVICE.deleteTask(task, id);
   }
 
   cancelUpdate(): void {

@@ -5,12 +5,14 @@ import { effect, inject, Injectable, Signal } from "@angular/core";
 import { MatDialog, MatDialogConfig, MatDialogRef } from "@angular/material/dialog";
 import { MatSnackBar } from "@angular/material/snack-bar";
 
+// Third party
+import * as _ from 'lodash';
+
 // Local
 import { STORE_TOKEN } from "../../data-access/state/state.store";
 import { TaskFormDialogComponent } from "../../uis/forms/task-form-dialog/task-form-dialog.component";
 import { TTask } from "../../utils/models/task.model";
 import { TaskAPI } from "../../data-access/apis/task.api";
-import { TPage } from "../../data-access/state/state.model";
 import { LoggingService } from "../../utils/services/logging.service";
 
 
@@ -47,9 +49,9 @@ export class TaskService {
     effect(() => {
       // console.log("TASK SERVICE: ", STORE().task.toString());
 
-      this.checkAdded();
-      this.checkUpdated();
-      this.checkDeleted();
+      // this.checkAdded();
+      // this.checkUpdated();
+      // this.checkDeleted();
     });
   }
 
@@ -73,27 +75,45 @@ export class TaskService {
   }
 
   addTask(task: TTask): void {
-    if (!task) return;
+    if (_.isEmpty(task)) return;
 
-    this._TASK_API.addTask(task)
+    this._TASK_API.addTask(JSON.stringify(task) as unknown as TTask)
       .subscribe({
         next: (response) => {
           console.log('Task created successfully:', response);
           this._STORE().task.list.update(tasks => [...tasks, response]);
           this._STORE().task.added.set(response || null);
           this._LOG.recordData('addTask');
+
+          this.notify(
+            `
+              Added:
+              ${task?.title.slice(0, 20)}
+              ${
+                (() => (
+                  (task?.title.slice(0, 20) as any).length >= 20 ? '...': ''
+                ))()
+              }
+            `
+          );
         },
         error: (error) => {
           console.error('Error creating task:', error);
           this._STORE().task.added.set(null);
+
+          this.notify(
+            `
+              Error adding: ${task?.title.slice(0, 20)}
+            `
+          );
         }
       });
   }
 
-  updateTask(task: TTask, update_task_id: string, callback: () => void): void {
-    if (!task || !update_task_id) return;
+  updateTask(task: TTask, update_task_id: string, callback: () => void, isDone: boolean = false): void {
+    if (_.isEmpty(task) || !update_task_id) return;
 
-    this._TASK_API.updateTask(update_task_id, task)
+    this._TASK_API.updateTask(update_task_id, JSON.stringify(task) as unknown as TTask)
       .subscribe({
         next: (response) => {
           console.log('Task updated successfully:', response);
@@ -106,19 +126,37 @@ export class TaskService {
           this._STORE().task.updated.set(response || null);
           callback();
           this._LOG.recordData('updateTask');
+
+          this.notify(
+            `
+              ${isDone ? 'Done Task' : 'Updated'}:
+              ${task?.title.slice(0, 20)}
+              ${
+                (() => (
+                  (task?.title.slice(0, 20) as any).length >= 20 ? '...': ''
+                ))()
+              }
+            `
+          );
         },
         error: (error) => {
           console.error('Error updating task:', error);
           this._STORE().task.updated.set(null);
+
+          this.notify(
+            `
+              Error updating: ${task?.title.slice(0, 20)}
+            `
+          );
         }
       });
   }
 
   markAsComplete(task: TTask): void {
-    this.updateTask(task, task.id || '', () => {});
+    this.updateTask(task, task.id || '', () => {}, true);
   }
 
-  deleteTask(id?: string): void {
+  deleteTask(task: TTask, id?: string): void {
     if (!id) return;
 
     this._TASK_API.deleteTask(id)
@@ -130,10 +168,28 @@ export class TaskService {
           );
           this._STORE().task.deleted.set(response || null);
           this._LOG.recordData('deleteTask');
+
+          this.notify(
+            `
+              Deleted:
+              ${task?.title.slice(0, 20)}
+              ${
+                (() => (
+                  (task?.title.slice(0, 20) as any).length >= 20 ? '...': ''
+                ))()
+              }
+            `
+          );
         },
         error: (error) => {
           console.error('Error deleting task:', error);
           this._STORE().task.deleted.set(null);
+
+          this.notify(
+            `
+              Error deleting: ${task?.title.slice(0, 20)}
+            `
+          );
         }
       });
   }
@@ -188,6 +244,20 @@ export class TaskService {
   /**
    * Notification
    */
+
+  notify(title: string, ): void {
+    this.dialogRef?.close();
+
+    this._SNACK_BAR.open(
+      title,
+      'close',
+      {
+        horizontalPosition: 'end',
+        verticalPosition: 'bottom',
+        duration: 5000
+      }
+    );
+  }
 
   checkAdded(): void {
     if (this._STORE().task.toString().added?.id) {

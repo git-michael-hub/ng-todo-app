@@ -61,7 +61,7 @@
                 @if (!task.isCompleted) {
                   <button
                     mat-button
-                    (click)="deleteTask(task.id || '')"
+                    (click)="deleteTask(task, task.id || '')"
                     class="!tw-text-[#cb2929]"
                     data-test="list-btn-delete"
                     [attr.aria-label]="'Delete ' + task.title"
