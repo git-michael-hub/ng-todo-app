@@ -1,0 +1,117 @@
+<div cdkDropListGroup class="tw-flex tw-justify-between">
+  <div class="example-container">
+    <h2>To do</h2>
+
+    <div
+      cdkDropList
+      [cdkDropListData]="getTodos()"
+      class="example-list tw-items-center"
+      (cdkDropListDropped)="drop($event, 'todo')"
+    >
+      @for (item of getTodos(); track item) {
+        <div class="cdkDropBoxItem" cdkDrag [cdkDragData]="item">
+          <div class="example-box" (click)="viewTaskUI(item)">
+            <span class="hover:!tw-text-blue-600 hover:!tw-underline !tw-cursor-pointer">
+              {{item?.title | titlecase}}
+            </span>
+          </div>
+
+          <ng-container
+            [ngTemplateOutlet]="priorityTemplate"
+            [ngTemplateOutletContext]="{
+              $implicit: item,
+              priority: item?.priority,
+              status: item?.status
+            }"
+          />
+        </div>
+      }
+
+      @if (getTodos()?.length === 0) {
+        <ng-container [ngTemplateOutlet]="emptyTemplate" />
+      }
+    </div>
+  </div>
+
+  <div class="example-container">
+    <h2>In Progress</h2>
+
+    <div
+      cdkDropList
+      [cdkDropListData]="getInProgress()"
+      class="example-list tw-items-center"
+      (cdkDropListDropped)="drop($event, 'inprogress')"
+    >
+      @for (item of getInProgress(); track item) {
+        <div class="cdkDropBoxItem" cdkDrag [cdkDragData]="item">
+          <div class="example-box" (click)="viewTaskUI(item)">
+            <span class="hover:!tw-text-blue-600 hover:!tw-underline !tw-cursor-pointer">
+              {{item?.title | titlecase}}
+            </span>
+          </div>
+
+          <ng-container
+            [ngTemplateOutlet]="priorityTemplate"
+            [ngTemplateOutletContext]="{
+              $implicit: item,
+              priority: item?.priority,
+              status: item?.status
+            }"
+          />
+        </div>
+      }
+
+      @if (getInProgress()?.length === 0) {
+        <ng-container [ngTemplateOutlet]="emptyTemplate" />
+      }
+    </div>
+  </div>
+
+  <div class="example-container">
+    <h2>Done</h2>
+
+    <div
+      cdkDropList
+      [cdkDropListData]="getDone()"
+      class="example-list tw-items-center"
+      (cdkDropListDropped)="drop($event, 'done')"
+    >
+      @for (item of getDone();track item) {
+        <div class="cdkDropBoxItem" cdkDrag [cdkDragData]="item">
+          <div class="example-box" (click)="viewTaskUI(item)">
+            <span class="hover:!tw-text-blue-600 hover:!tw-underline !tw-cursor-pointer">
+              {{item?.title | titlecase}}
+            </span>
+          </div>
+
+          <ng-container
+            [ngTemplateOutlet]="priorityTemplate"
+            [ngTemplateOutletContext]="{
+              $implicit: item,
+              priority: item?.priority,
+              status: item?.status
+            }"
+          />
+        </div>
+      }
+
+      @if (getDone()?.length === 0) {
+       <ng-container [ngTemplateOutlet]="emptyTemplate" />
+      }
+    </div>
+  </div>
+</div>
+
+
+<ng-template #priorityTemplate let-item let-priority="priority" let-status="status">
+  @if (item && (priority !== 'low') && (status !== 'done')) {
+    <span class="tw-px-[12px] tw-mr-[4px]">{{item.priority | priority}}</span>
+  }
+</ng-template>
+
+
+<ng-template #emptyTemplate>
+  <div class="tw-text-sm tw-mx-[10px] tw-mt-[20px]">
+    Empty.
+  </div>
+</ng-template>

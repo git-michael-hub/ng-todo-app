@@ -40,25 +40,59 @@
         }
       </div>
 
-      <div class="tw-flex">
-        <filter-btn [value]="getFilterValue" (filter)="filter($event)"></filter-btn>
-        <sort-btn [value]="getSortValue" (sort)="sort($event)"></sort-btn>
+      <div class="tw-flex tw-items-center">
+        <filter-btn
+          [value]="getFilterValue"
+          [source]="SOURCE_PAGE"
+          [view]="viewBoard ? 'board': 'list'"
+          (filter)="filter($event)"
+        />
+        <sort-btn
+          [value]="getSortValue"
+          (sort)="sort($event)"
+        />
         <button
           mat-button
-          class="tw-w-[7rem] tw-ml-[4px] tw-mb-[4px] !tw-px-2 tw-h-[46px] tw-cursor-pointer"
+          class="tw-ml-[4px] tw-mb-[4px] !tw-px-2 tw-h-[46px] tw-cursor-pointer"
           (click)="setDefaultData()"
         >
           Reset
+        </button>
+        <button
+          mat-button
+          class="tw-ml-[4px] tw-mb-[4px] !tw-px-2 tw-h-[46px] tw-cursor-pointer"
+          (click)="viewBoard = !viewBoard"
+        >
+          {{
+            (
+              viewBoard
+                ? 'list'
+                : 'board'
+            ) | titlecase
+          }}
         </button>
       </div>
     </div>
   </div>
 
-  <app-feature-task-list
-    [tasks]="getTasks()"
-    [SERVICE]="_TASK_SERVICE"
-    [searchTerm]="getSearchTerm"
-    [filterValue]="getFilterValue"
-    [sortValue]="getSortValue"
-  ></app-feature-task-list>
+
+  @if (viewBoard) {
+    <app-task-board
+      [TASKS]="getTasks"
+      [TASK_SERVICE]="_TASK_SERVICE"
+      [SEARCH_TERM]="getSearchTerm"
+      [FILTER_VALUE]="getFilterValue"
+      [SORT_VALUE]="getSortValue"
+    />
+  }
+  @else {
+    <app-feature-task-list
+      [tasks]="getTasks()"
+      [SERVICE]="_TASK_SERVICE"
+      [searchTerm]="getSearchTerm"
+      [filterValue]="getFilterValue"
+      [sortValue]="getSortValue"
+    />
+  }
+
 </section>

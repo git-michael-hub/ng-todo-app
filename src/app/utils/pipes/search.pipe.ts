@@ -1,10 +1,11 @@
-import { Pipe, PipeTransform } from '@angular/core';
+import { Injectable, Pipe, PipeTransform } from '@angular/core';
 import { TTask } from '../models/task.model';
 
 @Pipe({
   name: 'search',
   standalone: true
 })
+@Injectable({ providedIn: 'root' })
 export class SearchPipe implements PipeTransform {
 
   transform(tasks?: TTask[], query?: string): TTask[] {

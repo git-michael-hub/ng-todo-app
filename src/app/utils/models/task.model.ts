@@ -3,8 +3,9 @@ export type TTask = {
   title: string,
   description: string,
   dueDate: string,
-  priority: 'low' | 'medium' | 'high',
-  isCompleted?: boolean,
+  priority: TPriority,
+  // isCompleted?: boolean,
+  status: TStatus,
   isArchive: boolean,
   createdAt: string,
   updatedAt: string
@@ -12,3 +13,5 @@ export type TTask = {
 
 
 export type TSORT = 'asc' | 'desc';
+export type TStatus = 'todo' | 'inprogress' | 'done' | 'block' | 'inreview';
+export type TPriority = 'low' | 'medium' | 'high';

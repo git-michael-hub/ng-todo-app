@@ -13,8 +13,17 @@ export class ListService {
     medium: 2,
     high: 3,
   };
+  private readonly STATUS_ORDER: Record<string, number> = {
+    todo: 1,
+    inprogress: 2,
+    block: 3,
+    inreview: 4,
+    done: 5
+  };
 
-  sort<K extends keyof Pick<TTask, 'title' | 'priority' | 'createdAt' | 'updatedAt' | 'dueDate'>>(
+  sort<K extends keyof Pick<
+    TTask, 'title' | 'priority' | 'createdAt' | 'updatedAt' | 'dueDate' | 'status'>
+  >(
     list: TTask[],
     selection: {
       status: TSORT,
@@ -25,29 +34,60 @@ export class ListService {
     console.log('list:', list);
     console.log('selection:sort:', selection);
 
-    const x = ['createdAt', 'updatedAt', 'dueDate'].includes(selection.field)
-      ? [...list].sort((a, b) =>
+    let task: TTask[] = [];
+
+    switch (selection.field) {
+      case 'createdAt':
+        task = [...list].sort((a, b) =>
           selection.status === 'asc'
             ? new Date(a[selection.field]).getTime() - new Date(b[selection.field]).getTime() // asc
             : new Date(b[selection.field]).getTime() - new Date(a[selection.field]).getTime() // desc
-        )
-      : selection.field === 'priority'
-        ? [...list].sort((a, b) => {
-            const aVal = this.PRIORITY_ORDER[a[selection.field]];
-            const bVal = this.PRIORITY_ORDER[b[selection.field]];
+        );
+        break;
+      case 'updatedAt':
+        task = [...list].sort((a, b) =>
+          selection.status === 'asc'
+            ? new Date(a[selection.field]).getTime() - new Date(b[selection.field]).getTime() // asc
+            : new Date(b[selection.field]).getTime() - new Date(a[selection.field]).getTime() // desc
+        );
+        break;
+      case 'dueDate':
+        task = [...list].sort((a, b) =>
+          selection.status === 'asc'
+            ? new Date(a[selection.field]).getTime() - new Date(b[selection.field]).getTime() // asc
+            : new Date(b[selection.field]).getTime() - new Date(a[selection.field]).getTime() // desc
+        );
+        break;
+      case 'priority':
+        task = [...list].sort((a, b) => {
+          const aVal = this.PRIORITY_ORDER[a[selection.field]];
+          const bVal = this.PRIORITY_ORDER[b[selection.field]];
 
-            return selection.status === 'asc'
-              ? aVal - bVal
-              : bVal - aVal;
-          })
-        : [...list].sort((a, b) =>
+          return selection.status === 'asc'
+            ? aVal - bVal
+            : bVal - aVal;
+        });
+        break;
+      case 'status':
+        task = [...list].sort((a, b) => {
+          const aVal = this.STATUS_ORDER[a[selection.field]];
+          const bVal = this.STATUS_ORDER[b[selection.field]];
+
+          return selection.status === 'asc'
+            ? aVal - bVal
+            : bVal - aVal;
+        });
+        break;
+      default:
+          task =  [...list].sort((a, b) =>
             selection.status === 'asc'
               ? a[selection.field].localeCompare(b[selection.field]) // asc
               : b[selection.field].localeCompare(a[selection.field]) // desc
-          )
+          );
+    }
 
-    console.log('selection:sort:xx:', x)
-    return x;
+    console.log('selection:sort:task:', task)
+    return task;
   }
 
   filter(list: TTask[], filter: string, sort: TSORT = 'desc'): TTask[] {
@@ -106,8 +146,36 @@ export class ListService {
           field: 'dueDate'
         }
       );
-      case 'complete': return this.sort(
-        list.filter(task => task.isCompleted),
+      case 'todo': return this.sort(
+        list.filter(task => task?.status === 'todo'),
+        {
+          status: sort,
+          field: 'dueDate'
+        }
+      );
+      case 'in-progress': return this.sort(
+        list.filter(task => task?.status === 'inprogress'),
+        {
+          status: sort,
+          field: 'dueDate'
+        }
+      );
+      case 'done': return this.sort(
+        list.filter(task => task?.status === 'done'),
+        {
+          status: sort,
+          field: 'createdAt'
+        }
+      );
+      case 'in-review': return this.sort(
+        list.filter(task => task?.status === 'inreview'),
+        {
+          status: sort,
+          field: 'dueDate'
+        }
+      );
+      case 'block': return this.sort(
+        list.filter(task => task?.status === 'block'),
         {
           status: sort,
           field: 'dueDate'

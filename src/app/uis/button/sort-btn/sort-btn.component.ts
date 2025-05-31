@@ -15,15 +15,6 @@ import { TSORT } from '../../../utils/models/task.model';
     MatButtonModule
   ],
   template: `
-    @let ASC = 'asc';
-    @let DESC = 'desc';
-
-    @let TITLE = '-title';
-    @let DUE_DATE = '-due-date';
-    @let PRIORITY = '-priority';
-    @let CREATED_AT = '-created-at';
-    @let UPDATED_AT = '-updated-at';
-
     <button
       #menuTrigger="matMenuTrigger"
       mat-button
@@ -56,6 +47,9 @@ import { TSORT } from '../../../utils/models/task.model';
       <button mat-menu-item (click)="sort.emit({sort: 'asc', sortBy: 'priority'})">
         Priority
       </button>
+      <button mat-menu-item (click)="sort.emit({sort: 'asc', sortBy: 'status'})">
+        Status
+      </button>
       <button mat-menu-item (click)="sort.emit({sort: 'asc', sortBy: 'createdAt'})">
         Created At
       </button>
@@ -73,6 +67,9 @@ import { TSORT } from '../../../utils/models/task.model';
       </button>
       <button mat-menu-item (click)="sort.emit({sort: 'desc', sortBy: 'priority'})">
         Priority
+      </button>
+      <button mat-menu-item (click)="sort.emit({sort: 'desc', sortBy: 'status'})">
+        Status
       </button>
       <button mat-menu-item (click)="sort.emit({sort: 'desc', sortBy: 'createdAt'})">
         Created At

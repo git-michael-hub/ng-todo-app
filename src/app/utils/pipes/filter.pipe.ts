@@ -1,4 +1,4 @@
-import { inject, Pipe, PipeTransform } from '@angular/core';
+import { inject, Injectable, Pipe, PipeTransform } from '@angular/core';
 import { TTask } from '../models/task.model';
 import { ListService } from '../services/list.service';
 
@@ -6,6 +6,7 @@ import { ListService } from '../services/list.service';
   name: 'filter',
   standalone: true
 })
+@Injectable({ providedIn: 'root' })
 export class FilterPipe implements PipeTransform {
   private readonly _LIST_SERVICE = inject(ListService);
 

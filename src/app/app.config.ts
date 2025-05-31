@@ -27,7 +27,7 @@ export const appConfig: ApplicationConfig = {
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
     // hydration is not reflecting some code changes, only use hydration on prod
-    provideClientHydration(),
+    // provideClientHydration(),
     // provideClientHydration(withEventReplay()),
     provideHttpClient(withFetch()), provideAnimationsAsync(),
     { provide: STORE_TOKEN, useValue: STORE }

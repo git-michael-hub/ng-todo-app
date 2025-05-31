@@ -30,15 +30,15 @@ export const STORE: WritableSignal<IState> = signal({
       }),
       completeListComputed: computed(() => {
         const TASKS = STORE().task.list();
-        return TASKS.filter(task => task.isCompleted)?.length;
+        return TASKS.filter(task => task?.status === 'done')?.length;
       }),
       todoListComputed: computed(() => {
         const TASKS = STORE().task.list();
-        return TASKS.filter(task => !task.isCompleted)?.length;
+        return TASKS.filter(task => task?.status === 'todo')?.length;
       }),
       highPriorityListComputed: computed(() => {
         const TASKS = STORE().task.list();
-        return TASKS.filter(task => task.priority === 'high' && !task.isCompleted)?.length;
+        return TASKS.filter(task => task.priority === 'high' && (task?.status !== 'done'))?.length;
       })
     },
     toString: () => ({

@@ -49,11 +49,14 @@ export class TaskListComponent {
 
   readonly TRACK_BY = TRACK_BY;
 
-
   constructor() {
     effect(() => {
       console.log('Tasks updated:', this.tasks());
     });
+  }
+
+  ngOnInit() {
+  console.log('SERVICE:tasK', this.SERVICE)
   }
 
   // FOR CYPRESS PURPOSES
@@ -75,7 +78,16 @@ export class TaskListComponent {
   markAsComplete(task: TTask): void {
     if (!task || !task.id) return;
 
-    this.SERVICE.markAsComplete(task);
+    console.log('markAsComplete', task);
+    if (task.status === 'done') {
+      task = {...task, status: 'todo'};
+
+      this.SERVICE.updateTask(task, task.id || '', () => {}, false);
+    }
+    else {
+      task = {...task, status: 'done'};
+      this.SERVICE.markAsComplete(task);
+    }
   }
 
   deleteTask(task: TTask, id: string): void {

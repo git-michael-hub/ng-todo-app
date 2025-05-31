@@ -2,7 +2,7 @@
   <h2 mat-dialog-title data-test="dialog-title">
     @if (status === 'view') {
       <span>Task Detail</span>
-      @if (_DATA.isCompleted) {
+      @if (_DATA?.status === 'done') {
         <span class="tw-px-[12px] tw-ml-[4px] tw-text-md tw-text-[#1aa318]">DONE</span>
       }
     }
@@ -90,7 +90,7 @@
   </mat-dialog-content>
 
   <mat-dialog-actions align="end" class="!tw-py-[0]">
-    @if ((status === 'update' || status === 'view') && !_DATA.isCompleted) {
+    @if ((status === 'update' || status === 'view') && _DATA?.status !== 'done') {
       <div class="tw-absolute tw-left-[12px]">
         <button
           mat-button

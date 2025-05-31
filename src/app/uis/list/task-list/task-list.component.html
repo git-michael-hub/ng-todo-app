@@ -18,13 +18,14 @@
             <div class="item-head tw-text-lg tw-flex tw-justify-between tw-h-[36px]">
               <div>
                 <mat-checkbox
-                  [(ngModel)]="task.isCompleted"
+                  [checked]="task.status === 'done' ? true : false"
                   (click)="markAsComplete(task)"
                   class="example-margin"
-                  aria-label="Mark {{ task.title }} as {{ task.isCompleted }}
-                    ? 'Not completed yet'
-                    : 'Completed Task'
-                  "
+                  aria-label="Mark {{ task.title }} as {{
+                    task.status === 'done'
+                      ? 'Completed Task'
+                      : 'Not completed yet'
+                  }}"
                   data-test="list-checkbox-complete"
                 ></mat-checkbox>
 
@@ -34,11 +35,15 @@
               </div>
 
               <div class="tw-flex tw-items-center tw-pr-[4px]">
-                @if (task.isCompleted) {
+                @if (task.status === 'done') {
                   <span class="tw-px-[12px] tw-mr-[4px] tw-text-sm tw-text-[#1aa318]">DONE</span>
                 }
 
-                @if (task.priority !== 'low' && !task.isCompleted) {
+                @if (task.status === 'inprogress') {
+                  <span class="tw-px-[12px] tw-mr-[4px] tw-text-sm">In Progress</span>
+                }
+
+                @if (task.priority !== 'low' && (task.status !== 'done')) {
                   <span class="tw-px-[12px] tw-mr-[4px]">{{task.priority | priority}}</span>
                 }
 
@@ -58,7 +63,7 @@
               </div>
 
               <div class="item-content-buttons tw-hidden">
-                @if (!task.isCompleted) {
+                @if (task.status !== 'done') {
                   <button
                     mat-button
                     (click)="deleteTask(task, task.id || '')"
