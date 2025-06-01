@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { TMenu } from './sidenav.model';
 
 
-
 @Injectable({
   providedIn: 'root'
 })

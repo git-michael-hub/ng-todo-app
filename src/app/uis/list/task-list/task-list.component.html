@@ -1,12 +1,12 @@
 <section>
   <div class="list-container" data-test="list-container">
-    @if (tasks() && tasks().length !== 0) {
+    @if (TASKS() && TASKS()().length !== 0) {
       <cdk-virtual-scroll-viewport itemSize="0" autosize class="viewport">
         <div
-          *cdkVirtualFor="let task of tasks()
-            | filter: filterValue()()
-            | search: searchTerm()()
-            | sort: sortValue()();
+          *cdkVirtualFor="let task of TASKS()()
+            | filter: FILTER_VALUE()()
+            | search: SEARCH_TERM()()
+            | sort: SORT_VALUE()();
             trackBy: TRACK_BY; let i = index"
           class="list-item tw-pb-[12px]"
           data-test="list-item"

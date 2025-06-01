@@ -18,9 +18,8 @@ import { SummaryComponent } from '../../uis/widgets/summary/summary.component';
 import { TaskService } from '../../features/task/task.service';
 
 
-
 @Component({
-  selector: 'app-sidenav',
+  selector: 'layout-sidenav',
   templateUrl: './sidenav.component.html',
   styleUrls: ['./sidenav.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -38,14 +37,15 @@ import { TaskService } from '../../features/task/task.service';
   ],
 })
 export class SidenavComponent implements OnInit {
-  readonly _TASK_SERVICE = inject(TaskService);
+  // - di
   readonly _CD = inject(ChangeDetectorRef);
   readonly _MEDIA = inject(MediaMatcher);
+  readonly _TASK_SERVICE = inject(TaskService);
   readonly NAVIGATIONS: TMenu[] = inject(SidenavService)?.navigations;
 
   mobileQuery: MediaQueryList = this._MEDIA.matchMedia('(max-width: 600px)');
-
   private _mobileQueryListener = () => this._CD.detectChanges();
+
 
   ngOnInit(): void {
     // Check compatibility and add listener

@@ -3,16 +3,16 @@
     <div class="tw-w-[50%]">
       @if (isSearch()) {
         <div>
-          <ui-search (searchTermFn)="toSearch($event)"></ui-search>
+          <ui-search (searchTermFn)="toSearch($event)" />
         </div>
       }
       @else {
         <div>
-          <span class="tw-text-xl" [attr.data-test]="'page-title-' + PAGE?.id">
-            {{ PAGE?.name | titlecase }}.&nbsp;
+          <span class="tw-text-xl" [attr.data-test]="'page-title-' + PAGE.id">
+            {{ PAGE.name | titlecase }}.&nbsp;
           </span>
           <span class="tw-text-sm tw-text-[#4d4d4d]">
-            {{ PAGE?.description }}
+            {{ PAGE.description }}
           </span>
         </div>
       }
@@ -41,14 +41,19 @@
       </div>
 
       <div class="tw-flex tw-items-center">
-        <filter-btn
-          [value]="getFilterValue"
+        @if (SOURCE_PAGE !== 'completed') {
+          <ui-filter-btn
+            [value]="getFilterValue"
+            [source]="SOURCE_PAGE"
+            [view]="viewBoard ? 'board': 'list'"
+            (filter)="filter($event)"
+          />
+        }
+
+        <ui-sort-btn
+          [value]="getSortValue"
           [source]="SOURCE_PAGE"
           [view]="viewBoard ? 'board': 'list'"
-          (filter)="filter($event)"
-        />
-        <sort-btn
-          [value]="getSortValue"
           (sort)="sort($event)"
         />
         <button
@@ -77,7 +82,7 @@
 
 
   @if (viewBoard) {
-    <app-task-board
+    <ui-task-board
       [TASKS]="getTasks"
       [TASK_SERVICE]="_TASK_SERVICE"
       [SEARCH_TERM]="getSearchTerm"
@@ -86,12 +91,12 @@
     />
   }
   @else {
-    <app-feature-task-list
-      [tasks]="getTasks()"
-      [SERVICE]="_TASK_SERVICE"
-      [searchTerm]="getSearchTerm"
-      [filterValue]="getFilterValue"
-      [sortValue]="getSortValue"
+    <ui-task-list
+      [TASKS]="getTasks"
+      [TASK_SERVICE]="_TASK_SERVICE"
+      [SEARCH_TERM]="getSearchTerm"
+      [FILTER_VALUE]="getFilterValue"
+      [SORT_VALUE]="getSortValue"
     />
   }
 

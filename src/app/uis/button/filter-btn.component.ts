@@ -1,14 +1,14 @@
 import { CommonModule, TitleCasePipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component, input, output, Signal, signal, ViewChild, WritableSignal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input, output, Signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
-import { MatMenuModule, MatMenuTrigger } from '@angular/material/menu';
+import { MatMenuModule } from '@angular/material/menu';
 import * as _ from 'lodash';
-import { TSORT } from '../../../utils/models/task.model';
+
 
 @Component({
-  selector: 'filter-btn',
-  standalone: true,
+  selector: 'ui-filter-btn',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
   imports: [
     CommonModule,
     TitleCasePipe,
@@ -23,8 +23,6 @@ import { TSORT } from '../../../utils/models/task.model';
     @let TODO = 'todo';
     @let IN_PROGRESS = 'in-progress';
     @let DONE = 'done';
-    @let BLOCK = 'block';
-    @let IN_REVIEW = 'in-review';
 
     <button
       #menuTrigger="matMenuTrigger"
@@ -33,7 +31,7 @@ import { TSORT } from '../../../utils/models/task.model';
       class="tw-w-[7rem] tw-mx-[4px] tw-mb-[4px] !tw-px-2 tw-h-[46px]"
       [ngClass]="{
         '!tw-w-[8rem]': value() && value()() === 'complete',
-        '!tw-w-[10rem]': value() && value()().includes('priority')
+        '!tw-w-[10rem]': value() && value()().includes('priority') || value()().includes('progress')
       }"
     >
       Filter:
@@ -48,7 +46,11 @@ import { TSORT } from '../../../utils/models/task.model';
 
     <mat-menu #filterMenu="matMenu">
       <button mat-menu-item (click)="filter.emit(NONE)">None</button>
-      <button mat-menu-item [matMenuTriggerFor]="priorityMenu">Priority</button>
+
+      @if (source() !== 'priority') {
+        <button mat-menu-item [matMenuTriggerFor]="priorityMenu">Priority</button>
+      }
+
       <button mat-menu-item [matMenuTriggerFor]="statusMenu">Status</button>
     </mat-menu>
 
@@ -75,12 +77,5 @@ export class FilterBtnComponent {
   source = input.required<string>();
   view = input.required<'list' | 'board'>();
 
-
   filter = output<string>();
-
-
-  ngOnInit() {
-  console.log('filter:source:', this.source())
-  console.log('filter:view:', this.view())
-  }
 }

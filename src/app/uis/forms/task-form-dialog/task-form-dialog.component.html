@@ -2,7 +2,7 @@
   <h2 mat-dialog-title data-test="dialog-title">
     @if (status === 'view') {
       <span>Task Detail</span>
-      @if (_DATA?.status === 'done') {
+      @if (_DATA.status === 'done') {
         <span class="tw-px-[12px] tw-ml-[4px] tw-text-md tw-text-[#1aa318]">DONE</span>
       }
     }
@@ -85,13 +85,13 @@
         [theme]="'snow'"
         class="tw-h-[58vh]"
         data-test="task-description-input"
-      ></quill-editor>
+      />
     </div>
   </mat-dialog-content>
 
   <mat-dialog-actions align="end" class="!tw-py-[0]">
-    @if ((status === 'update' || status === 'view') && _DATA?.status !== 'done') {
-      <div class="tw-absolute tw-left-[12px]">
+    @if ((status === 'update' || status === 'view') && _DATA.status !== 'done') {
+      <div class="tw-absolute tw-flex tw-items-center tw-left-[12px]">
         <button
           mat-button
           (click)="deleteTask(_DATA, _DATA.id)"
@@ -100,6 +100,21 @@
         >
           Delete
         </button>
+
+        @if (_DATA.createdAt) {
+          <div class="tw-flex tw-flex-row tw-w-full tw-justify-start tw-text-sm">
+            <div class="tw-ml-[10px]">
+              <span>
+                Created: {{ _DATA.createdAt | date: 'mediumDate' }}
+              </span>
+            </div>
+            <div class="tw-ml-[24px]">
+              <span>
+                Updated: {{ _DATA.updatedAt | date: 'mediumDate' }}
+              </span>
+            </div>
+          </div>
+        }
       </div>
     }
 
@@ -133,18 +148,3 @@
     </div>
   </mat-dialog-actions>
 </form>
-
-@if (_DATA?.createdAt) {
-  <div class="tw-flex tw-flex-row tw-w-full tw-justify-start tw-text-sm">
-    <div class="tw-ml-[24px]">
-      <span>
-        Created: {{ _DATA.createdAt | date: 'mediumDate' }}
-      </span>
-    </div>
-    <div class="tw-ml-[24px]">
-      <span>
-        Updated: {{ _DATA.updatedAt | date: 'mediumDate' }}
-      </span>
-    </div>
-  </div>
-}

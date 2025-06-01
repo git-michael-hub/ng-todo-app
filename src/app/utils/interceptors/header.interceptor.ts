@@ -1,6 +1,5 @@
-import { HttpRequest, HttpHandler, HttpEvent, HttpHandlerFn } from '@angular/common/http';
+import { HttpRequest, HttpEvent, HttpHandlerFn } from '@angular/common/http';
 import { Observable } from 'rxjs';
-
 
 
 export function headerInterceptor(req: HttpRequest<any>, next: HttpHandlerFn): Observable<HttpEvent<any>> {

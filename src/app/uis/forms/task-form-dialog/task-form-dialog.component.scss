@@ -16,13 +16,10 @@ input:focus-visible {
   border: none;
 }
 
-
-
 :host ::ng-deep .ql-container {
   border: none !important;
   box-shadow: none !important;
 }
-
 
 :host ::ng-deep .ql-editor {
   font-size: 14px !important; /* Set default font size */

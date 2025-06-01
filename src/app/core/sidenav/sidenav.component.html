@@ -1,15 +1,14 @@
-<section class="example-container side-nav" [class.example-is-mobile]="mobileQuery.matches">
-  <mat-toolbar class="example-toolbar">
+<section class="container side-nav" [class.is-mobile]="mobileQuery.matches">
+  <mat-toolbar class="toolbar">
     <div class="tw-w-[218px] tw-inline-flex tw-items-center">
-      <!-- <button mat-icon-button (click)="snav.toggle()"><mat-icon>menu</mat-icon></button> -->
-      <h1 class="example-app-name">Workie-Work</h1>
+      <h1 class="app-name">Workie-Work</h1>
     </div>
 
-    <app-ui-widget-summary></app-ui-widget-summary>
+    <ui-widget-summary></ui-widget-summary>
   </mat-toolbar>
 
   <mat-sidenav-container
-    class="example-sidenav-container"
+    class="sidenav-container"
     [style.marginTop.px]="mobileQuery.matches ? 56 : 0"
   >
     <mat-sidenav

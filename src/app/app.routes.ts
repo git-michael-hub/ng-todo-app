@@ -1,7 +1,6 @@
 import { Routes } from '@angular/router';
 
 
-
 export const ROUTES: Routes = [
   {
     path: '', redirectTo: '/home', pathMatch: 'full'
@@ -12,38 +11,38 @@ export const ROUTES: Routes = [
       {
         path: 'recent',
         title: 'Recent tasks',
-        // loadComponent: () => import('./features/task/pages/recent/recent.component').then(c => c.RecentComponent)
-        loadComponent: () => import('./features/task/pages/task-page-list/task-page-list.component').then(c => c.TaskBaseListComponent)
+        loadComponent: () => import('./features/task/pages/task-page-list/task-page-list.component')
+          .then(c => c.TaskBaseListComponent)
       },
       {
         path: 'today',
         title: 'Todays tasks',
-        loadComponent: () => import('./features/task/pages/task-page-list/task-page-list.component').then(c => c.TaskBaseListComponent)
-        // loadComponent: () => import('./features/task/pages/today/today.component').then(c => c.TodayComponent)
+        loadComponent: () => import('./features/task/pages/task-page-list/task-page-list.component')
+          .then(c => c.TaskBaseListComponent)
       },
       {
         path: 'upcoming',
         title: 'Upcoming tasks',
-        loadComponent: () => import('./features/task/pages/task-page-list/task-page-list.component').then(c => c.TaskBaseListComponent)
-        // loadComponent: () => import('./features/task/pages/upcoming/upcoming.component').then(c => c.UpcomingComponent)
+        loadComponent: () => import('./features/task/pages/task-page-list/task-page-list.component')
+          .then(c => c.TaskBaseListComponent)
       },
       {
         path: 'priority',
         title: 'Priority tasks',
-        loadComponent: () => import('./features/task/pages/task-page-list/task-page-list.component').then(c => c.TaskBaseListComponent)
-        // loadComponent: () => import('./features/task/pages/priority/priority.component').then(c => c.PriorityComponent)
+        loadComponent: () => import('./features/task/pages/task-page-list/task-page-list.component')
+          .then(c => c.TaskBaseListComponent)
       },
       {
         path: 'list',
         title: 'List of all tasks',
-        loadComponent: () => import('./features/task/pages/task-page-list/task-page-list.component').then(c => c.TaskBaseListComponent)
-        // loadComponent: () => import('./features/task/pages/list/list.component').then(c => c.ListComponent)
+        loadComponent: () => import('./features/task/pages/task-page-list/task-page-list.component')
+          .then(c => c.TaskBaseListComponent)
       },
       {
         path: 'completed',
         title: 'Completed tasks',
-        loadComponent: () => import('./features/task/pages/task-page-list/task-page-list.component').then(c => c.TaskBaseListComponent)
-        // loadComponent: () => import('./features/task/pages/completed/completed.component').then(c => c.CompletedComponent)
+        loadComponent: () => import('./features/task/pages/task-page-list/task-page-list.component')
+          .then(c => c.TaskBaseListComponent)
       },
       // {
       //   path: 'archive',
@@ -53,12 +52,14 @@ export const ROUTES: Routes = [
       {
         path: 'calendar',
         title: 'Calendar tasks',
-        loadComponent: () => import('./features/task/pages/calendar/calendar.component').then(c => c.CalendarComponent)
+        loadComponent: () => import('./features/task/pages/calendar/calendar.component')
+          .then(c => c.CalendarComponent)
       },
       {
         path: 'home',
         title: 'Home tasks',
-        loadComponent: () => import('./features/task/pages/home/home.component').then(c => c.HomeComponent)
+        loadComponent: () => import('./features/task/pages/home/home.component')
+          .then(c => c.HomeComponent)
       },
     ]
   },

@@ -1,20 +1,35 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, computed, effect, inject, Signal, signal, WritableSignal } from '@angular/core';
+// Angular
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  computed,
+  effect,
+  inject,
+  OnInit,
+  Signal,
+  signal,
+  WritableSignal
+} from '@angular/core';
+import { CommonModule, TitleCasePipe } from '@angular/common';
+import { Router } from '@angular/router';
+
+// Local
 import { TSORT, TTask } from '../../../../utils/models/task.model';
 import { STORE_TOKEN } from '../../../../data-access/state/state.store';
 import { TaskService } from '../../task.service';
-import { CommonModule, TitleCasePipe } from '@angular/common';
-import { FilterBtnComponent } from '../../../../uis/button/filter-btn/filter-btn.component';
-import { SortBtnComponent } from '../../../../uis/button/sort-btn/sort-btn.component';
+import { FilterBtnComponent } from '../../../../uis/button/filter-btn.component';
+import { SortBtnComponent } from '../../../../uis/button/sort-btn.component';
 import { SearchComponent } from '../../../../uis/input/search/search.component';
 import { TaskListComponent } from '../../../../uis/list/task-list/task-list.component';
 import { TMenu } from '../../../../core/sidenav/sidenav.model';
 import { SidenavService } from '../../../../core/sidenav/sidenav.service';
-import { Router } from '@angular/router';
 import { ListService } from '../../../../utils/services/list.service';
 import { TaskBoardComponent } from '../../../../uis/board/task-board/task-board.component';
 
+
 @Component({
-  selector: 'app-task-page-list',
+  selector: 'feature-task-page-list',
   templateUrl: 'task-page-list.component.html',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -28,7 +43,7 @@ import { TaskBoardComponent } from '../../../../uis/board/task-board/task-board.
     TaskBoardComponent
   ]
 })
-export class TaskBaseListComponent {
+export class TaskBaseListComponent implements OnInit {
   // - angular DI
   private readonly _STORE = inject(STORE_TOKEN);
   private readonly _ROUTER = inject(Router);
@@ -65,20 +80,11 @@ export class TaskBaseListComponent {
   viewBoard: boolean = false;
 
 
-  constructor() {
-    effect(() => {
-      console.log('TEST:', this.getTasks())
-    });
-  }
-
   ngOnInit(): void {
     this.setDefaultData();
-    console.log('_TASK_SERVICE:', this._TASK_SERVICE)
   }
 
   setDefaultData(): void {
-    console.log('setData');
-
     this.isSearch.set(false);
     this.searchTerm.set('');
     this.filterValue.set('none');
@@ -113,6 +119,7 @@ export class TaskBaseListComponent {
     }
   }
 
+  // - search
   toSearch(term: string): void {
     this.searchTerm.set(term);
   }
@@ -122,6 +129,7 @@ export class TaskBaseListComponent {
     this.searchTerm.set('');
   }
 
+  // - util
   filter(selection: string): void {
     this.sortValue.set({
       sort: 'desc',

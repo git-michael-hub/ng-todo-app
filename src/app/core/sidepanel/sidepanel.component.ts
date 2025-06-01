@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-sidepanel',
+  selector: 'layout-sidepanel',
   templateUrl: './sidepanel.component.html',
   styleUrls: ['./sidepanel.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

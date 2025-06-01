@@ -3,7 +3,6 @@ import { TError } from "../../utils/models/common.model"
 import { TTask } from "../../utils/models/task.model"
 
 
-
 type TAPI = {
   isRequestingAPI?: boolean, // checking for API request
   response?: boolean, // response data from the request
@@ -28,7 +27,6 @@ export interface IState {
     deleted: WritableSignal<TTask | null>, // latest deleted task
 
     count: {
-      // status: WritableSignal<'all' | 'complete' | 'todo' | 'high-priority'>,
       allListComputed: Signal<number>,
       completeListComputed: Signal<number>,
       todoListComputed: Signal<number>,

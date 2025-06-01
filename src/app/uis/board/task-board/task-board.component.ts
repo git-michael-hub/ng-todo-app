@@ -23,7 +23,7 @@ import { PriorityPipe } from '../../../utils/pipes/priority.pipe';
 
 
 @Component({
-  selector: 'app-task-board',
+  selector: 'ui-task-board',
   templateUrl: './task-board.component.html',
   styleUrls: ['./task-board.component.scss'],
   standalone: true,
@@ -34,9 +34,6 @@ import { PriorityPipe } from '../../../utils/pipes/priority.pipe';
     CdkDropList,
     CdkDrag,
     TitleCasePipe,
-    SearchPipe,
-    SortPipe,
-    FilterPipe,
     PriorityPipe
   ],
 })
@@ -96,6 +93,7 @@ export class TaskBoardComponent {
     return filtered;
   });
 
+
   drop(event: CdkDragDrop<TTask[]>, status: TStatus): void {
     const DATA = event?.item?.data;
 
@@ -120,5 +118,4 @@ export class TaskBoardComponent {
 
     this.TASK_SERVICE().viewTaskUI(task);
   }
-
 }

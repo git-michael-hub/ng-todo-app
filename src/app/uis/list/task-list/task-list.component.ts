@@ -1,5 +1,5 @@
 // Angular
-import { ChangeDetectionStrategy, Component, computed, effect, input, Input, signal, Signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input, Signal } from '@angular/core';
 import { DatePipe, SlicePipe, TitleCasePipe } from '@angular/common';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { FormsModule } from '@angular/forms';
@@ -18,13 +18,12 @@ import { SortPipe } from '../../../utils/pipes/sort.pipe';
 import { FilterPipe } from '../../../utils/pipes/filter.pipe';
 
 
-
 @Component({
-  selector: 'app-feature-task-list',
+  selector: 'ui-task-list',
   templateUrl: './task-list.component.html',
   styleUrls: ['./task-list.component.scss'],
-  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
   imports: [
     SlicePipe,
     MatButtonModule,
@@ -40,39 +39,22 @@ import { FilterPipe } from '../../../utils/pipes/filter.pipe';
   ],
 })
 export class TaskListComponent {
-  tasks = input.required<TTask[]>();
-  filterValue = input.required<Signal<string>>();
-  sortValue = input.required<Signal<{sort: TSORT, sortBy: string}>>();
-  searchTerm = input.required<Signal<string>>();
+  // input - reactivity
+  readonly TASKS = input.required<Signal<TTask[]>>();
+  readonly FILTER_VALUE = input.required<Signal<string>>();
+  readonly SORT_VALUE = input.required<Signal<{sort: TSORT, sortBy: string}>>();
+  readonly SEARCH_TERM = input.required<Signal<string>>();
 
-  @Input() SERVICE!: TaskService;
+  // input - no reactivity
+  readonly TASK_SERVICE = input.required<TaskService>();
 
   readonly TRACK_BY = TRACK_BY;
 
-  constructor() {
-    effect(() => {
-      console.log('Tasks updated:', this.tasks());
-    });
-  }
-
-  ngOnInit() {
-  console.log('SERVICE:tasK', this.SERVICE)
-  }
-
-  // FOR CYPRESS PURPOSES
-  showButtons(): void {
-    document.querySelectorAll(".item-content-buttons").forEach(el => {
-      if (el.classList.contains("tw-hidden"))
-        el.classList.remove("tw-hidden");
-      else
-        el.classList.add("tw-hidden");
-    });
-  }
 
   viewTaskUI(task: TTask): void {
     if (!task || !task.id) return;
 
-    this.SERVICE.viewTaskUI(task);
+    this.TASK_SERVICE().viewTaskUI(task);
   }
 
   markAsComplete(task: TTask): void {
@@ -82,17 +64,28 @@ export class TaskListComponent {
     if (task.status === 'done') {
       task = {...task, status: 'todo'};
 
-      this.SERVICE.updateTask(task, task.id || '', () => {}, false);
+      this.TASK_SERVICE().updateTask(task, task.id || '', () => {}, false);
     }
     else {
       task = {...task, status: 'done'};
-      this.SERVICE.markAsComplete(task);
+      this.TASK_SERVICE().markAsComplete(task);
     }
   }
 
   deleteTask(task: TTask, id: string): void {
     if (!task || !id) return;
 
-    this.SERVICE.deleteTask(task, id);
+    this.TASK_SERVICE().deleteTask(task, id);
+  }
+
+
+  // FOR CYPRESS PURPOSES
+  showButtons(): void {
+    document.querySelectorAll(".item-content-buttons").forEach(el => {
+      if (el.classList.contains("tw-hidden"))
+        el.classList.remove("tw-hidden");
+      else
+        el.classList.add("tw-hidden");
+    });
   }
 }

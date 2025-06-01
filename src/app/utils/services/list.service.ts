@@ -6,6 +6,7 @@ import { DateService } from "./date.service";
   providedIn: 'root'
 })
 export class ListService {
+  // - di
   private readonly _DATE_SERVICE = inject(DateService);
 
   private readonly PRIORITY_ORDER: Record<string, number> = {
@@ -21,6 +22,7 @@ export class ListService {
     done: 5
   };
 
+
   sort<K extends keyof Pick<
     TTask, 'title' | 'priority' | 'createdAt' | 'updatedAt' | 'dueDate' | 'status'>
   >(
@@ -31,9 +33,6 @@ export class ListService {
     } = { status: 'desc', field: 'createdAt' as K}
   ): TTask[] {
     // use spread for signal input child reactivity
-    console.log('list:', list);
-    console.log('selection:sort:', selection);
-
     let task: TTask[] = [];
 
     switch (selection.field) {
@@ -86,7 +85,6 @@ export class ListService {
           );
     }
 
-    console.log('selection:sort:task:', task)
     return task;
   }
 

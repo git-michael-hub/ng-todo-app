@@ -23,7 +23,6 @@ import { TTask } from '../../../utils/models/task.model';
 import { TaskService } from '../../../features/task/task.service';
 
 
-
 const MOMENT = _rollupMoment || _moment;
 const MY_FORMATS = {
   parse: {
@@ -39,7 +38,7 @@ const MY_FORMATS = {
 
 
 @Component({
-  selector: 'app-task-form-dialog',
+  selector: 'ui-task-form-dialog',
   templateUrl: './task-form-dialog.component.html',
   styleUrls: ['./task-form-dialog.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -59,11 +58,13 @@ const MY_FORMATS = {
   ],
 })
 export class TaskFormDialogComponent implements OnInit {
+  // - di
   private readonly _TASK_SERVICE = inject(TaskService);
   private readonly _FORM_BUILDER = inject(FormBuilder);
   private readonly _CD = inject(ChangeDetectorRef);
   readonly _DATA: TTask = inject(MAT_DIALOG_DATA);
 
+  // editor config
   editorModules = {
     toolbar: false, // Disable toolbar
     // toolbar: {
@@ -75,7 +76,6 @@ export class TaskFormDialogComponent implements OnInit {
     //   //   image: this.imageHandler.bind(this), // Custom handler for images
     //   // },
     // },
-
   };
 
   taskForm = this._FORM_BUILDER.group({
@@ -84,7 +84,6 @@ export class TaskFormDialogComponent implements OnInit {
     dueDate: [MOMENT(Date.now()), Validators.required],
     priority: ["low", Validators.required],
   });
-
   status: 'view' | 'add' | 'update' | 'close' = 'view';
 
 
@@ -106,6 +105,8 @@ export class TaskFormDialogComponent implements OnInit {
     });
   }
 
+
+  // - actions
   addTask(): void {
     if (this.taskForm.invalid) return;
 
@@ -142,9 +143,9 @@ export class TaskFormDialogComponent implements OnInit {
   }
 
 
-  // Triggered when content changes in the editor
+  // - editor
+  // triggered when content changes in the editor
   onContentChanged(event: any): void {
-    console.log(event)
     this.taskForm.controls.description.setValue(event.html);
   }
 

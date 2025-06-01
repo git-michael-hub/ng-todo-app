@@ -19,10 +19,11 @@ import { TaskService } from './features/task/task.service';
   selector: 'app-root',
   imports: [RouterOutlet, SidenavComponent, MatButtonModule, MatDialogModule],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.scss',
 })
 export class AppComponent {
   title = "Workie Work";
+
+  // - di
   private readonly _PLATFORM_ID = inject(PLATFORM_ID);
   private readonly _TASK_SERVICE = inject(TaskService);
   private readonly _STORE = inject(STORE_TOKEN);

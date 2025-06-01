@@ -1,16 +1,16 @@
 <div cdkDropListGroup class="tw-flex tw-justify-between">
-  <div class="example-container">
+  <div class="container">
     <h2>To do</h2>
 
     <div
       cdkDropList
       [cdkDropListData]="getTodos()"
-      class="example-list tw-items-center"
+      class="list tw-items-center"
       (cdkDropListDropped)="drop($event, 'todo')"
     >
       @for (item of getTodos(); track item) {
         <div class="cdkDropBoxItem" cdkDrag [cdkDragData]="item">
-          <div class="example-box" (click)="viewTaskUI(item)">
+          <div class="box" (click)="viewTaskUI(item)">
             <span class="hover:!tw-text-blue-600 hover:!tw-underline !tw-cursor-pointer">
               {{item?.title | titlecase}}
             </span>
@@ -27,24 +27,24 @@
         </div>
       }
 
-      @if (getTodos()?.length === 0) {
+      @if (getTodos().length === 0) {
         <ng-container [ngTemplateOutlet]="emptyTemplate" />
       }
     </div>
   </div>
 
-  <div class="example-container">
+  <div class="container">
     <h2>In Progress</h2>
 
     <div
       cdkDropList
       [cdkDropListData]="getInProgress()"
-      class="example-list tw-items-center"
+      class="list tw-items-center"
       (cdkDropListDropped)="drop($event, 'inprogress')"
     >
       @for (item of getInProgress(); track item) {
         <div class="cdkDropBoxItem" cdkDrag [cdkDragData]="item">
-          <div class="example-box" (click)="viewTaskUI(item)">
+          <div class="box" (click)="viewTaskUI(item)">
             <span class="hover:!tw-text-blue-600 hover:!tw-underline !tw-cursor-pointer">
               {{item?.title | titlecase}}
             </span>
@@ -61,24 +61,24 @@
         </div>
       }
 
-      @if (getInProgress()?.length === 0) {
+      @if (getInProgress().length === 0) {
         <ng-container [ngTemplateOutlet]="emptyTemplate" />
       }
     </div>
   </div>
 
-  <div class="example-container">
+  <div class="container">
     <h2>Done</h2>
 
     <div
       cdkDropList
       [cdkDropListData]="getDone()"
-      class="example-list tw-items-center"
+      class="-ist tw-items-center"
       (cdkDropListDropped)="drop($event, 'done')"
     >
       @for (item of getDone();track item) {
         <div class="cdkDropBoxItem" cdkDrag [cdkDragData]="item">
-          <div class="example-box" (click)="viewTaskUI(item)">
+          <div class="box" (click)="viewTaskUI(item)">
             <span class="hover:!tw-text-blue-600 hover:!tw-underline !tw-cursor-pointer">
               {{item?.title | titlecase}}
             </span>
@@ -95,7 +95,7 @@
         </div>
       }
 
-      @if (getDone()?.length === 0) {
+      @if (getDone().length === 0) {
        <ng-container [ngTemplateOutlet]="emptyTemplate" />
       }
     </div>
