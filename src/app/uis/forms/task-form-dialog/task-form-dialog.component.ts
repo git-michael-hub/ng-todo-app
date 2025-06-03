@@ -62,7 +62,7 @@ export class TaskFormDialogComponent implements OnInit {
   private readonly _TASK_SERVICE = inject(TaskService);
   private readonly _FORM_BUILDER = inject(FormBuilder);
   private readonly _CD = inject(ChangeDetectorRef);
-  readonly _DATA: TTask = inject(MAT_DIALOG_DATA);
+  readonly _DATA: TTask & {date: _moment.Moment} = inject(MAT_DIALOG_DATA);
 
   // editor config
   editorModules = {
@@ -88,16 +88,20 @@ export class TaskFormDialogComponent implements OnInit {
 
 
   ngOnInit(): void {
-    this.status = this._DATA ? 'view' : 'add';
+    this.status = this._DATA?.title
+      ? 'view'
+      : 'add';
 
     if (this.status === 'view') {
       this.taskForm.setValue({
-        title: this._DATA.title,
-        description: this._DATA.description,
-        dueDate: MOMENT(this._DATA.dueDate),
-        priority: this._DATA.priority
+        title: this._DATA?.title,
+        description: this._DATA?.description,
+        dueDate: MOMENT(this._DATA?.dueDate),
+        priority: this._DATA?.priority
       });
     }
+
+    if (this._DATA?.date) this.taskForm.controls.dueDate.setValue(this._DATA.date);
 
     this.taskForm.valueChanges.subscribe(() => {
       if (this.status === 'close') return;

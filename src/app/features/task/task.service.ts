@@ -7,6 +7,8 @@ import { MatSnackBar } from "@angular/material/snack-bar";
 
 // Third party
 import * as _ from 'lodash';
+import * as _moment from 'moment';
+import {default as _rollupMoment} from 'moment';
 
 // Local
 import { STORE_TOKEN } from "../../data-access/state/state.store";
@@ -14,6 +16,8 @@ import { TaskFormDialogComponent } from "../../uis/forms/task-form-dialog/task-f
 import { TTask } from "../../utils/models/task.model";
 import { TaskAPI } from "../../data-access/apis/task.api";
 import { LoggingService } from "../../utils/services/logging.service";
+
+const MOMENT = _rollupMoment || _moment;
 
 
 @Injectable({
@@ -189,12 +193,17 @@ export class TaskService {
 
 
   // - view UI dialog
-  addTaskUI(): void {
+  addTaskUI(date?:  string | Date): void {
     this.dialogRef?.close();
 
     this.dialogRef = this._DIALOG.open(
       TaskFormDialogComponent,
-      this.DIALOG_SETTINGS
+      date
+        ? {
+            ...this.DIALOG_SETTINGS,
+            data: { date:  MOMENT( (date as any)?.date) }
+          }
+        : this.DIALOG_SETTINGS
     );
 
     this.dialogRef.afterClosed().subscribe({

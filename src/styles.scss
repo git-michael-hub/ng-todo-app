@@ -2,6 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
+
+@import "../node_modules/angular-calendar/css/angular-calendar.css";
+
 /* You can add global styles to this file, and also import other style files */
 
 html, body { height: 100%; }
@@ -9,9 +12,21 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 .page {
   @apply tw-mx-[28px];
+  animation-name: fadeShow;
+  animation-duration: 1s;
 }
 
 
 .cdk-virtual-scroll-orientation-vertical .cdk-virtual-scroll-content-wrapper  {
   width: 100% !important;
+}
+
+
+@keyframes fadeShow {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }

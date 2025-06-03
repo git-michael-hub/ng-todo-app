@@ -1,11 +1,190 @@
-
-
-
 <section class="page">
-  <p>
-    calendar works!
-  </p>
+  <div class="tw-flex">
+    <div class="tw-w-[50%]">
+        <div>
+          <span class="tw-text-xl" >
+            Calendar
+          </span>
+        </div>
+    </div>
 
-  <app-ui-widget-summary></app-ui-widget-summary>
+    <div class="tw-w-[50%] tw-pl-[12px] tw-flex tw-flex-row tw-items-center tw-justify-end">
+      <div class="tw-flex tw-items-center">
+        <ui-filter-btn
+          [value]="getFilterValue"
+          [source]="SOURCE_PAGE"
+          [view]="'list'"
+          (filter)="filter($event)"
+        />
+        <ui-sort-btn
+          [value]="getSortValue"
+          [source]="SOURCE_PAGE"
+          [view]="'list'"
+          (sort)="sort($event)"
+        />
+        <button
+          mat-button
+          class="tw-ml-[4px] tw-mb-[4px] !tw-px-2 tw-h-[46px] tw-cursor-pointer"
+          (click)="setDefaultData()"
+        >
+          Reset
+        </button>
+      </div>
+    </div>
+  </div>
 
+  <div class="
+    tw-flex tw-justify-between
+    tw-py-[20px] tw-px-[12px]
+    tw-bg-[white] tw-border-solid tw-border-b-[2px]
+  ">
+    <div class="">
+      <span class="tw-text-xl">{{ viewDate | calendarDate:(view + 'ViewTitle'):'en' }}</span>
+    </div>
+    <div class="tw-flex">
+      <div
+        class="tw-w-[5rem] tw-flex tw-justify-center tw-cursor-pointer"
+        mwlCalendarPreviousView
+        [view]="view"
+        [(viewDate)]="viewDate"
+      >
+        Previous
+      </div>
+      <div
+        class="tw-w-[5rem] tw-flex tw-justify-center tw-cursor-pointer"
+        mwlCalendarToday
+        [(viewDate)]="viewDate"
+      >
+        Today
+      </div>
+      <div
+        class="tw-w-[5rem] tw-flex tw-justify-center tw-cursor-pointer"
+        mwlCalendarNextView
+        [view]="view"
+        [(viewDate)]="viewDate"
+      >
+        Next
+      </div>
+    </div>
+  </div>
+
+  <!-- Calendar UI -->
+  <div>
+    <mwl-calendar-month-view
+      [viewDate]="viewDate"
+      [events]="getEvents()"
+      [activeDayIsOpen]="false"
+      [cellTemplate]="monthCellTemplate"
+    >
+    </mwl-calendar-month-view>
+  </div>
 </section>
+
+
+<ng-template #monthCellTemplate
+  let-day="day"
+  let-locale="locale"
+  let-tooltipPlacement="tooltipPlacement"
+  let-highlightDay="highlightDay"
+  let-unhighlightDay="unhighlightDay"
+  let-eventClicked="eventClicked"
+  let-tooltipTemplate="tooltipTemplate"
+  let-tooltipAppendToBody="tooltipAppendToBody"
+  let-tooltipDelay="tooltipDelay"
+>
+  <div class="cal-cell-top">
+    <span>
+      <span class="!tw-absolute !tw-mt-[10px] !tw-ml-[10px]">
+        <button
+          mat-icon-button
+          aria-label="Add task"
+          matTooltip="Add task"
+        >
+          <span class="tw-cursor-pointer">
+            <mat-icon class="
+                tw-text-[18px] tw-text-[#418CFD]
+                tw-cursor-pointer
+                tw-mt-[9px]
+                tw-border-solid tw-border-[1px] tw-rounded-[16px]
+                !tw-flex !tw-justify-center !tw-items-center
+                !tw-h-[20px] !tw-w-[20px]
+              "
+              (click)="_TASK_SERVICE.addTaskUI(day)"
+            >
+              add
+            </mat-icon>
+          </span>
+        </button>
+      </span>
+
+      @if (day.badgeTotal > 0) {
+        <span
+          class="cal-day-badge !tw-absolute !tw-mt-[20px] !tw-ml-[42px]"
+          aria-label="# of task"
+          matTooltip="# of task"
+          (click)="$event.stopPropagation();"
+        >
+          {{ day.badgeTotal }}
+        </span>
+      }
+    </span>
+
+    <span class="cal-day-number">
+      {{
+        day.date | calendarDate : "monthViewDayNumber" : locale
+      }}
+    </span>
+  </div>
+
+  @if (day.events.length > 0) {
+    <div>
+      @for (event of day.events; track event.id; let i = $index) {
+        <div>
+          @if (i < eventLimit) {
+            <small
+              class="
+                cal-events
+                tw-bg-[#015cbb] tw-h-[18px] !tw-flex tw-text-[white] tw-pt-[2px]
+                !tw-items-center
+                !tw-pl-[2px]
+                tw-cursor-pointer
+              "
+              [ngStyle]="{ backgroundColor: event.color?.primary }"
+              [ngClass]="event?.cssClass"
+              (mwlClick)="eventClicked.emit({ event: event })"
+              [mwlCalendarTooltip]="
+              event && event?.meta && event?.meta?.order
+                ? (event.meta.order.currentDatetime.description
+                  | calendarEventTitle : 'monthTooltip' : event)
+                : ''
+              "
+              [tooltipPlacement]="tooltipPlacement"
+              [tooltipEvent]="event"
+              [tooltipTemplate]="tooltipTemplate"
+              [tooltipAppendToBody]="tooltipAppendToBody"
+              [tooltipDelay]="tooltipDelay"
+              [matTooltip]="event?.title | titlecase"
+            >
+              <span (click)="_TASK_SERVICE.viewTaskUI(event);">
+                {{
+                  event && event?.title
+                    ? (event.title.slice(0, 20) | titlecase )
+                    : ''
+                }}
+              </span>
+              <span>{{ event.title.length > 20 ? '...' : '' }}</span>
+            </small>
+          }
+
+          @if (i === eventLimit) {
+            <small class="cal-events">
+              <a class="showmore">
+                + Show {{ day.badgeTotal - eventLimit }} more
+              </a>
+            </small>
+          }
+        </div>
+      }
+    </div>
+  }
+</ng-template>

@@ -7,7 +7,6 @@ import { SummaryComponent } from '../../../../uis/widgets/summary/summary.compon
   styleUrls: ['./home.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [SummaryComponent]
 })
 export class HomeComponent implements OnInit {
 
