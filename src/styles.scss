@@ -16,6 +16,11 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   animation-duration: 1s;
 }
 
+.fadeShow {
+  animation-name: fadeShow;
+  animation-duration: 1s;
+}
+
 
 .cdk-virtual-scroll-orientation-vertical .cdk-virtual-scroll-content-wrapper  {
   width: 100% !important;

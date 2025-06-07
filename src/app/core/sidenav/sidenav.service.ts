@@ -22,7 +22,7 @@ export class SidenavService {
       isSelected: true,
       position: 'top',
       page: '/today',
-      description: 'Tasks for today to work on.'
+      description: "Tasks for today's due date to work on."
     },
     {
       name: 'upcoming',
@@ -30,7 +30,7 @@ export class SidenavService {
       isSelected: false,
       position: 'top',
       page: '/upcoming',
-      description: 'Tasks for the next day due and so on.'
+      description: 'Tasks for the next due date.'
     },
     // {
     //   name: 'watching',

@@ -1,10 +1,8 @@
 // Angular
 import {
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
   computed,
-  effect,
   inject,
   OnInit,
   Signal,
@@ -47,7 +45,6 @@ export class TaskBaseListComponent implements OnInit {
   // - angular DI
   private readonly _STORE = inject(STORE_TOKEN);
   private readonly _ROUTER = inject(Router);
-  private readonly _CDREF = inject(ChangeDetectorRef);
 
   // - custom DI
   private readonly _SIDE_NAV_SERVICE = inject(SidenavService);
@@ -59,19 +56,19 @@ export class TaskBaseListComponent implements OnInit {
   getTasks: Signal<TTask[]> = this._STORE().task.getList;
 
   isSearch: WritableSignal<boolean>  = signal(false);
-  getIsSearch: Signal<boolean> = computed(() => this.isSearch());
+  readonly GET_IS_SEARCH: Signal<boolean> = computed(() => this.isSearch());
 
   searchTerm: WritableSignal<string> = signal('');
-  getSearchTerm: Signal<string> = computed(() => this.searchTerm());
+  readonly GET_SEARCH_TERM: Signal<string> = computed(() => this.searchTerm());
 
   sortValue: WritableSignal<{sort: TSORT, sortBy: string}> = signal({
     sort: 'desc',
     sortBy: 'createdAt'
   });
-  getSortValue: Signal<{sort: TSORT, sortBy: string}> = computed(() => this.sortValue());
+  readonly GET_SORT_VALUE: Signal<{sort: TSORT, sortBy: string}> = computed(() => this.sortValue());
 
   filterValue: WritableSignal<string> = signal('');
-  getFilterValue: Signal<string> = computed(() => this.filterValue());
+  readonly GET_FILTER_VALUE: Signal<string> = computed(() => this.filterValue());
 
   // - no reactivity
   readonly PAGE: TMenu = this._SIDE_NAV_SERVICE.navigations

@@ -43,7 +43,7 @@
       <div class="tw-flex tw-items-center">
         @if (SOURCE_PAGE !== 'completed') {
           <ui-filter-btn
-            [value]="getFilterValue"
+            [value]="GET_FILTER_VALUE"
             [source]="SOURCE_PAGE"
             [view]="viewBoard ? 'board': 'list'"
             (filter)="filter($event)"
@@ -51,7 +51,7 @@
         }
 
         <ui-sort-btn
-          [value]="getSortValue"
+          [value]="GET_SORT_VALUE"
           [source]="SOURCE_PAGE"
           [view]="viewBoard ? 'board': 'list'"
           (sort)="sort($event)"
@@ -85,18 +85,18 @@
     <ui-task-board
       [TASKS]="getTasks"
       [TASK_SERVICE]="_TASK_SERVICE"
-      [SEARCH_TERM]="getSearchTerm"
-      [FILTER_VALUE]="getFilterValue"
-      [SORT_VALUE]="getSortValue"
+      [SEARCH_TERM]="GET_SEARCH_TERM"
+      [FILTER_VALUE]="GET_FILTER_VALUE"
+      [SORT_VALUE]="GET_SORT_VALUE"
     />
   }
   @else {
     <ui-task-list
       [TASKS]="getTasks"
       [TASK_SERVICE]="_TASK_SERVICE"
-      [SEARCH_TERM]="getSearchTerm"
-      [FILTER_VALUE]="getFilterValue"
-      [SORT_VALUE]="getSortValue"
+      [SEARCH_TERM]="GET_SEARCH_TERM"
+      [FILTER_VALUE]="GET_FILTER_VALUE"
+      [SORT_VALUE]="GET_SORT_VALUE"
     />
   }
 

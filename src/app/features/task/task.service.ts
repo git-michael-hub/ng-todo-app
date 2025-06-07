@@ -16,6 +16,7 @@ import { TaskFormDialogComponent } from "../../uis/forms/task-form-dialog/task-f
 import { TTask } from "../../utils/models/task.model";
 import { TaskAPI } from "../../data-access/apis/task.api";
 import { LoggingService } from "../../utils/services/logging.service";
+import DATA from '../../../assets/mock-data/sample_tasks_200.json'
 
 const MOMENT = _rollupMoment || _moment;
 
@@ -58,8 +59,20 @@ export class TaskService {
         error: (error) => {
           console.error('Error fetching tasks:', error);
           this._STORE().task.list.set([]);
+
+          // fallback if server is not working
+          this.fallbackGetTasks();
         }
       });
+  }
+
+  fallbackGetTasks(): void {
+    // fallback if server is not working
+    console.log('DATA:', DATA)
+    this._STORE().task.list.set(DATA as any);
+    this._LOG.recordData('getTask');
+
+    this.notify(`You're using test data!`);
   }
 
   addTask(task: TTask): void {

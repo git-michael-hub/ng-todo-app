@@ -11,13 +11,13 @@
     <div class="tw-w-[50%] tw-pl-[12px] tw-flex tw-flex-row tw-items-center tw-justify-end">
       <div class="tw-flex tw-items-center">
         <ui-filter-btn
-          [value]="getFilterValue"
+          [value]="GET_FILTER_VALUE"
           [source]="SOURCE_PAGE"
           [view]="'list'"
           (filter)="filter($event)"
         />
         <ui-sort-btn
-          [value]="getSortValue"
+          [value]="GET_SORT_VALUE"
           [source]="SOURCE_PAGE"
           [view]="'list'"
           (sort)="sort($event)"
@@ -39,13 +39,13 @@
     tw-bg-[white] tw-border-solid tw-border-b-[2px]
   ">
     <div class="">
-      <span class="tw-text-xl">{{ viewDate | calendarDate:(view + 'ViewTitle'):'en' }}</span>
+      <span class="tw-text-xl">{{ viewDate | calendarDate:(VIEW_CALENDAR + 'ViewTitle'):'en' }}</span>
     </div>
     <div class="tw-flex">
       <div
         class="tw-w-[5rem] tw-flex tw-justify-center tw-cursor-pointer"
         mwlCalendarPreviousView
-        [view]="view"
+        [view]="VIEW_CALENDAR"
         [(viewDate)]="viewDate"
       >
         Previous
@@ -60,7 +60,7 @@
       <div
         class="tw-w-[5rem] tw-flex tw-justify-center tw-cursor-pointer"
         mwlCalendarNextView
-        [view]="view"
+        [view]="VIEW_CALENDAR"
         [(viewDate)]="viewDate"
       >
         Next

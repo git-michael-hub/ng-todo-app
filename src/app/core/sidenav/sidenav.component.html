@@ -4,7 +4,10 @@
       <h1 class="app-name">Workie-Work</h1>
     </div>
 
-    <ui-widget-summary></ui-widget-summary>
+    @if (pageSelected !== 'home') {
+      <ui-widget-summary></ui-widget-summary>
+    }
+
   </mat-toolbar>
 
   <mat-sidenav-container
@@ -24,7 +27,12 @@
             @for (nav of NAVIGATIONS; track nav) {
               @if (nav.position === 'top') {
                 <div [attr.data-test]="'nav-' + nav.id">
-                  <a mat-list-item routerLink="{{nav.page}}" routerLinkActive="active">
+                  <a
+                    mat-list-item
+                    routerLink="{{nav.page}}"
+                    routerLinkActive="active"
+                    (click)="pageSelected=nav.page.split('/')[1]"
+                  >
                     {{ nav.name | titlecase }}
                   </a>
                 </div>
@@ -45,7 +53,11 @@
             @for (nav of NAVIGATIONS; track nav) {
               @if (nav.position === 'bottom') {
                 <div>
-                  <a mat-list-item routerLink="{{nav.page}}">
+                  <a
+                    mat-list-item
+                    routerLink="{{nav.page}}"
+                    (click)="pageSelected=nav.page.split('/')[1]"
+                  >
                     {{ nav.name | titlecase }}
                   </a>
                 </div>

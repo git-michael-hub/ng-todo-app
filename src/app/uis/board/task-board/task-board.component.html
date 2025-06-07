@@ -4,11 +4,11 @@
 
     <div
       cdkDropList
-      [cdkDropListData]="getTodos()"
+      [cdkDropListData]="GET_TODOS()"
       class="list tw-items-center"
       (cdkDropListDropped)="drop($event, 'todo')"
     >
-      @for (item of getTodos(); track item) {
+      @for (item of GET_TODOS(); track item) {
         <div class="cdkDropBoxItem" cdkDrag [cdkDragData]="item">
           <div class="box" (click)="viewTaskUI(item)">
             <span class="hover:!tw-text-blue-600 hover:!tw-underline !tw-cursor-pointer">
@@ -27,7 +27,7 @@
         </div>
       }
 
-      @if (getTodos().length === 0) {
+      @if (GET_TODOS().length === 0) {
         <ng-container [ngTemplateOutlet]="emptyTemplate" />
       }
     </div>
@@ -38,11 +38,11 @@
 
     <div
       cdkDropList
-      [cdkDropListData]="getInProgress()"
+      [cdkDropListData]="GET_IN_PROGRESS()"
       class="list tw-items-center"
       (cdkDropListDropped)="drop($event, 'inprogress')"
     >
-      @for (item of getInProgress(); track item) {
+      @for (item of GET_IN_PROGRESS(); track item) {
         <div class="cdkDropBoxItem" cdkDrag [cdkDragData]="item">
           <div class="box" (click)="viewTaskUI(item)">
             <span class="hover:!tw-text-blue-600 hover:!tw-underline !tw-cursor-pointer">
@@ -61,7 +61,7 @@
         </div>
       }
 
-      @if (getInProgress().length === 0) {
+      @if (GET_IN_PROGRESS().length === 0) {
         <ng-container [ngTemplateOutlet]="emptyTemplate" />
       }
     </div>
@@ -72,11 +72,11 @@
 
     <div
       cdkDropList
-      [cdkDropListData]="getDone()"
+      [cdkDropListData]="GET_DONE()"
       class="-ist tw-items-center"
       (cdkDropListDropped)="drop($event, 'done')"
     >
-      @for (item of getDone();track item) {
+      @for (item of GET_DONE();track item) {
         <div class="cdkDropBoxItem" cdkDrag [cdkDragData]="item">
           <div class="box" (click)="viewTaskUI(item)">
             <span class="hover:!tw-text-blue-600 hover:!tw-underline !tw-cursor-pointer">
@@ -95,7 +95,7 @@
         </div>
       }
 
-      @if (getDone().length === 0) {
+      @if (GET_DONE().length === 0) {
        <ng-container [ngTemplateOutlet]="emptyTemplate" />
       }
     </div>

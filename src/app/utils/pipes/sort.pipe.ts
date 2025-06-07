@@ -11,7 +11,6 @@ export class SortPipe implements PipeTransform {
   private readonly _LIST_SERVICE = inject(ListService);
 
   transform(list: TTask[], selection: {sort: TSORT, sortBy: string}): any {
-    console.log('selection pipe::', selection)
     return this._LIST_SERVICE.sort(list, { status: selection.sort, field: selection.sortBy} as any);
   }
 }

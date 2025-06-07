@@ -30,11 +30,10 @@ import { TaskService } from '../../task.service';
 import { STORE_TOKEN } from '../../../../data-access/state/state.store';
 import { SortPipe } from '../../../../utils/pipes/sort.pipe';
 import { FilterPipe } from '../../../../utils/pipes/filter.pipe';
-import { TRACK_BY } from '../../../../utils/services/template.service';
 
 
 @Component({
-  selector: 'app-calendar',
+  selector: 'feature-calendar',
   templateUrl: './calendar.component.html',
   styleUrls: ['./calendar.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -64,13 +63,13 @@ export class CalendarComponent {
   protected readonly _TASK_SERVICE = inject(TaskService);
 
   // - reactivity
-  private readonly tasks: Signal<TTask[]> = this._STORE().task.list;
-  getTasks: Signal<TTask[]> = this._STORE().task.getList;
+  private readonly TASKS: Signal<TTask[]> = this._STORE().task.list;
+  private getTasks: Signal<TTask[]> = this._STORE().task.getList;
 
   getEvents: Signal<CalendarEvent[]> = computed(() => {
     const list = this.getTasks();
-    const filter = this.getFilterValue();
-    const sort = this.getSortValue();
+    const filter = this.GET_FILTER_VALUE();
+    const sort = this.GET_SORT_VALUE();
 
     let filtered = this.FILTER_PIPE.transform(list, filter);
 
@@ -82,23 +81,21 @@ export class CalendarComponent {
     }))
   });
 
-  sortValue: WritableSignal<{sort: TSORT, sortBy: string}> = signal({
+  private sortValue: WritableSignal<{sort: TSORT, sortBy: string}> = signal({
     sort: 'desc',
     sortBy: 'createdAt'
   });
-  getSortValue: Signal<{sort: TSORT, sortBy: string}> = computed(() => this.sortValue());
+  readonly GET_SORT_VALUE: Signal<{sort: TSORT, sortBy: string}> = computed(() => this.sortValue());
 
-  filterValue: WritableSignal<string> = signal('');
-  getFilterValue: Signal<string> = computed(() => this.filterValue());
+  private filterValue: WritableSignal<string> = signal('');
+  readonly GET_FILTER_VALUE: Signal<string> = computed(() => this.filterValue());
 
   // - no reactivity
   readonly SOURCE_PAGE: string = 'calendar';
-  readonly TRACK_BY = TRACK_BY;
-  readonly EVENT_LIMIT = 2;
+  private readonly EVENT_LIMIT = 2;
   eventLimit = this.EVENT_LIMIT;
 
-  view: CalendarView = CalendarView.Month;
-  CalendarView = CalendarView;
+  readonly VIEW_CALENDAR: CalendarView = CalendarView.Month;
   viewDate: Date = new Date();
 
 
@@ -113,7 +110,7 @@ export class CalendarComponent {
       sortBy: 'createdAt'
     });
 
-    this.getTasks = computed(() => this._LIST_SERVICE.filter(this.tasks(), 'none'));
+    this.getTasks = computed(() => this._LIST_SERVICE.filter(this.TASKS(), 'none'));
   }
 
   // - util

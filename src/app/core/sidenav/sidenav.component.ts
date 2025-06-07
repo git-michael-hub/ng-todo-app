@@ -38,14 +38,16 @@ import { TaskService } from '../../features/task/task.service';
 })
 export class SidenavComponent implements OnInit {
   // - di
-  readonly _CD = inject(ChangeDetectorRef);
-  readonly _MEDIA = inject(MediaMatcher);
+  private readonly _CD = inject(ChangeDetectorRef);
+  private readonly _MEDIA = inject(MediaMatcher);
   readonly _TASK_SERVICE = inject(TaskService);
   readonly NAVIGATIONS: TMenu[] = inject(SidenavService)?.navigations;
 
   mobileQuery: MediaQueryList = this._MEDIA.matchMedia('(max-width: 600px)');
   private _mobileQueryListener = () => this._CD.detectChanges();
 
+  // - no reactivity
+  pageSelected: string = 'home';
 
   ngOnInit(): void {
     // Check compatibility and add listener

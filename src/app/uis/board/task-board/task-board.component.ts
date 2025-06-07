@@ -53,7 +53,7 @@ export class TaskBoardComponent {
   private readonly SORT_PIPE = inject(SortPipe);
 
   // variable - reactivity
-  readonly getTodos: Signal<TTask[]> = computed(() => {
+  readonly GET_TODOS: Signal<TTask[]> = computed(() => {
     const list = this.TASKS()().filter(item => item?.status === 'todo');
     const filter = this.FILTER_VALUE()();
     const search = this.SEARCH_TERM()();
@@ -66,7 +66,7 @@ export class TaskBoardComponent {
 
     return filtered;
   });
-  readonly getDone: Signal<TTask[]> = computed(() => {
+  readonly GET_DONE: Signal<TTask[]> = computed(() => {
     const list = this.TASKS()().filter(item => item?.status === 'done');
     const filter = this.FILTER_VALUE()();
     const search = this.SEARCH_TERM()();
@@ -79,7 +79,7 @@ export class TaskBoardComponent {
 
     return filtered;
   });
-  readonly getInProgress: Signal<TTask[]> = computed(() => {
+  readonly GET_IN_PROGRESS: Signal<TTask[]> = computed(() => {
     const list = this.TASKS()().filter(item => item?.status === 'inprogress');
     const filter = this.FILTER_VALUE()();
     const search = this.SEARCH_TERM()();

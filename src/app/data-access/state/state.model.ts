@@ -30,7 +30,8 @@ export interface IState {
       allListComputed: Signal<number>,
       completeListComputed: Signal<number>,
       todoListComputed: Signal<number>,
-      highPriorityListComputed: Signal<number>
+      highPriorityListComputed: Signal<number>,
+      inProgressListComputed: Signal<number>
     },
 
     toString: () => any
