@@ -1,3 +1,82 @@
 <section class="page">
+  <div #summary class="tw-grid tw-grid-cols-5 tw-gap-x-2">
+    <mat-card appearance="outlined" class="tw-w-full">
+      <mat-card-header>
+        <mat-card-title>{{ TOTAL_HIGH_PRIORITY() }}</mat-card-title>
+        <mat-card-subtitle>High Priority</mat-card-subtitle>
+      </mat-card-header>
+    </mat-card>
+    <mat-card appearance="outlined" class="tw-w-full">
+      <mat-card-header>
+        <mat-card-title>{{ TOTAL_TODO() }}</mat-card-title>
+        <mat-card-subtitle>Todo List</mat-card-subtitle>
+      </mat-card-header>
+    </mat-card>
+    <mat-card appearance="outlined" class="tw-w-full">
+      <mat-card-header>
+        <mat-card-title>{{ TOTAL_IN_PROGRESS() }}</mat-card-title>
+        <mat-card-subtitle>In Progress</mat-card-subtitle>
+      </mat-card-header>
+    </mat-card>
+    <mat-card appearance="outlined" class="tw-w-full">
+      <mat-card-header>
+        <mat-card-title>{{ TOTAL_COMPLETED() }}</mat-card-title>
+        <mat-card-subtitle>Completed</mat-card-subtitle>
+      </mat-card-header>
+    </mat-card>
+    <mat-card appearance="outlined" class="tw-w-full">
+      <mat-card-header>
+        <mat-card-title>{{ TOTAL_ALL_LIST() }}</mat-card-title>
+        <mat-card-subtitle>All List</mat-card-subtitle>
+      </mat-card-header>
+    </mat-card>
+  </div>
 
+  <div #overAll class="tw-mt-[2rem]">
+    <mat-accordion>
+      <mat-expansion-panel expanded="true">
+        <mat-expansion-panel-header>
+          <mat-panel-title>Real-time task status of 2025</mat-panel-title>
+        </mat-expansion-panel-header>
+        <div>
+          <mat-tab-group animationDuration="300">
+            <mat-tab label="Tasks by this Week">
+              <ag-charts [options]="chartOptionsByWeekDay" class="tw-flex tw-w-full"/>
+            </mat-tab>
+            <mat-tab label="Tasks by Month">
+              <ag-charts [options]="chartOptionsByMonth" class="tw-flex tw-w-full"/>
+            </mat-tab>
+          </mat-tab-group>
+        </div>
+      </mat-expansion-panel>
+    </mat-accordion>
+
+    <div class="tw-flex tw-my-[2rem]">
+      <div class="tw-flex tw-w-[49%] tw-mr-[20px]">
+        <mat-accordion class="tw-w-full">
+          <mat-expansion-panel expanded="true">
+            <mat-expansion-panel-header>
+              <mat-panel-title>Summary by Donut Graph</mat-panel-title>
+            </mat-expansion-panel-header>
+            <div>
+              <ag-charts [options]="donutGraphOptions" class="tw-flex tw-w-full"/>
+            </div>
+          </mat-expansion-panel>
+        </mat-accordion>
+      </div>
+
+      <div class="tw-flex tw-w-[49%]">
+        <mat-accordion class="tw-w-full">
+          <mat-expansion-panel expanded="true">
+            <mat-expansion-panel-header>
+              <mat-panel-title>Summary by Bar Graph</mat-panel-title>
+            </mat-expansion-panel-header>
+            <div>
+              <ag-charts [options]="barGraphOptions" class="tw-flex tw-w-full"/>
+            </div>
+          </mat-expansion-panel>
+        </mat-accordion>
+      </div>
+    </div>
+  </div>
 </section>
