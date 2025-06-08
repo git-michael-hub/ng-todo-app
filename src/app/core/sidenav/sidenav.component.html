@@ -31,6 +31,7 @@
                     mat-list-item
                     routerLink="{{nav.page}}"
                     routerLinkActive="active"
+                    (click)="pageSelected=nav.page.split('/')[1]"
                   >
                     {{ nav.name | titlecase }}
                   </a>

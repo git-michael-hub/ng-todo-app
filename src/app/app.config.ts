@@ -32,7 +32,7 @@ export const appConfig: ApplicationConfig = {
     ...INTERCEPTORS,
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
-    provideHttpClient(withFetch()), provideAnimationsAsync(),
+    // provideHttpClient(withFetch()), provideAnimationsAsync(),
     { provide: STORE_TOKEN, useValue: STORE },
     provideAnimations(),
     importProvidersFrom(
