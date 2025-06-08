@@ -1,6 +1,6 @@
 // Angular
 import { ApplicationConfig, importProvidersFrom, provideZoneChangeDetection } from '@angular/core';
-import { provideRouter } from '@angular/router';
+import { PreloadAllModules, provideRouter, withPreloading } from '@angular/router';
 import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideAnimations } from '@angular/platform-browser/animations';
@@ -31,8 +31,11 @@ export const appConfig: ApplicationConfig = {
   providers: [
     ...INTERCEPTORS,
     provideZoneChangeDetection({ eventCoalescing: true }),
-    provideRouter(routes),
-    // provideHttpClient(withFetch()), provideAnimationsAsync(),
+    provideRouter(
+      routes,
+      withPreloading(PreloadAllModules)
+    ),
+    provideHttpClient(withFetch()), provideAnimationsAsync(),
     { provide: STORE_TOKEN, useValue: STORE },
     provideAnimations(),
     importProvidersFrom(
