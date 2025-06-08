@@ -1,93 +1,102 @@
 <section>
   <div class="list-container" data-test="list-container">
     @if (TASKS() && TASKS()().length !== 0) {
-      <cdk-virtual-scroll-viewport itemSize="0" autosize class="viewport">
-        <div
-          *cdkVirtualFor="let task of TASKS()()
-            | filter: FILTER_VALUE()()
-            | search: SEARCH_TERM()()
-            | sort: SORT_VALUE()();
-            trackBy: TRACK_BY; let i = index"
-          class="list-item tw-pb-[12px]"
-          data-test="list-item"
-        >
+      @if (
+        (TASKS()()
+          | filter: FILTER_VALUE()()
+          | search: SEARCH_TERM()()
+          | sort: SORT_VALUE()()
+        ).length !== 0
+      ) {
+        <cdk-virtual-scroll-viewport itemSize="0" autosize class="viewport">
           <div
-            class="tw-bg-[#ffqf] tw-rounded-lg tw-px-[0] tw-py-[4px] tw-h-[80px]"
-            data-test="item-wrap"
+            *cdkVirtualFor="let task of TASKS()()
+              | filter: FILTER_VALUE()()
+              | search: SEARCH_TERM()()
+              | sort: SORT_VALUE()();
+              trackBy: TRACK_BY; let i = index"
+            class="list-item tw-pb-[12px]"
+            data-test="list-item"
           >
-            <div class="item-head tw-text-lg tw-flex tw-justify-between tw-h-[36px]">
-              <div>
-                <mat-checkbox
-                  [checked]="task.status === 'done' ? true : false"
-                  (click)="markAsComplete(task)"
-                  class="example-margin"
-                  aria-label="Mark {{ task.title }} as {{
-                    task.status === 'done'
-                      ? 'Completed Task'
-                      : 'Not completed yet'
-                  }}"
-                  data-test="list-checkbox-complete"
-                ></mat-checkbox>
+            <div
+              class="tw-bg-[#ffqf] tw-rounded-lg tw-px-[0] tw-py-[4px] tw-h-[80px]"
+              data-test="item-wrap"
+            >
+              <div class="item-head tw-text-lg tw-flex tw-justify-between tw-h-[36px]">
+                <div>
+                  <mat-checkbox
+                    [checked]="task.status === 'done' ? true : false"
+                    (click)="markAsComplete(task)"
+                    class="example-margin"
+                    aria-label="Mark {{ task.title }} as {{
+                      task.status === 'done'
+                        ? 'Completed Task'
+                        : 'Not completed yet'
+                    }}"
+                    data-test="list-checkbox-complete"
+                  ></mat-checkbox>
 
-                <span class="tw-text-[16px]">
-                  {{task.title | titlecase | slice:0:100 }}
-                </span>
-              </div>
+                  <span class="tw-text-[16px]">
+                    {{task.title | titlecase | slice:0:100 }}
+                  </span>
+                </div>
 
-              <div class="tw-flex tw-items-center tw-pr-[4px]">
-                @if (task.status === 'done') {
-                  <span class="tw-px-[12px] tw-mr-[4px] tw-text-sm tw-text-[#1aa318]">DONE</span>
-                }
+                <div class="tw-flex tw-items-center tw-pr-[4px]">
+                  @if (task.status === 'done') {
+                    <span class="tw-px-[2px] tw-text-sm tw-text-[#1aa318]">DONE</span>
+                  }
 
-                @if (task.status === 'inprogress') {
-                  <span class="tw-px-[12px] tw-mr-[4px] tw-text-sm">In Progress</span>
-                }
+                  @if (task.status === 'inprogress') {
+                    <span class="tw-px-[2px] tw-text-sm">In Progress</span>
+                  }
 
-                @if (task.priority !== 'low' && (task.status !== 'done')) {
                   <span class="tw-px-[12px] tw-mr-[4px]">{{task.priority | priority}}</span>
-                }
 
-                <span class="tw-text-sm tw-rounded-full tw-px-[12px] tw-py-[4px] tw-bg-[#faf9fd]">
-                  {{task.dueDate | date: 'mediumDate' }}
-                </span>
+                  <span class="tw-text-sm tw-rounded-full tw-px-[12px] tw-py-[4px] tw-bg-[#faf9fd]">
+                    {{task.dueDate | date: 'mediumDate' }}
+                  </span>
 
-              </div>
-            </div>
-
-            <div class="item-content tw-flex tw-justify-between tw-h-[20px]">
-              <div class="task-description tw-text-sm tw-pl-[45px] tw-text-[#4d4d4d] tw-w-[80%]">
-                <div class="">
-                <span class="" [innerHTML]="task.description | slice:0:200"></span>
-                <span>{{ task.description.length > 200 ? '...' : '' }}</span>
                 </div>
               </div>
 
-              <div class="item-content-buttons tw-hidden">
-                @if (task.status !== 'done') {
+              <div class="item-content tw-flex tw-justify-between tw-h-[20px]">
+                <div class="task-description tw-text-sm tw-pl-[45px] tw-text-[#4d4d4d] tw-w-[80%]">
+                  <div class="">
+                  <span class="" [innerHTML]="task.description | slice:0:200"></span>
+                  <span>{{ task.description.length > 200 ? '...' : '' }}</span>
+                  </div>
+                </div>
+
+                <div class="item-content-buttons tw-hidden">
+                  @if (task.status !== 'done') {
+                    <button
+                      mat-button
+                      (click)="deleteTask(task, task.id || '')"
+                      class="!tw-text-[#cb2929]"
+                      data-test="list-btn-delete"
+                      [attr.aria-label]="'Delete ' + task.title"
+                    >
+                      Delete
+                    </button>
+                  }
+
                   <button
                     mat-button
-                    (click)="deleteTask(task, task.id || '')"
-                    class="!tw-text-[#cb2929]"
-                    data-test="list-btn-delete"
-                    [attr.aria-label]="'Delete ' + task.title"
+                    (click)="viewTaskUI(task)"
+                    data-test="list-btn-view"
+                    [attr.aria-label]="'View ' + task.title"
                   >
-                    Delete
+                    View
                   </button>
-                }
-
-                <button
-                  mat-button
-                  (click)="viewTaskUI(task)"
-                  data-test="list-btn-view"
-                  [attr.aria-label]="'View ' + task.title"
-                >
-                  View
-                </button>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </cdk-virtual-scroll-viewport>
+        </cdk-virtual-scroll-viewport>
+      }
+      @else {
+       <div>No results found from search.</div>
+      }
     }
     @else {
       <div>No Tasks.</div>

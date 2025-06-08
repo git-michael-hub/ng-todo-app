@@ -5,11 +5,11 @@
     <div
       cdkDropList
       [cdkDropListData]="GET_TODOS()"
-      class="list tw-items-center"
+      class="list tw-items-center !tw-overflow-y-auto hide-scrollbar !tw-h-[84vh]"
       (cdkDropListDropped)="drop($event, 'todo')"
     >
       @for (item of GET_TODOS(); track item) {
-        <div class="cdkDropBoxItem" cdkDrag [cdkDragData]="item">
+        <div class="cdkDropBoxItem tw-bg-white" cdkDrag [cdkDragData]="item">
           <div class="box" (click)="viewTaskUI(item)">
             <span class="hover:!tw-text-blue-600 hover:!tw-underline !tw-cursor-pointer">
               {{item?.title | titlecase}}
@@ -39,11 +39,11 @@
     <div
       cdkDropList
       [cdkDropListData]="GET_IN_PROGRESS()"
-      class="list tw-items-center"
+      class="list tw-items-center !tw-overflow-y-auto hide-scrollbar !tw-h-[84vh]"
       (cdkDropListDropped)="drop($event, 'inprogress')"
     >
       @for (item of GET_IN_PROGRESS(); track item) {
-        <div class="cdkDropBoxItem" cdkDrag [cdkDragData]="item">
+        <div class="cdkDropBoxItem tw-bg-white" cdkDrag [cdkDragData]="item">
           <div class="box" (click)="viewTaskUI(item)">
             <span class="hover:!tw-text-blue-600 hover:!tw-underline !tw-cursor-pointer">
               {{item?.title | titlecase}}
@@ -73,11 +73,11 @@
     <div
       cdkDropList
       [cdkDropListData]="GET_DONE()"
-      class="-ist tw-items-center"
+      class="list tw-items-center !tw-overflow-y-auto hide-scrollbar !tw-h-[84vh]"
       (cdkDropListDropped)="drop($event, 'done')"
     >
       @for (item of GET_DONE();track item) {
-        <div class="cdkDropBoxItem" cdkDrag [cdkDragData]="item">
+        <div class="cdkDropBoxItem tw-bg-white" cdkDrag [cdkDragData]="item">
           <div class="box" (click)="viewTaskUI(item)">
             <span class="hover:!tw-text-blue-600 hover:!tw-underline !tw-cursor-pointer">
               {{item?.title | titlecase}}
@@ -104,14 +104,12 @@
 
 
 <ng-template #priorityTemplate let-item let-priority="priority" let-status="status">
-  @if (item && (priority !== 'low') && (status !== 'done')) {
-    <span class="tw-px-[12px] tw-mr-[4px]">{{item.priority | priority}}</span>
-  }
+  <span class="tw-px-[12px] tw-mr-[4px]">{{item.priority | priority}}</span>
 </ng-template>
 
 
 <ng-template #emptyTemplate>
-  <div class="tw-text-sm tw-mx-[10px] tw-mt-[20px]">
+  <div class="tw-text-sm tw-mt-[20px]">
     Empty.
   </div>
 </ng-template>
