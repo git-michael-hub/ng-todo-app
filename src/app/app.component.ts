@@ -1,6 +1,5 @@
 // Angular
-import { isPlatformBrowser } from '@angular/common';
-import { Component, inject, PLATFORM_ID } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 
 // Material
@@ -24,17 +23,14 @@ export class AppComponent {
   title = "Workie Work";
 
   // - di
-  private readonly _PLATFORM_ID = inject(PLATFORM_ID);
   private readonly _TASK_SERVICE = inject(TaskService);
   private readonly _STORE = inject(STORE_TOKEN);
 
 
   ngOnInit(): void {
-    if (isPlatformBrowser(this._PLATFORM_ID)) {
-      (window as any).NG_APP = {
-        STORE: this._STORE,
-        TASK_SERVICE: this._TASK_SERVICE
-      }
+    (window as any).NG_APP = {
+      STORE: this._STORE,
+      TASK_SERVICE: this._TASK_SERVICE
     }
   }
 }
