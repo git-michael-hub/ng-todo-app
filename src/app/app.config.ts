@@ -32,9 +32,6 @@ export const appConfig: ApplicationConfig = {
     ...INTERCEPTORS,
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
-    // hydration is not reflecting some code changes, only use hydration on prod
-    // provideClientHydration(),
-    // provideClientHydration(withEventReplay()),
     provideHttpClient(withFetch()), provideAnimationsAsync(),
     { provide: STORE_TOKEN, useValue: STORE },
     provideAnimations(),
