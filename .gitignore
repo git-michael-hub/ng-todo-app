@@ -47,5 +47,4 @@ cypress/
 *-debug.log
 .runtimeconfig.json
 
-/src/app/environment/environment.example.ts
 /READ_ME/

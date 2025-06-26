@@ -57,7 +57,7 @@
               "fileReplacements": [
                 {
                   "replace": "src/app/environment/environment.ts",
-                  "with": "src/app/environment/environment.prod.ts"
+                  "with": "src/app/environment/environment.example.ts"
                 }
               ]
             },
