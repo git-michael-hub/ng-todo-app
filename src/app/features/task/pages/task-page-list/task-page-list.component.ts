@@ -95,12 +95,24 @@ export class TaskBaseListComponent implements OnInit {
         this.getTasks = computed(() => this._LIST_SERVICE.filter(this.tasks(), 'none'));
         break;
       case 'today':
+        this.sortValue.set({
+          sort: 'asc',
+          sortBy: 'createdAt'
+        });
         this.getTasks = computed(() => this._LIST_SERVICE.filter(this.tasks(), 'today'));
         break;
       case 'upcoming':
+        this.sortValue.set({
+          sort: 'asc',
+          sortBy: 'dueDate'
+        });
         this.getTasks = computed(() => this._LIST_SERVICE.filter(this.tasks(), 'upcoming'));
         break;
       case 'priority':
+        this.sortValue.set({
+          sort: 'asc',
+          sortBy: 'dueDate'
+        });
         this.getTasks = computed(() => this._LIST_SERVICE.filter(this.tasks(), 'high-priority'));
         break;
       case 'list':
@@ -111,6 +123,10 @@ export class TaskBaseListComponent implements OnInit {
         this.getTasks = computed(() => this._LIST_SERVICE.filter(this.tasks(), 'none'));
         break;
       case 'completed':
+        this.sortValue.set({
+          sort: 'asc',
+          sortBy: 'dueDate'
+        });
         this.getTasks = computed(() => this._LIST_SERVICE.filter(this.tasks(), 'done'));
         break;
     }

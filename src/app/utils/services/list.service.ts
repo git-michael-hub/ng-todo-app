@@ -100,7 +100,9 @@ export class ListService {
       case 'upcoming': {
 
         // Convert the dates to Date objects
-        const withDateObject = list.map(task => ({
+        const withDateObject = list
+        .filter(task => this._DATE_SERVICE.isUpcoming(task.dueDate))
+        .map(task => ({
           ...task,
           dueDate: new Date(task.dueDate)
         }));
@@ -118,7 +120,7 @@ export class ListService {
         return this.sort(
           upcomingDates,
           {
-            status: sort,
+            status: 'asc',
             field: 'dueDate'
           }
         );

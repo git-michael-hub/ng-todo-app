@@ -37,4 +37,5 @@ export interface IState {
     toString: () => any
   },
   error?: TError // a global error data
+  isServerDown: WritableSignal<boolean>
 }

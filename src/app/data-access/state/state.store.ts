@@ -48,4 +48,5 @@ export const STORE: WritableSignal<IState> = signal({
       deleted: STORE().task.deleted()
     }),
   },
+  isServerDown: signal(false),
 });

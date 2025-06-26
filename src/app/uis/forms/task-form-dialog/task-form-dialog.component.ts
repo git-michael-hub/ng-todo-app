@@ -1,6 +1,8 @@
 // Angular
 import {
-  Component, OnInit, ChangeDetectionStrategy, inject, ChangeDetectorRef
+  Component, OnInit, ChangeDetectionStrategy, inject, ChangeDetectorRef,
+  Signal,
+  computed
 } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { DatePipe } from '@angular/common';
@@ -21,6 +23,7 @@ import {default as _rollupMoment} from 'moment';
 // Local
 import { TTask } from '../../../utils/models/task.model';
 import { TaskService } from '../../../features/task/task.service';
+import { STORE_TOKEN } from '../../../data-access/state/state.store';
 
 
 const MOMENT = _rollupMoment || _moment;
@@ -59,10 +62,15 @@ const MY_FORMATS = {
 })
 export class TaskFormDialogComponent implements OnInit {
   // - di
+  private readonly _STORE = inject(STORE_TOKEN);
   private readonly _TASK_SERVICE = inject(TaskService);
   private readonly _FORM_BUILDER = inject(FormBuilder);
   private readonly _CD = inject(ChangeDetectorRef);
   readonly _DATA: TTask & {date: _moment.Moment} = inject(MAT_DIALOG_DATA);
+
+  // - reactivity
+  private readonly IS_SERVER_DOWN: Signal<boolean> = this._STORE().isServerDown;
+  private readonly $_IS_SERVER_DOWN: Signal<boolean> = computed(() => this.IS_SERVER_DOWN());
 
   // editor config
   editorModules = {
@@ -124,8 +132,19 @@ export class TaskFormDialogComponent implements OnInit {
       this.status = 'view';
       this._CD.markForCheck();
     };
+    let valueForm: TTask = this.taskForm.value as unknown as TTask;
 
-    this._TASK_SERVICE.updateTask(this.taskForm.value as unknown as TTask, this._DATA?.id, CALLBACK);
+    if (this.$_IS_SERVER_DOWN()) {
+      valueForm = {
+        ...valueForm,
+        id: this._DATA?.id,
+        status: this._DATA?.status,
+        createdAt: this._DATA?.createdAt,
+        updatedAt: this._DATA?.updatedAt
+      } as unknown as TTask
+    }
+
+    this._TASK_SERVICE.updateTask(valueForm as unknown as TTask, this._DATA?.id, CALLBACK);
   }
 
   deleteTask(task: TTask, id?: string): void {

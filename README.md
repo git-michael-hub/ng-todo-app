@@ -68,3 +68,9 @@ npm run start
 
 cypress@14.1.0
 npx cypress@14.1.0 open 
+
+
+firebase login
+firebase init
+
+npx @angular/cli@19 add @angular/fire

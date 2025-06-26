@@ -16,6 +16,7 @@ import { TMenu } from './sidenav.model';
 import { SidenavService } from './sidenav.service';
 import { SummaryComponent } from '../../uis/widgets/summary/summary.component';
 import { TaskService } from '../../features/task/task.service';
+import { AuthFirebaseService } from '../../utils/services/auth-firebase.service';
 
 
 @Component({
@@ -40,6 +41,8 @@ export class SidenavComponent implements OnInit {
   // - di
   private readonly _CD = inject(ChangeDetectorRef);
   private readonly _MEDIA = inject(MediaMatcher);
+
+  private readonly _AUTH_FIREBASE_SERVICE= inject(AuthFirebaseService);
   readonly _TASK_SERVICE = inject(TaskService);
   readonly NAVIGATIONS: TMenu[] = inject(SidenavService)?.navigations;
 
@@ -67,4 +70,11 @@ export class SidenavComponent implements OnInit {
     }
   }
 
+  login(): void {
+    this._AUTH_FIREBASE_SERVICE.login();
+  }
+
+  register(): void {
+    this._AUTH_FIREBASE_SERVICE.register();
+  }
 }
