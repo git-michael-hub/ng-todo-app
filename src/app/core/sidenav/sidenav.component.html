@@ -47,7 +47,9 @@
                     routerLinkActive="active"
                     (click)="pageSelected=nav.page.split('/')[1]"
                   >
-                    {{ nav.name | titlecase }}
+                    <span class="tw-text-sm">
+                      {{ nav.name | titlecase }}
+                    </span>
                   </a>
                 </div>
               }
@@ -56,7 +58,7 @@
           <div>
             <button
               mat-raised-button
-              class="tw-w-[7rem] tw-ml-[4px] tw-mb-[4px] !tw-px-0"
+              class="!tw-w-[100px] !tw-h-[30px] !tw-ml-[4px] !tw-mb-[12px] !tw-px-0 !tw-text-sm"
               (click)="_TASK_SERVICE.addTaskUI()"
               data-test="add-task-button"
             >
@@ -72,7 +74,9 @@
                     routerLink="{{nav.page}}"
                     (click)="pageSelected=nav.page.split('/')[1]"
                   >
-                    {{ nav.name | titlecase }}
+                    <span class="tw-text-sm">
+                      {{ nav.name | titlecase }}
+                    </span>
                   </a>
                 </div>
               }

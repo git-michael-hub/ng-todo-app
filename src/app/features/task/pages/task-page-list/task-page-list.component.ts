@@ -61,11 +61,12 @@ export class TaskBaseListComponent implements OnInit {
   searchTerm: WritableSignal<string> = signal('');
   readonly GET_SEARCH_TERM: Signal<string> = computed(() => this.searchTerm());
 
-  sortValue: WritableSignal<{sort: TSORT, sortBy: string}> = signal({
+  sortValue: WritableSignal<{sort: TSORT, sortBy: string, name: string}> = signal({
     sort: 'desc',
-    sortBy: 'createdAt'
+    sortBy: 'createdAt',
+    name: 'created'
   });
-  readonly GET_SORT_VALUE: Signal<{sort: TSORT, sortBy: string}> = computed(() => this.sortValue());
+  readonly GET_SORT_VALUE: Signal<{sort: TSORT, sortBy: string, name: string}> = computed(() => this.sortValue());
 
   filterValue: WritableSignal<string> = signal('');
   readonly GET_FILTER_VALUE: Signal<string> = computed(() => this.filterValue());
@@ -87,7 +88,8 @@ export class TaskBaseListComponent implements OnInit {
     this.filterValue.set('none');
     this.sortValue.set({
       sort: 'desc',
-      sortBy: 'createdAt'
+      sortBy: 'createdAt',
+      name: 'created'
     });
 
     switch(this.SOURCE_PAGE) {
@@ -97,35 +99,40 @@ export class TaskBaseListComponent implements OnInit {
       case 'today':
         this.sortValue.set({
           sort: 'asc',
-          sortBy: 'createdAt'
+          sortBy: 'createdAt',
+          name: 'created'
         });
         this.getTasks = computed(() => this._LIST_SERVICE.filter(this.tasks(), 'today'));
         break;
       case 'upcoming':
         this.sortValue.set({
           sort: 'asc',
-          sortBy: 'dueDate'
+          sortBy: 'dueDate',
+          name: 'dueDate'
         });
         this.getTasks = computed(() => this._LIST_SERVICE.filter(this.tasks(), 'upcoming'));
         break;
       case 'priority':
         this.sortValue.set({
           sort: 'asc',
-          sortBy: 'dueDate'
+          sortBy: 'dueDate',
+          name: 'dueDate'
         });
         this.getTasks = computed(() => this._LIST_SERVICE.filter(this.tasks(), 'high-priority'));
         break;
       case 'list':
         this.sortValue.set({
           sort: 'asc',
-          sortBy: 'createdAt'
+          sortBy: 'createdAt',
+          name: 'created'
         });
         this.getTasks = computed(() => this._LIST_SERVICE.filter(this.tasks(), 'none'));
         break;
       case 'completed':
         this.sortValue.set({
           sort: 'asc',
-          sortBy: 'dueDate'
+          sortBy: 'dueDate',
+          name: 'dueDate'
         });
         this.getTasks = computed(() => this._LIST_SERVICE.filter(this.tasks(), 'done'));
         break;
@@ -146,12 +153,13 @@ export class TaskBaseListComponent implements OnInit {
   filter(selection: string): void {
     this.sortValue.set({
       sort: 'desc',
-      sortBy: 'createdAt'
+      sortBy: 'createdAt',
+      name: 'created'
     });
     this.filterValue.set(selection);
   }
 
-  sort(selection: {sort: TSORT, sortBy: string}): void {
+  sort(selection: {sort: TSORT, sortBy: string, name: string}): void {
     this.sortValue.set(selection);
   }
 }

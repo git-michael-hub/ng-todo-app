@@ -18,7 +18,7 @@ import * as _ from 'lodash';
   template: `
     @let NONE = 'none';
     @let LOW = 'low-priority';
-    @let MEDIUM = 'medium-priority';
+    @let MEDIUM = 'med-priority';
     @let HIGH = 'high-priority';
     @let TODO = 'todo';
     @let IN_PROGRESS = 'in-progress';
@@ -28,10 +28,10 @@ import * as _ from 'lodash';
       #menuTrigger="matMenuTrigger"
       mat-button
       [matMenuTriggerFor]="filterMenu"
-      class="tw-w-[7rem] tw-mx-[4px] tw-mb-[4px] !tw-px-2 tw-h-[46px]"
+      class="!tw-w-[100px] !tw-h-[30px] tw-mx-[2px] tw-mb-[4px] !tw-px-1"
       [ngClass]="{
         '!tw-w-[8rem]': value() && value()() === 'complete',
-        '!tw-w-[10rem]': value() && value()().includes('priority') || value()().includes('progress')
+        '!tw-w-[9rem]': value() && value()().includes('priority') || value()().includes('progress')
       }"
     >
       Filter:

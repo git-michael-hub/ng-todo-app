@@ -10,11 +10,46 @@ import { STORE_TOKEN } from '../../../data-access/state/state.store';
   standalone: true,
   template: `
     <div class="tw-pl-[18px] fadeShow">
-      <span class="tw-pr-[3rem]">{{ TOTAL_HIGH_PRIORITY() }} High Priority</span>
-      <span class="tw-pr-[3rem]">{{ TOTAL_TODO() }} Todo List</span>
-      <span class="tw-pr-[3rem]">{{ TOTAL_IN_PROGRESS() }} In Progress</span>
-      <span class="tw-pr-[3rem]">{{ TOTAL_COMPLETED() }} Completed</span>
-      <span class="tw-pr-[3rem]">{{ TOTAL_ALL_LIST() }} All List</span>
+      <span class="tw-pr-[1rem]">
+        <span class="tw-text-xl">
+          {{ TOTAL_HIGH_PRIORITY() }}
+        </span>
+        <span class="tw-text-sm">
+          High Priority
+        </span>
+      </span>
+      <span class="tw-pr-[1rem]">
+        <span class="tw-text-xl">
+          {{ TOTAL_TODO() }}
+        </span>
+        <span class="tw-text-sm">
+          Todo List
+        </span>
+      </span>
+      <span class="tw-pr-[1rem]">
+        <span class="tw-text-xl">
+          {{ TOTAL_IN_PROGRESS() }}
+        </span>
+        <span class="tw-text-sm">
+          In Progress
+        </span>
+      </span>
+      <span class="tw-pr-[1rem]">
+        <span class="tw-text-xl">
+          {{ TOTAL_COMPLETED() }}
+        </span>
+        <span class="tw-text-sm">
+          Completed
+        </span>
+      </span>
+      <span class="tw-pr-[1rem]">
+        <span class="tw-text-xl">
+          {{ TOTAL_ALL_LIST() }}
+        </span>
+        <span class="tw-text-sm">
+          All List
+        </span>
+      </span>
     </div>
   `
 })

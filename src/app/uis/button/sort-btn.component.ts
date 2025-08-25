@@ -20,13 +20,13 @@ import { TSORT } from '../../utils/models/task.model';
       #menuTrigger="matMenuTrigger"
       mat-button
       [matMenuTriggerFor]="sortMenu"
-      class="tw-w-[10rem] tw-mx-[4px] tw-mb-[4px] !tw-px-2 tw-h-[46px]"
+      class="!tw-w-[8.5rem] !tw-h-[30px] tw-mx-[2px] tw-mb-[4px] !tw-px-1"
     >
       Sort:
       <span class="!tw-text-black">
        {{
           value()
-            ? (value()().sort | titlecase) + '-' + (value()().sortBy | titlecase)
+            ? (value()().sort | titlecase) + '-' + (value()().name | titlecase)
             : ''
         }}
       </span>
@@ -39,72 +39,72 @@ import { TSORT } from '../../utils/models/task.model';
 
 
     <mat-menu #asc="matMenu">
-      <button mat-menu-item (click)="sort.emit({sort: 'asc', sortBy: 'title'})">
+      <button mat-menu-item (click)="sort.emit({sort: 'asc', sortBy: 'title', name: 'title' })">
         Title
       </button>
 
       @if (source() !== 'today') {
-        <button mat-menu-item (click)="sort.emit({sort: 'asc', sortBy: 'dueDate'})">
+        <button mat-menu-item (click)="sort.emit({sort: 'asc', sortBy: 'dueDate', name: 'dueDate' })">
           Due Date
         </button>
       }
 
       @if (!['completed', 'priority'].includes(source())) {
-        <button mat-menu-item (click)="sort.emit({sort: 'asc', sortBy: 'priority'})">
+        <button mat-menu-item (click)="sort.emit({sort: 'asc', sortBy: 'priority', name: 'priority'})">
           Priority
         </button>
       }
 
       @if (view() === 'list' && source() !== 'completed') {
-        <button mat-menu-item (click)="sort.emit({sort: 'asc', sortBy: 'status'})">
+        <button mat-menu-item (click)="sort.emit({sort: 'asc', sortBy: 'status', name: 'status'})">
           Status
         </button>
       }
 
-      <button mat-menu-item (click)="sort.emit({sort: 'asc', sortBy: 'createdAt'})">
+      <button mat-menu-item (click)="sort.emit({sort: 'asc', sortBy: 'createdAt', name: 'created'})">
         Created At
       </button>
-      <button mat-menu-item (click)="sort.emit({sort: 'asc', sortBy: 'updatedAt'})">
-        UpdatedAt At
+      <button mat-menu-item (click)="sort.emit({sort: 'asc', sortBy: 'updatedAt', name: 'updated'})">
+        Updated At
       </button>
     </mat-menu>
 
 
     <mat-menu #desc="matMenu">
-      <button mat-menu-item (click)="sort.emit({sort: 'desc', sortBy: 'title'})">
+      <button mat-menu-item (click)="sort.emit({sort: 'desc', sortBy: 'title', name: 'title'})">
         Title
       </button>
 
       @if (source() !== 'today') {
-        <button mat-menu-item (click)="sort.emit({sort: 'desc', sortBy: 'dueDate'})">
+        <button mat-menu-item (click)="sort.emit({sort: 'desc', sortBy: 'dueDate', name: 'dueDate'})">
           Due Date
         </button>
       }
 
       @if (!['completed', 'priority'].includes(source())) {
-        <button mat-menu-item (click)="sort.emit({sort: 'desc', sortBy: 'priority'})">
+        <button mat-menu-item (click)="sort.emit({sort: 'desc', sortBy: 'priority', name: 'priority'})">
           Priority
         </button>
       }
 
       @if (view() === 'list' && source() !== 'completed') {
-        <button mat-menu-item (click)="sort.emit({sort: 'desc', sortBy: 'status'})">
+        <button mat-menu-item (click)="sort.emit({sort: 'desc', sortBy: 'status', name: 'status'})">
           Status
         </button>
       }
 
-      <button mat-menu-item (click)="sort.emit({sort: 'desc', sortBy: 'createdAt'})">
+      <button mat-menu-item (click)="sort.emit({sort: 'desc', sortBy: 'createdAt', name: 'created'})">
         Created At
       </button>
-      <button mat-menu-item (click)="sort.emit({sort: 'desc', sortBy: 'updatedAt'})">
-        UpdatedAt At
+      <button mat-menu-item (click)="sort.emit({sort: 'desc', sortBy: 'updatedAt', name: 'updated'})">
+        Updated At
       </button>
     </mat-menu>
   `
 })
 export class SortBtnComponent {
   // - reactivity
-  value = input.required<Signal<{ sort: TSORT; sortBy: string; }>>();
+  value = input.required<Signal<{ sort: TSORT; sortBy: string; name: string;}>>();
 
   // - no reactivity
   source = input.required<string>();
@@ -112,6 +112,7 @@ export class SortBtnComponent {
 
   sort = output<{
     sort: TSORT,
-    sortBy: string
+    sortBy: string,
+    name: string
   }>();
 }

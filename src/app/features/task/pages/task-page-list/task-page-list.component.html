@@ -1,29 +1,29 @@
 <section class="page">
-  <div class="tw-pb-3 tw-flex">
-    <div class="tw-w-[50%]">
+  <div class="tw-pb-3 tw-flex tw-justify-between tw-h-[0px] tw-my-[12px]">
+    <div class="tw-flex tw-flex-row tw-items-center">
       @if (isSearch()) {
-        <div>
+        <div class="tw-w-[37vw]">
           <ui-search (searchTermFn)="toSearch($event)" />
         </div>
       }
       @else {
         <div>
-          <span class="tw-text-xl" [attr.data-test]="'page-title-' + PAGE.id">
-            {{ PAGE.name | titlecase }}.&nbsp;
+          <span class="tw-text-lg">
+            {{ getTasks().length }}
           </span>
           <span class="tw-text-sm tw-text-[#4d4d4d]">
-            {{ PAGE.description }}
+            {{ PAGE.description | lowercase}}
           </span>
         </div>
       }
     </div>
 
-    <div class="tw-w-[50%] tw-pl-[12px] tw-flex tw-flex-row tw-items-center tw-justify-between">
+    <div class="tw-pl-[12px] tw-flex tw-flex-row tw-items-center tw-justify-between tw-pt-[2px]">
       <div class="tw-flex">
         @if (isSearch()) {
           <button
             mat-button
-            class="tw-w-[7rem] tw-ml-[4px] tw-mb-[4px] !tw-px-2 tw-h-[46px]"
+            class="tw-ml-[4px] tw-mb-[4px] !tw-px-2 tw-h-[46px] tw-text-sm"
             (click)="closeSearch()"
           >
             Close
@@ -32,7 +32,7 @@
         @else {
           <button
             mat-button
-            class="tw-w-[7rem] tw-ml-[4px] tw-mb-[4px] !tw-px-2 tw-h-[46px]"
+            class="tw-ml-[4px] tw-mb-[4px] !tw-px-2 tw-h-[46px] tw-text-sm"
             (click)="isSearch.set(true)"
           >
             Search
@@ -58,14 +58,14 @@
         />
         <button
           mat-button
-          class="tw-ml-[4px] tw-mb-[4px] !tw-px-2 tw-h-[46px] tw-cursor-pointer"
+          class="tw-ml-[4px] tw-mb-[4px] !tw-px-2 tw-h-[46px] tw-cursor-pointer tw-text-sm"
           (click)="setDefaultData()"
         >
           Reset
         </button>
         <button
           mat-button
-          class="tw-ml-[4px] tw-mb-[4px] !tw-px-2 tw-h-[46px] tw-cursor-pointer"
+          class="tw-ml-[4px] tw-mb-[4px] !tw-px-2 tw-h-[46px] tw-cursor-pointer tw-text-sm"
           (click)="viewBoard = !viewBoard"
         >
           {{

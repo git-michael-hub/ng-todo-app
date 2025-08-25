@@ -9,14 +9,6 @@ export class SidenavService {
 
   navigations: TMenu[] = [
     {
-      name: 'recently added',
-      id: 'recently_added',
-      isSelected: false,
-      position: 'top',
-      page: '/recent',
-      description: 'Tasks that has been recently created.'
-    },
-    {
       name: 'today',
       id: 'today',
       isSelected: true,
@@ -45,7 +37,7 @@ export class SidenavService {
       isSelected: false,
       position: 'top',
       page: '/priority',
-      description: 'Tasks that are high priority that needed to be done ASAP.'
+      description: 'Tasks that are needed to be done ASAP.'
     },
     {
       name: 'completed',
@@ -54,6 +46,14 @@ export class SidenavService {
       position: 'top',
       page: '/completed',
       description: 'Tasks that are completed.'
+    },
+    {
+      name: 'recently added',
+      id: 'recently_added',
+      isSelected: false,
+      position: 'top',
+      page: '/recent',
+      description: 'Tasks that has been recently created.'
     },
     {
       name: 'all list',
