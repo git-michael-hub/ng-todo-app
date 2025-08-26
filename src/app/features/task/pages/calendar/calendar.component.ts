@@ -81,11 +81,12 @@ export class CalendarComponent {
     }))
   });
 
-  private sortValue: WritableSignal<{sort: TSORT, sortBy: string}> = signal({
+  private sortValue: WritableSignal<{sort: TSORT, sortBy: string, name: string}> = signal({
     sort: 'desc',
-    sortBy: 'createdAt'
+    sortBy: 'createdAt',
+    name: 'created'
   });
-  readonly GET_SORT_VALUE: Signal<{sort: TSORT, sortBy: string}> = computed(() => this.sortValue());
+  readonly GET_SORT_VALUE: Signal<{sort: TSORT, sortBy: string, name: string}> = computed(() => this.sortValue());
 
   private filterValue: WritableSignal<string> = signal('');
   readonly GET_FILTER_VALUE: Signal<string> = computed(() => this.filterValue());
@@ -107,7 +108,8 @@ export class CalendarComponent {
     this.filterValue.set('none');
     this.sortValue.set({
       sort: 'desc',
-      sortBy: 'createdAt'
+      sortBy: 'createdAt',
+      name: 'created'
     });
 
     this.getTasks = computed(() => this._LIST_SERVICE.filter(this.TASKS(), 'none'));
@@ -117,12 +119,13 @@ export class CalendarComponent {
   filter(selection: string): void {
     this.sortValue.set({
       sort: 'desc',
-      sortBy: 'createdAt'
+      sortBy: 'createdAt',
+      name: 'created'
     });
     this.filterValue.set(selection);
   }
 
-  sort(selection: {sort: TSORT, sortBy: string}): void {
+  sort(selection: {sort: TSORT, sortBy: string, name: string}): void {
     this.sortValue.set(selection);
   }
 }
