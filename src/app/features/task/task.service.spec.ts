@@ -6,7 +6,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { LoggingService } from '../../utils/services/logging.service';
 import { of, throwError } from 'rxjs';
 import { TTask } from '../../utils/models/task.model';
-import { TaskFormDialogComponent } from '../../uis/forms/task-form-dialog/task-form-dialog.component';
+import { TaskFormDialogComponent } from '../../uis/forms/task-form/task-form.component';
 import { computed, signal } from '@angular/core';
 import { IState } from '../../data-access/state/state.model';
 import { STORE_TOKEN } from '../../data-access/state/state.store';

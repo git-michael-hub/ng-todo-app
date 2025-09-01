@@ -12,7 +12,7 @@ import {default as _rollupMoment} from 'moment';
 
 // Local
 import { STORE_TOKEN } from "../../data-access/state/state.store";
-import { TaskFormDialogComponent } from "../../uis/forms/task-form-dialog/task-form-dialog.component";
+import { TaskDialogComponent } from "../../uis/dialog/task-dialog/task-dialog.component";
 import { TTask } from "../../utils/models/task.model";
 import { TaskAPI } from "../../data-access/apis/task.api";
 import { LoggingService } from "../../utils/services/logging.service";
@@ -35,7 +35,7 @@ export class TaskService {
   private readonly _FIRESTORE_SERVICE = inject(FirestoreService);
 
   // - dialog
-  private dialogRef!: MatDialogRef<TaskFormDialogComponent, any>;
+  private dialogRef!: MatDialogRef<TaskDialogComponent, any>;
   private DIALOG_SETTINGS: MatDialogConfig = {
     maxWidth: '60vw',
     width: '60vw',
@@ -303,7 +303,7 @@ export class TaskService {
     this.dialogRef?.close();
 
     this.dialogRef = this._DIALOG.open(
-      TaskFormDialogComponent,
+      TaskDialogComponent,
       date
         ? {
             ...this.DIALOG_SETTINGS,
@@ -328,7 +328,7 @@ export class TaskService {
     this.dialogRef?.close();
 
     this.dialogRef = this._DIALOG.open(
-      TaskFormDialogComponent,
+      TaskDialogComponent,
       {
         ...this.DIALOG_SETTINGS,
         data: task

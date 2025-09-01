@@ -1,6 +1,7 @@
 import { Signal, WritableSignal } from "@angular/core";
 import { TError } from "../../utils/models/common.model"
 import { TTask } from "../../utils/models/task.model"
+import { TUser } from "../../utils/models/user.model";
 
 
 type TAPI = {
@@ -14,8 +15,11 @@ export type TPage = 'recent' | 'today' | 'upcoming' | 'high-priority' | 'list' |
 export interface IState {
   id: string,
   currentPage: WritableSignal<string>,
-  authentication?: TAPI & {
-    status: 'login' | 'logout'
+  authentication: TAPI & {
+    user: WritableSignal<TUser|undefined>,
+    getUser: Signal<TUser|undefined>,
+    error: WritableSignal<TError|undefined>,
+    toString: () => any
   },
   task: TAPI & {
     list: WritableSignal<TTask[]>, // the data content of the list

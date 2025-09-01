@@ -1,0 +1,148 @@
+<div class="tw-py-[16px]">
+  <form
+    [formGroup]="form"
+    class="example-form tw-flex tw-flex-col tw-justify-center tw-items-center tw-px-[12rem]"
+  >
+
+    <!-- Remove Google input suggestion. Dummy fields. -->
+    <input type="text" style="display:none" autocomplete="username">
+    <input type="password" style="display:none" autocomplete="new-password">
+
+    <mat-form-field class="example-full-width tw-w-full tw-py-[8px]">
+      <mat-label>Name</mat-label>
+      <input type="email" matInput formControlName="name">
+
+      @if (nameFormControl.hasError('required')) {
+        <mat-error>Name is <strong>required</strong></mat-error>
+      }
+      @if (nameFormControl.hasError('minLength')) {
+        <mat-error>Name must be at least <strong>{{ nameFormControl.getError('minLength').requiredLength }}</strong> characters</mat-error>
+      }
+      @if (nameFormControl.hasError('maxLength')) {
+        <mat-error>Name must be no more than <strong>{{ nameFormControl.getError('maxLength').requiredLength }}</strong> characters</mat-error>
+      }
+
+      @if (nameFormControl.value) {
+        <button matSuffix matIconButton aria-label="Clear"
+          (click)="clearName($event)">
+          <mat-icon class="tw-text-[#000] tw-mx-[14px]">close</mat-icon>
+        </button>
+      }
+    </mat-form-field>
+
+    <mat-form-field class="example-full-width tw-w-full tw-py-[8px]">
+      <mat-label>Email</mat-label>
+      <input type="email" matInput formControlName="email">
+      @if (emailFormControl.hasError('invalidEmail') && !emailFormControl.hasError('required')) {
+        <mat-error>Please enter a valid email address</mat-error>
+      }
+      @if (emailFormControl.hasError('required')) {
+        <mat-error>Email is <strong>required</strong></mat-error>
+      }
+
+      @if (emailFormControl.value) {
+        <button matSuffix matIconButton aria-label="Clear"
+          (click)="clearEmail($event)">
+          <mat-icon class="tw-text-[#000] tw-mx-[14px]">close</mat-icon>
+        </button>
+      }
+    </mat-form-field>
+
+    <mat-form-field class="example-full-width tw-w-full tw-py-[8px]">
+      <mat-label>Password</mat-label>
+      <input #password type="password" matInput formControlName="password">
+      @if (passwordFormControl.hasError('required')) {
+        <mat-error>Password is <strong>required</strong></mat-error>
+      }
+
+      @if (passwordFormControl.hasError('minLength')) {
+        <mat-error>Password must be at least <strong>{{ passwordFormControl.getError('minLength').requiredLength }}</strong> characters long</mat-error>
+      }
+      @if (passwordFormControl.hasError('passwordComplexity')) {
+        <mat-error>Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character</mat-error>
+      }
+
+      @if (passwordFormControl.value) {
+        <button matSuffix matIconButton
+          (click)="togglePasswordVisibility(password, $event)"
+        >
+          <mat-icon class="tw-text-[#000] tw-mx-[14px]">
+            {{
+              psVisibility()
+                ? 'visibility'
+                : 'visibility_off'
+            }}
+          </mat-icon>
+        </button>
+      }
+
+    </mat-form-field>
+
+    <mat-form-field class="example-full-width tw-w-full tw-py-[8px]">
+      <mat-label>Confirm Password</mat-label>
+      <input #confirmPassword type="password" matInput formControlName="confirmPassword">
+
+      @if (confirmPasswordFormControl.value) {
+        <button matSuffix matIconButton
+          (click)="togglePasswordVisibility(confirmPassword, $event)"
+        >
+          <mat-icon class="tw-text-[#000] tw-mx-[14px]">
+            {{
+              psVisibility()
+                ? 'visibility'
+                : 'visibility_off'
+            }}
+          </mat-icon>
+        </button>
+      }
+
+      @if (confirmPasswordFormControl.hasError('required')) {
+        <mat-error>Confirm Password is <strong>required</strong></mat-error>
+      }
+      @if (confirmPasswordFormControl.hasError('passwordMismatch')) {
+        <mat-error>Passwords do not match</mat-error>
+      }
+
+    </mat-form-field>
+
+
+
+    <div class="tw-w-full tw-py-[8px] tw-h-[72px] tw-flex tw-items-center tw-justify-center">
+      <!-- Message error -->
+       @if (error) {
+        <span class="tw-text-red-600">{{ error?.error?.error?.message }}</span>
+       }
+
+      <!-- @if (confirmPasswordFormControl.hasError('notMatch') && passwordFormControl.valid) {
+        <span class="tw-text-red-600">
+          {{ confirmPasswordFormControl.getError('notMatch') }}
+        </span>
+      } -->
+
+    </div>
+
+    <div class="tw-w-full tw-py-[8px]">
+      <button
+        (click)="register()"
+        mat-flat-button class="tw-w-full"
+        [disabled]="form.invalid || error || isRegistering()"
+      >
+        <span>
+          <!-- Register -->
+          @if (isRegistering() && !error) {
+            Registering in...
+          }
+          @else {
+            Register
+          }
+        </span>
+      </button>
+    </div>
+
+    <div class="tw-text-sm tw-py-[8px]">
+      <span>Already have an account? Login here</span>
+    </div>
+
+
+  </form>
+</div>

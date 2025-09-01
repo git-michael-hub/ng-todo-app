@@ -1,6 +1,10 @@
 import { HttpErrorResponse } from "@angular/common/http";
 
 export type TError = unknown | string | undefined | Partial<HttpErrorResponse> | null | any;
+export type TErrorMessage = {
+  message: string
+}
+
 export type TMethodHTTP = 'GET' | 'POST' | 'PUT' | 'DELETE';
 
 export type TAPI = {

@@ -1,0 +1,28 @@
+<div class="!tw-bg-[#ffffff] tw-flex tw-flex-row tw-w-full tw-justify-between ">
+  <h2 mat-dialog-title data-test="dialog-title">
+    <span>
+      {{
+        data === 'login'
+          ? 'Login'
+          : 'Register'
+      }}
+    </span>
+  </h2>
+  <div class="tw-flex tw-items-center">
+    <button
+      mat-button mat-dialog-close
+      class="tw-mx-[20px]"
+      data-test="dialog-action-close"
+    >
+      <span>Close</span>
+    </button>
+  </div>
+</div>
+
+@if (data === 'login') {
+  <feature-login></feature-login>
+}
+@else {
+  <feature-register></feature-register>
+}
+

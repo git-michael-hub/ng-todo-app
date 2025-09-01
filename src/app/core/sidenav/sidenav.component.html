@@ -4,23 +4,23 @@
       <h1 class="app-name">Workie-Work</h1>
     </div>
 
-    @if (pageSelected !== 'home') {
+    @if (pageSelected() !== 'home') {
       <ui-widget-summary></ui-widget-summary>
     }
 
-    <div>
-      <!-- <button
+    <div class="tw-absolute tw-right-[50px]">
+      <button
         mat-button
-        (click)="login()"
-      >
-        Login
-      </button> -->
-      <!-- <button
-        mat-button
-        (click)="register()"
+        (click)="_AUTHENTICATION_SERVICE.showRegisterUI()"
       >
         Register
-      </button> -->
+      </button>
+      <button
+        mat-button
+        (click)="_AUTHENTICATION_SERVICE.showLoginUI()"
+      >
+        Login
+      </button>
     </div>
   </mat-toolbar>
 
@@ -45,7 +45,7 @@
                     mat-list-item
                     routerLink="{{nav.page}}"
                     routerLinkActive="active"
-                    (click)="pageSelected=nav.page.split('/')[1]"
+                    (click)="pageSelected.set(nav.page.split('/')[1])"
                   >
                     <span class="tw-text-sm">
                       {{ nav.name | titlecase }}
@@ -72,7 +72,7 @@
                   <a
                     mat-list-item
                     routerLink="{{nav.page}}"
-                    (click)="pageSelected=nav.page.split('/')[1]"
+                    (click)="pageSelected.set(nav.page.split('/')[1])"
                   >
                     <span class="tw-text-sm">
                       {{ nav.name | titlecase }}

@@ -41,9 +41,9 @@ const MY_FORMATS = {
 
 
 @Component({
-  selector: 'ui-task-form-dialog',
-  templateUrl: './task-form-dialog.component.html',
-  styleUrls: ['./task-form-dialog.component.scss'],
+  selector: 'ui-task-form',
+  templateUrl: './task-form.component.html',
+  styleUrls: ['./task-form.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   providers: [
@@ -60,7 +60,10 @@ const MY_FORMATS = {
     DatePipe
   ],
 })
-export class TaskFormDialogComponent implements OnInit {
+export class TaskFormComponent implements OnInit {
+
+  // @TODO: remove DI for UI
+
   // - di
   private readonly _STORE = inject(STORE_TOKEN);
   private readonly _TASK_SERVICE = inject(TaskService);

@@ -27,8 +27,8 @@ import { TaskBoardComponent } from '../../../../uis/board/task-board/task-board.
 
 
 @Component({
-  selector: 'feature-task-page-list',
-  templateUrl: 'task-page-list.component.html',
+  selector: 'feature-list',
+  templateUrl: 'list.component.html',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [

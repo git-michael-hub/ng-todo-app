@@ -9,6 +9,11 @@ export const STORE_TOKEN = new InjectionToken<WritableSignal<IState>>('STORE');
 export const STORE: WritableSignal<IState> = signal({
   id: 'main_store',
   currentPage: signal(''),
+  authentication: {
+    user: signal(undefined),
+    getUser: computed(() => STORE().authentication?.user()),
+    error: signal(undefined),
+  },
   task: {
     list: signal([]),
     getList: computed(() => STORE().task.list()),

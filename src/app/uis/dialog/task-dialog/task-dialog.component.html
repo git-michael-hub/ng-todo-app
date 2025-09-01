@@ -1,0 +1,73 @@
+<div class="!tw-bg-[#ffffff] tw-flex tw-flex-row tw-w-full tw-justify-between ">
+  <h2 mat-dialog-title data-test="dialog-title">
+    @if (status === 'view') {
+      <span>Task Detail</span>
+      @if (_DATA.status === 'done') {
+        <span class="tw-px-[12px] tw-ml-[4px] tw-text-md tw-text-[#1aa318]">DONE</span>
+      }
+    }
+    @else if (status === 'update') {
+      <span>Update Task</span>
+    }
+    @else if (status === 'add') {
+     <span>Add a New Task</span>
+    }
+  </h2>
+  <div class="tw-flex tw-items-center">
+    @if (status === 'view') {
+      <button
+        mat-button mat-dialog-close
+        class="tw-mx-[20px]"
+        (click)="status = 'close'"
+        data-test="dialog-action-close"
+      >
+        <span>Close</span>
+      </button>
+    }
+    @else if (status === 'update') {
+      <button
+        mat-button
+        class="tw-mx-[20px]"
+        (click)="cancelUpdate()"
+        data-test="dialog-action-cancel-update"
+      >
+        <span>Cancel</span>
+      </button>
+    }
+    @else if (status === 'add') {
+      <button
+        mat-button mat-dialog-close
+        class="tw-mx-[20px]"
+        data-test="dialog-action-cancel"
+      >
+        <span>Cancel</span>
+      </button>
+    }
+
+    @if (status === 'update') {
+      <button
+        mat-flat-button
+        class="!tw-px-[50px] tw-mx-[20px]"
+        (click)="updateTask()"
+        [disabled]="taskForm.invalid"
+        data-test="dialog-action-update"
+      >
+        Update
+      </button>
+    }
+    @else if (status === 'add') {
+      <button
+        mat-flat-button
+        class="!tw-px-[50px] tw-mx-[20px]"
+        (click)="addTask()"
+        [disabled]="taskForm.invalid"
+        data-test="dialog-action-add"
+      >
+        Add
+      </button>
+    }
+  </div>
+</div>
+
+
+<ui-task-form></ui-task-form>

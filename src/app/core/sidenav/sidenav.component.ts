@@ -1,8 +1,8 @@
 // Angular
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, OnInit, signal } from '@angular/core';
 import { MediaMatcher } from '@angular/cdk/layout';
 import { CommonModule, TitleCasePipe } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { NavigationEnd, Router, RouterModule } from '@angular/router';
 
 // Material
 import { MatListModule } from '@angular/material/list';
@@ -17,6 +17,8 @@ import { SidenavService } from './sidenav.service';
 import { SummaryComponent } from '../../uis/widgets/summary/summary.component';
 import { TaskService } from '../../features/task/task.service';
 import { AuthFirebaseService } from '../../utils/services/auth-firebase.service';
+import { filter } from 'rxjs';
+import { AuthenticationService } from '../../features/authentication/authentication.service';
 
 
 @Component({
@@ -40,17 +42,25 @@ import { AuthFirebaseService } from '../../utils/services/auth-firebase.service'
 export class SidenavComponent implements OnInit {
   // - di
   private readonly _CD = inject(ChangeDetectorRef);
+  private readonly _ROUTER = inject(Router);
   private readonly _MEDIA = inject(MediaMatcher);
 
   private readonly _AUTH_FIREBASE_SERVICE= inject(AuthFirebaseService);
   readonly _TASK_SERVICE = inject(TaskService);
+  readonly _AUTHENTICATION_SERVICE = inject(AuthenticationService);
   readonly NAVIGATIONS: TMenu[] = inject(SidenavService)?.navigations;
 
   mobileQuery: MediaQueryList = this._MEDIA.matchMedia('(max-width: 600px)');
   private _mobileQueryListener = () => this._CD.detectChanges();
 
   // - no reactivity
-  pageSelected: string = 'home';
+  pageSelected = signal('home');
+
+  constructor() {
+    this._ROUTER.events
+      .pipe(filter(e => e instanceof NavigationEnd))
+      .subscribe((e: NavigationEnd) => this.pageSelected.set(e.urlAfterRedirects.split('/')[1]));
+  }
 
   ngOnInit(): void {
     // Check compatibility and add listener
@@ -71,10 +81,10 @@ export class SidenavComponent implements OnInit {
   }
 
   login(): void {
-    this._AUTH_FIREBASE_SERVICE.login();
+    // this._AUTH_FIREBASE_SERVICE.login();
   }
 
   register(): void {
-    this._AUTH_FIREBASE_SERVICE.register();
+    // this._AUTH_FIREBASE_SERVICE.register();
   }
 }

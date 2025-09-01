@@ -5,7 +5,7 @@ import { DebugElement } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
-import { TaskFormDialogComponent } from './task-form-dialog.component';
+import { TaskFormDialogComponent } from './task-form.component';
 import { TaskService } from '../../../features/task/task.service';
 import { TaskAPI } from '../../../data-access/apis/task.api';
 import { TTask } from '../../../utils/models/task.model';
