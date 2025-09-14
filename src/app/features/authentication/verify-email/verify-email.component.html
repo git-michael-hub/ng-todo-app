@@ -1,0 +1,34 @@
+isVerifyEmail() {{ isVerifyEmail() | json }}
+<div class="verification-container">
+  @if (isVerifying && !isVerifyEmailError()) {
+    <div class="verifying">
+      <h2>Verifying your email...</h2>
+      <p>Please wait while we verify your email address.</p>
+    </div>
+  }
+  @else {
+    @if (isVerifyEmail()) {
+      <p>Successfully verified email. Click the button below to login.</p>
+      <button (click)="goToLogin()">
+        Go to Login
+      </button>
+    }
+    @else if (isVerifyEmailError()) {
+     <p>
+        Failed! {{ isVerifyEmailError().error?.message }}
+     </p>
+    }
+  }
+
+</div>
+
+
+<!-- <p>
+  isVerifyEmail
+  {{ isVerifyEmail() }}
+</p>
+
+<p>
+  isVerifyEmailError
+  {{ isVerifyEmailError() | json }}
+</p> -->

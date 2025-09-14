@@ -57,19 +57,23 @@
 
     <div class="tw-w-full tw-py-[10px] tw-h-[72px] tw-flex tw-items-center tw-justify-center">
       <!-- Message error -->
-       @if (error) {
-        <span class="tw-text-red-600">{{ error?.error?.message }}</span>
+       @if (error()?.()) {
+        <span class="tw-text-red-600">{{ error()?.()?.error?.message }}</span>
        }
     </div>
 
     <div class="tw-w-full tw-py-[10px]">
+      <!-- {{  error()?.() | json }}
+    {{ form.invalid  | json }}
+    {{ isLogging()  | json }} -->
+
       <button
         (click)="login()"
         mat-flat-button class="tw-w-full"
-        [disabled]="form.invalid || error || isLogging()"
+        [disabled]="form.invalid || error()?.() || isLogging()"
       >
         <span>
-          @if (isLogging() && !error) {
+          @if (isLogging() && !error()?.()) {
             Logging in...
           }
           @else {

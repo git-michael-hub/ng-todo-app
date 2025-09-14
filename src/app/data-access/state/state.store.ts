@@ -10,8 +10,11 @@ export const STORE: WritableSignal<IState> = signal({
   id: 'main_store',
   currentPage: signal(''),
   authentication: {
-    user: signal(undefined),
-    getUser: computed(() => STORE().authentication?.user()),
+    auth: signal(undefined),
+    // user: signal(undefined),
+    getUser: computed(() => STORE().authentication?.auth()?.user),
+    // token: signal(undefined),
+    getToken: computed(() => STORE().authentication?.auth()?.token),
     error: signal(undefined),
   },
   task: {

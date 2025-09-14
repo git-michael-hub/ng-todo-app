@@ -1,6 +1,8 @@
 <ui-register-form
-  [error]="registerError()"
+  [error]="registerError"
+  [success]="registerSuccess"
   (registerUser)="register($event)"
   (clearError)="clearError()"
+  (clearUser)="clearUser()"
 ></ui-register-form>
 

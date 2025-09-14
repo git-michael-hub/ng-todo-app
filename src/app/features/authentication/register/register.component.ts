@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, effect, inject, OnInit, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, effect, inject, OnInit, Signal, signal } from '@angular/core';
 import { AuthenticationService } from '../authentication.service';
 import { STORE_TOKEN } from '../../../data-access/state/state.store';
 import { RegisterFormComponent } from '../../../uis/forms/register-form/register-form.component';
@@ -20,16 +20,33 @@ export class RegisterComponent implements OnInit {
   private readonly _AUTH_SERVICE = inject(AuthenticationService);
   private readonly _STORE = inject(STORE_TOKEN);
 
-  registerError = signal('');
+  registerError: Signal<null>;
+  registerSuccess: Signal<boolean|null>;
 
   constructor() {
     effect(() => {
-      console.log('error', this._STORE().authentication.error())
+      console.log('STORE', this._STORE().authentication.getUser());
+    //   console.log('error', this._STORE().authentication.error())
 
-      this.registerError.set(
-        this._STORE().authentication.error()
-      );
+    //   this.registerError.set(
+    //     this._STORE().authentication.error()
+    //   );
+
+    //   if (this._STORE().authentication?.getUser()?.id) {
+    //     this.registerSuccess.set(true);
+    //   }
+    //   else this.registerSuccess.set(false);
+
     });
+
+      // Use computed to derive values instead of manually setting signals
+    this.registerError = computed(() =>
+      this._STORE().authentication.error()
+    );
+
+    this.registerSuccess = computed(() =>
+      !!this._STORE().authentication?.getUser()?.id
+    );
   }
 
   ngOnInit() {
@@ -39,12 +56,18 @@ export class RegisterComponent implements OnInit {
     this.clearError();
   }
 
+
+
   register(user: IRegister): void {
     this._AUTH_SERVICE.register(user);
   }
 
   clearError(): void {
     this._STORE().authentication.error.set(undefined);
+  }
+
+  clearUser(): void {
+    this._STORE().authentication.auth.set(undefined);
   }
 
 }

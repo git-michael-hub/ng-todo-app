@@ -1,4 +1,4 @@
-import { inject, Injectable } from "@angular/core";
+import { effect, inject, Injectable } from "@angular/core";
 import { LoginComponent } from "./login/login.component";
 import { MatDialog, MatDialogConfig, MatDialogRef } from "@angular/material/dialog";
 import { AuthDialogComponent } from "../../uis/dialog/auth-dialog/auth-dialog.component";
@@ -6,9 +6,11 @@ import { AuthenticationAPI } from "../../data-access/apis/authentication.api";
 
 // Third party
 import * as _ from 'lodash';
-import { ILogin, IRegister, TUser } from "../../utils/models/user.model";
+import { ILogin, IRegister, TAuth, TUser } from "../../utils/models/user.model";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { STORE_TOKEN } from "../../data-access/state/state.store";
+import { CookieService } from "../../data-access/services/cookie-service";
+// import { setAuthToken } from "../../data-access/services/local-storage.service";
 
 
 @Injectable({
@@ -20,6 +22,7 @@ export class AuthenticationService {
   private readonly _AUTH_API = inject(AuthenticationAPI);
   private readonly _SNACK_BAR = inject(MatSnackBar);
   private readonly _STORE = inject(STORE_TOKEN);
+  private readonly _COOKIE = inject(CookieService)
 
   // - dialog
   private dialogRef!: MatDialogRef<AuthDialogComponent, any>;
@@ -30,6 +33,18 @@ export class AuthenticationService {
     height: '80vh',
     disableClose: true,
   };
+
+  constructor() {
+    effect(() => {
+      console.log('STORE', this._STORE().authentication.auth());
+
+      const auth = this._STORE().authentication.auth();
+
+      if (auth?.token && auth?.status === 'login') {
+        this.dialogRef?.close();
+      }
+    });
+  }
 
   /**
    * - UI dialog
@@ -78,7 +93,14 @@ export class AuthenticationService {
         next: (response) => {
           console.log('User successfully login:', response);
 
-          this._STORE().authentication.user.set(response as TUser);
+          this._STORE().authentication.auth.set(
+            {
+              ...response,
+              status: 'login'
+            } as TAuth
+          );
+
+          this._COOKIE.saveAuthToken((response as TAuth).token);
         },
         error: (error) => {
           console.error('Error login user:', error);
@@ -102,7 +124,12 @@ export class AuthenticationService {
         next: (response) => {
           console.log('User successfully register:', response);
 
-          // this._STORE().authentication.user.set(response as TUser);
+          this._STORE().authentication.auth.set(
+            {
+              ...response,
+              status: 'register'
+            } as unknown as TAuth
+          );
         },
         error: (error) => {
           console.error('Error register user:', error);
@@ -112,9 +139,35 @@ export class AuthenticationService {
             error: {
               ...error.error,
               error: {
-                message: "Registration failed!"
+                message: "Registration failed! Please contact support."
               }
             }
+          });
+        }
+      });
+  }
+
+  verifyEmail(token: string): void {
+    if (_.isEmpty(token)) return;
+
+    this._AUTH_API.verifyEmail(token)
+      .subscribe({
+        next: (response) => {
+          console.log('Token response:', response);
+
+          this._STORE().authentication.auth.set(
+            {
+              ...response,
+              isVerifyEmail: true
+            } as unknown as TAuth
+          );
+        },
+        error: (error) => {
+          console.error('Error register user:', error);
+
+          this._STORE().authentication.error.set({
+            ...error,
+            error: error?.error
           });
         }
       });

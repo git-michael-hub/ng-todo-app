@@ -11,6 +11,7 @@ import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { getAuth, provideAuth } from '@angular/fire/auth';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
+import { CookieService } from 'ngx-cookie-service';
 
 // Local
 import { ROUTES as routes } from './app.routes';
@@ -34,6 +35,7 @@ const INTERCEPTORS = [
 export const appConfig: ApplicationConfig = {
   providers: [
     ...INTERCEPTORS,
+    CookieService,
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(
       routes,

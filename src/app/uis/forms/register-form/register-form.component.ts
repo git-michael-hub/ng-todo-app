@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect, EventEmitter, input, Input, OnInit, Output, Signal, signal } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -31,10 +31,12 @@ import { passwordValidator } from '../../../utils/validators/password.validator'
   ]
 })
 export class RegisterFormComponent implements OnInit {
-  @Input() error!: TError;
-  // error = input<TError>>();
+  // @Input() error!: TError;
+  error = input<Signal<TError>>();
+  success = input<Signal<Boolean|null>>();
   @Output() registerUser = new EventEmitter<IRegister>();
   @Output() clearError = new EventEmitter<void>();
+  @Output() clearUser = new EventEmitter<void>();
 
 
   form = new FormGroup({
@@ -100,14 +102,49 @@ export class RegisterFormComponent implements OnInit {
       //   this.confirmPasswordFormControl.setErrors(null);
       // }
 
-      console.log('confirmPasswordFormControl:',  this.confirmPasswordFormControl);
-      console.log('form:',  this.form);
+      // this.clearError.emit();
+      // this.isRegistering.set(false);
+
+      // console.log('confirmPasswordFormControl:',  this.confirmPasswordFormControl);
+      // console.log('form:',  this.form);
+
+
+
+      if (this.error()?.()) {
+        this.clearError.emit();
+        this.isRegistering.set(false);
+      }
 
 
     });
+
+    effect(() => {
+      console.log('register:error:', this.error()?.());
+
+      if (this.error()?.()) {
+        // this.clearError.emit();
+        // this.isLogging.set(false);
+        this.form.enable({ emitEvent: false });
+        this.passwordFormControl.disable({ emitEvent: false });
+        this.confirmPasswordFormControl.disable({ emitEvent: false });
+      }
+    });
+
+
+
+  }
+
+  ngOnChanges(): void {
+    console.log('   this.error();:',    this.error()?.());
+    console.log('   this.success();:',    this.success()?.());
   }
 
   ngOnInit() {
+  }
+
+  ngOnDestroy() {
+    this.clearUser.emit();
+    this.clearError.emit();
   }
 
   clearName(event: Event): void {
@@ -166,6 +203,8 @@ export class RegisterFormComponent implements OnInit {
 
     this.isRegistering.set(true);
     this.registerUser.emit(this.form.value as IRegister);
+
+    this.form.disable();
 
   //   this._AUTH_SERVICE.login(this.form.value as TLogin);
   }

@@ -3,13 +3,14 @@ import { Observable } from 'rxjs';
 
 
 export function headerInterceptor(req: HttpRequest<any>, next: HttpHandlerFn): Observable<HttpEvent<any>> {
-  // const authToken = localStorage.getItem('authToken'); // Get the token from local storage
+  const authToken = localStorage.getItem('authToken'); // Get the token from local storage
 
   // Clone the request and add the Authorization header
   const modifiedReq = req.clone({
     setHeaders: {
       'Accept': 'application/json',
       'Content-Type': 'application/json',
+      'Authorization': `Bearer ${authToken || undefined}`
     },
   });
 

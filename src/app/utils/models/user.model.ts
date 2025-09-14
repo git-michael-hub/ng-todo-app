@@ -1,3 +1,10 @@
+export type TAuth = {
+  user: TUser,
+  status: 'login' | 'register',
+  token: string,
+  isVerifyEmail: boolean
+}
+
 export type TUser = {
   id?: string,
   name: string,
@@ -8,7 +15,15 @@ export type TUser = {
   position: string[],
   team: string[],
   createdAt: string,
-  updatedAt: string
+  updatedAt: string,
+  status: 'register' | 'login',
+  isVerifyEmail?: boolean
+}
+
+export type TCheckToken = {
+  isValid: boolean,
+  expiresAt: string,
+  timeRemaining: number
 }
 
 
@@ -20,3 +35,5 @@ export interface ILogin {
 export interface IRegister extends ILogin {
   name: string
 }
+
+

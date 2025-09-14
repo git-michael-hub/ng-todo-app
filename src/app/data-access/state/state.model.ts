@@ -1,7 +1,7 @@
 import { Signal, WritableSignal } from "@angular/core";
 import { TError } from "../../utils/models/common.model"
 import { TTask } from "../../utils/models/task.model"
-import { TUser } from "../../utils/models/user.model";
+import { TAuth, TUser } from "../../utils/models/user.model";
 
 
 type TAPI = {
@@ -16,8 +16,11 @@ export interface IState {
   id: string,
   currentPage: WritableSignal<string>,
   authentication: TAPI & {
-    user: WritableSignal<TUser|undefined>,
+    auth: WritableSignal<TAuth|undefined>,
+    // user: WritableSignal<TUser|undefined>,
     getUser: Signal<TUser|undefined>,
+    // token: WritableSignal<string|undefined>,
+    getToken: Signal<string|undefined>,
     error: WritableSignal<TError|undefined>,
     toString: () => any
   },

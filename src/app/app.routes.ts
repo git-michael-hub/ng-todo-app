@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { VerifyEmailComponent } from './features/authentication/verify-email/verify-email.component';
 
 
 export const ROUTES: Routes = [
@@ -61,7 +62,12 @@ export const ROUTES: Routes = [
         loadComponent: () => import('./features/task/pages/home/home.component')
           .then(c => c.HomeComponent)
       },
+
     ]
+  },
+  {
+    path: 'verify-email/:token',
+    component: VerifyEmailComponent
   },
   {
     path: '**', redirectTo: '/home', pathMatch: 'full'

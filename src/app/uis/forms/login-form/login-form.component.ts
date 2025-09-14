@@ -1,12 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, Input, input, OnInit, Output, Signal, EventEmitter, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, input, OnInit, Output, Signal, EventEmitter, signal, effect } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS, MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { AuthenticationService } from '../../../features/authentication/authentication.service';
-import { ILogin } from '../../../utils/models/user.model';
+import { ILogin, TUser } from '../../../utils/models/user.model';
 import { TError } from '../../../utils/models/common.model';
 import { MatIconModule } from '@angular/material/icon';
 import { ShowHideDirective } from '../../../utils/directives/show-hide.directive';
@@ -30,7 +30,9 @@ import { ShowHideDirective } from '../../../utils/directives/show-hide.directive
   ]
 })
 export class LoginFormComponent implements OnInit {
-  @Input() error!: TError;
+  // @Input() error!: TError;
+  error = input<Signal<TError>>();
+  // success = input<Signal<null|undefined|TUser>>();
   // error = input<TError>>();
   @Output() loginUser = new EventEmitter<ILogin>();
   @Output() clearError = new EventEmitter<void>();
@@ -51,10 +53,24 @@ export class LoginFormComponent implements OnInit {
   constructor() {
     this.form.valueChanges.subscribe((value) => {
       console.log('form:value:', value);
-      if (this.error) {
+      if (this.error()?.()) {
         this.clearError.emit();
         this.isLogging.set(false);
       }
+    });
+
+    effect(() => {
+      console.log('login:error:', this.error()?.());
+
+      if (this.error()?.()) {
+        // this.clearError.emit();
+        // this.isLogging.set(false);
+        this.form.enable({ emitEvent: false });
+      }
+      else {
+        // console.log('login:success:', this.success()?.());
+      }
+
     });
   }
 
@@ -102,6 +118,8 @@ export class LoginFormComponent implements OnInit {
 
     this.isLogging.set(true);
     this.loginUser.emit(this.form.value as ILogin);
+
+    this.form.disable();
 
   //   this._AUTH_SERVICE.login(this.form.value as TLogin);
   }

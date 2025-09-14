@@ -1,0 +1,17 @@
+.verification-container {
+  max-width: 500px;
+  margin: 50px auto;
+  text-align: center;
+  padding: 20px;
+}
+.verifying, .result {
+  padding: 20px;
+  border-radius: 8px;
+  margin: 20px 0;
+}
+.verifying {
+  background-color: #e3f2fd;
+}
+.result {
+  background-color: #e8f5e8;
+}

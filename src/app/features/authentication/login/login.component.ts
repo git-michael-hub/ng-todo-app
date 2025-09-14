@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, effect, inject, OnInit, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, effect, inject, OnInit, Signal, signal } from '@angular/core';
 
 import {FormControl, Validators, FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MatInputModule} from '@angular/material/input';
@@ -8,7 +8,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { LoginFormComponent } from '../../../uis/forms/login-form/login-form.component';
 import { AuthenticationService } from '../authentication.service';
-import { ILogin } from '../../../utils/models/user.model';
+import { ILogin, TUser } from '../../../utils/models/user.model';
 import { STORE_TOKEN } from '../../../data-access/state/state.store';
 import { ShowHideDirective } from '../../../utils/directives/show-hide.directive';
 
@@ -30,15 +30,22 @@ export class LoginComponent implements OnInit {
   private readonly _AUTH_SERVICE = inject(AuthenticationService);
   private readonly _STORE = inject(STORE_TOKEN);
 
-  loginError = signal('');
+  loginError?: Signal<null>;
+  // loginSuccess?: Signal<null|undefined|TUser>;
 
   constructor() {
     effect(() => {
       console.log('error', this._STORE().authentication.error())
 
-      this.loginError.set(
+      this.loginError = computed(() =>
         this._STORE().authentication.error()
       );
+
+      // this.loginSuccess = computed(() =>
+      //   this._STORE().authentication.user()
+      // );
+
+      console.log('LOLGIN:', this._STORE().authentication?.getToken());
     });
   }
 
