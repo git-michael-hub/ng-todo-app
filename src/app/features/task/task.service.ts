@@ -1,5 +1,5 @@
 // Angular
-import { inject, Injectable } from "@angular/core";
+import { effect, inject, Injectable } from "@angular/core";
 
 // Material
 import { MatDialog, MatDialogConfig, MatDialogRef } from "@angular/material/dialog";
@@ -18,6 +18,7 @@ import { TaskAPI } from "../../data-access/apis/task.api";
 import { LoggingService } from "../../utils/services/logging.service";
 import DATA from '../../../assets/mock-data/sample_tasks_200.json'
 import { FirestoreService } from "../../data-access/services/firestore.service";
+import { IAuth } from "../../utils/models/user.model";
 
 const MOMENT = _rollupMoment || _moment;
 
@@ -47,12 +48,23 @@ export class TaskService {
   private isServerDown!: boolean;
 
   constructor() {
-    this.getTasks();
+    effect(() => {
+      const auth = this._STORE().authentication.auth() as IAuth;
+
+      if (auth?.token && auth?.status === 'login') {
+
+        setTimeout(() => {
+          this.getTasks();
+        }, 500);
+      }
+    });
   }
 
 
   // - tasks requests
   getTasks(): void {
+    this._STORE().task.list.set([]);
+
     this._TASK_API.getTasks()
       .subscribe({
         next: (response) => {

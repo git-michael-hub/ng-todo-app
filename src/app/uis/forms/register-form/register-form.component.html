@@ -1,14 +1,5 @@
-<div class="tw-py-[16px]">
-  <!-- {{success()?.() | json}} -->
-  @if (success()?.()) {
-    <div class="tw-h-[40vh] tw-flex tw-justify-center tw-items-center">
-      <span>
-        {{ nameFormControl.value | titlecase }} is successfully register. Please check your email to verify account.
-      </span>
-    </div>
-  }
-  @else {
-    <form
+
+  <form
     [formGroup]="form"
     class="example-form tw-flex tw-flex-col tw-justify-center tw-items-center tw-px-[12rem]"
   >
@@ -158,7 +149,4 @@
 
 
   </form>
-  }
 
-
-</div>

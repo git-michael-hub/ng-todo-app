@@ -1,5 +1,6 @@
 import { computed, InjectionToken, signal, WritableSignal } from "@angular/core";
 import { IState } from "./state.model";
+import { IAuth } from "../../utils/models/user.model";
 
 
 // Define the STORE Injection Token
@@ -12,9 +13,9 @@ export const STORE: WritableSignal<IState> = signal({
   authentication: {
     auth: signal(undefined),
     // user: signal(undefined),
-    getUser: computed(() => STORE().authentication?.auth()?.user),
+    getUser: computed(() => (STORE().authentication?.auth() as IAuth)?.user),
     // token: signal(undefined),
-    getToken: computed(() => STORE().authentication?.auth()?.token),
+    getToken: computed(() => (STORE().authentication?.auth() as IAuth)?.token),
     error: signal(undefined),
   },
   task: {

@@ -1,8 +1,22 @@
-<ui-register-form
-  [error]="registerError"
-  [success]="registerSuccess"
-  (registerUser)="register($event)"
-  (clearError)="clearError()"
-  (clearUser)="clearUser()"
-></ui-register-form>
+<div class="tw-py-[16px]">
+  <!-- {{registerUserSuccess()?.() | json}} -->
+  @if (registerUser?.()?.emailVerificationToken) {
+    <div class="tw-h-[40vh] tw-flex tw-justify-center tw-items-center">
+      <span>
+        {{ registerUser?.()?.name | titlecase }} is successfully register. Please check your email to verify account.
+      </span>
+    </div>
+  }
+  @else {
+    <ui-register-form
+      [error]="registerError"
+      (registerUser)="register($event)"
+      (clearError)="clearError()"
+      (clearUser)="clearUser()"
+    ></ui-register-form>
+  }
+</div>
+
+
+
 

@@ -1,6 +1,6 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { ILogin, IRegister, TAuth, TCheckToken, TUser } from "../../utils/models/user.model";
+import { ILogin, IRegister, IAuth, TCheckToken, TUser } from "../../utils/models/user.model";
 import { Observable } from "rxjs";
 import { TErrorMessage } from "../../utils/models/common.model";
 
@@ -12,8 +12,12 @@ export class AuthenticationAPI {
 
   constructor(private http: HttpClient) {}
 
-  loginUser<T extends TAuth |TErrorMessage>(user: ILogin): Observable<T> {
+  loginUser<T extends IAuth |TErrorMessage>(user: ILogin): Observable<T> {
     return this.http.post<T>(this.apiUrl+'/login', user);
+  }
+
+  logoutUser<T extends {message: string} | TErrorMessage>(): Observable<T> {
+    return this.http.post<T>(this.apiUrl+'/logout', {});
   }
 
   registerUser<T extends TUser|TErrorMessage>(user: IRegister): Observable<T> {

@@ -9,18 +9,25 @@
     }
 
     <div class="tw-absolute tw-right-[50px]">
-      <button
-        mat-button
-        (click)="_AUTHENTICATION_SERVICE.showRegisterUI()"
-      >
-        Register
-      </button>
-      <button
-        mat-button
-        (click)="_AUTHENTICATION_SERVICE.showLoginUI()"
-      >
-        Login
-      </button>
+      @if (user?.()?.isAuth) {
+        <p (click)="_AUTHENTICATION_SERVICE.logout()">
+          {{ user?.()?.user?.name | titlecase }}
+        </p>
+      }
+      @else {
+        <button
+          mat-button
+          (click)="_AUTHENTICATION_SERVICE.showRegisterUI()"
+        >
+          Register
+        </button>
+        <button
+          mat-button
+          (click)="_AUTHENTICATION_SERVICE.showLoginUI()"
+        >
+          Login
+        </button>
+      }
     </div>
   </mat-toolbar>
 

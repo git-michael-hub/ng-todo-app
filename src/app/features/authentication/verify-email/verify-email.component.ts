@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AuthenticationService } from '../authentication.service';
 import { STORE_TOKEN } from '../../../data-access/state/state.store';
 import { CommonModule } from '@angular/common';
+import { IAuth } from '../../../utils/models/user.model';
 
 @Component({
   selector: 'feature-verify-email',
@@ -16,6 +17,8 @@ import { CommonModule } from '@angular/common';
   ]
 })
 export class VerifyEmailComponent implements OnInit {
+  private readonly _HOST = 'VerifyEmailComponent';
+
   private readonly _STORE = inject(STORE_TOKEN);
   private readonly _AUTH_SERVICE = inject(AuthenticationService);
 
@@ -24,7 +27,7 @@ export class VerifyEmailComponent implements OnInit {
   // private authService = inject(AuthenticationService);
 
   isVerifyEmail = computed(() =>
-    this._STORE().authentication.auth()?.isVerifyEmail
+    (this._STORE().authentication.auth() as IAuth)?.isVerifyEmail
   );
 
   isVerifyEmailError = computed(() =>
@@ -35,12 +38,12 @@ export class VerifyEmailComponent implements OnInit {
   verificationResult: { success: boolean; message: string } | null = null;
 
   constructor() {
-    effect(() => {
-      console.log('VerifyEmailComponent:error:');
-      if (this._STORE().authentication.auth()?.isVerifyEmail) {
-        this.isVerifying = false;
-      }
-    });
+    // effect(() => {
+    //   console.log('VerifyEmailComponent:error:');
+    //   if (this._STORE().authentication.auth()?.isVerifyEmail) {
+    //     this.isVerifying = false;
+    //   }
+    // });
   }
 
   ngOnInit() {
@@ -68,13 +71,13 @@ export class VerifyEmailComponent implements OnInit {
     // }
   }
 
-  goToLogin() {
-    this.router.navigate(['/login']);
-  }
+  // goToLogin() {
+  //   this.router.navigate(['/login']);
+  // }
 
   ngOnDestroy() {
     this._STORE().authentication.error.set(undefined);
-    this._STORE().authentication.auth.set(undefined);
+    this._STORE().authentication.auth.set({ source: this._HOST + 'ngOnDestroy'});
   }
 
 }

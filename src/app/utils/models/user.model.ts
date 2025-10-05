@@ -1,8 +1,11 @@
-export type TAuth = {
-  user: TUser,
-  status: 'login' | 'register',
-  token: string,
-  isVerifyEmail: boolean
+import { TStateManagement } from "./common.model"
+
+export interface IAuth extends TStateManagement {
+  user?: TUser,
+  status: 'login' | 'register' | 'verify-email',
+  token?: string,
+  isVerifyEmail?: boolean,
+  isAuth?: boolean,
 }
 
 export type TUser = {
@@ -17,7 +20,8 @@ export type TUser = {
   createdAt: string,
   updatedAt: string,
   status: 'register' | 'login',
-  isVerifyEmail?: boolean
+  isVerifyEmail?: boolean,
+  emailVerificationToken?: string
 }
 
 export type TCheckToken = {

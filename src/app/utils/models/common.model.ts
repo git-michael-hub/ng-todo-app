@@ -13,3 +13,7 @@ export type TAPI = {
   reponse?: unknown, // the response data from request
   error?: TError // error from request
 }
+
+export interface TStateManagement {
+  source: string
+}

@@ -8,7 +8,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { createPasswordMatchValidator } from '../../../utils/validators/confirm-password.validator';
 import { TError } from '../../../utils/models/common.model';
-import { IRegister } from '../../../utils/models/user.model';
+import { IRegister, TUser } from '../../../utils/models/user.model';
 import { nameLengthValidator } from '../../../utils/validators/name-length.validator';
 import { emailValidator } from '../../../utils/validators/email.validator';
 import { passwordValidator } from '../../../utils/validators/password.validator';
@@ -33,7 +33,7 @@ import { passwordValidator } from '../../../utils/validators/password.validator'
 export class RegisterFormComponent implements OnInit {
   // @Input() error!: TError;
   error = input<Signal<TError>>();
-  success = input<Signal<Boolean|null>>();
+  // registerUserSuccess = input<Signal<TUser|undefined>>();
   @Output() registerUser = new EventEmitter<IRegister>();
   @Output() clearError = new EventEmitter<void>();
   @Output() clearUser = new EventEmitter<void>();
@@ -125,7 +125,7 @@ export class RegisterFormComponent implements OnInit {
         // this.clearError.emit();
         // this.isLogging.set(false);
         this.form.enable({ emitEvent: false });
-        this.passwordFormControl.disable({ emitEvent: false });
+        // this.passwordFormControl.disable({ emitEvent: false });
         this.confirmPasswordFormControl.disable({ emitEvent: false });
       }
     });
@@ -136,14 +136,14 @@ export class RegisterFormComponent implements OnInit {
 
   ngOnChanges(): void {
     console.log('   this.error();:',    this.error()?.());
-    console.log('   this.success();:',    this.success()?.());
+    // console.log('   this.success();:',    this.registerUserSuccess()?.());
   }
 
   ngOnInit() {
   }
 
   ngOnDestroy() {
-    this.clearUser.emit();
+    // this.clearUser.emit();
     this.clearError.emit();
   }
 

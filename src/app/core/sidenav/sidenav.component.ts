@@ -1,5 +1,5 @@
 // Angular
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, OnInit, signal } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, computed, effect, inject, OnInit, signal } from '@angular/core';
 import { MediaMatcher } from '@angular/cdk/layout';
 import { CommonModule, TitleCasePipe } from '@angular/common';
 import { NavigationEnd, Router, RouterModule } from '@angular/router';
@@ -19,6 +19,8 @@ import { TaskService } from '../../features/task/task.service';
 import { AuthFirebaseService } from '../../utils/services/auth-firebase.service';
 import { filter } from 'rxjs';
 import { AuthenticationService } from '../../features/authentication/authentication.service';
+import { STORE_TOKEN } from '../../data-access/state/state.store';
+import { IAuth } from '../../utils/models/user.model';
 
 
 @Component({
@@ -44,11 +46,23 @@ export class SidenavComponent implements OnInit {
   private readonly _CD = inject(ChangeDetectorRef);
   private readonly _ROUTER = inject(Router);
   private readonly _MEDIA = inject(MediaMatcher);
+  private readonly _STORE = inject(STORE_TOKEN);
 
   private readonly _AUTH_FIREBASE_SERVICE= inject(AuthFirebaseService);
   readonly _TASK_SERVICE = inject(TaskService);
   readonly _AUTHENTICATION_SERVICE = inject(AuthenticationService);
   readonly NAVIGATIONS: TMenu[] = inject(SidenavService)?.navigations;
+
+  readonly _user = this._STORE().authentication.auth;
+  readonly user = computed(() => {
+    const user = this._user() as IAuth;
+
+    return {
+      ...user,
+      isAuth: user?.token && user?.status === 'login' ? true : false
+    }
+  });
+
 
   mobileQuery: MediaQueryList = this._MEDIA.matchMedia('(max-width: 600px)');
   private _mobileQueryListener = () => this._CD.detectChanges();
