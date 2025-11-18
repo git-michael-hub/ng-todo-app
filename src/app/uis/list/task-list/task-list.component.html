@@ -27,6 +27,7 @@
                   <mat-checkbox
                     [checked]="task.status === 'done' ? true : false"
                     (click)="markAsComplete(task)"
+                    [disabled]="task.status === 'done'"
                     class="example-margin"
                     aria-label="Mark {{ task.title }} as {{
                       task.status === 'done'

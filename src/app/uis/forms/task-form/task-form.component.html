@@ -1,76 +1,5 @@
-<!-- <div class="!tw-bg-[#ffffff] tw-flex tw-flex-row tw-w-full tw-justify-between ">
-  <h2 mat-dialog-title data-test="dialog-title">
-    @if (status === 'view') {
-      <span>Task Detail</span>
-      @if (_DATA.status === 'done') {
-        <span class="tw-px-[12px] tw-ml-[4px] tw-text-md tw-text-[#1aa318]">DONE</span>
-      }
-    }
-    @else if (status === 'update') {
-      <span>Update Task</span>
-    }
-    @else if (status === 'add') {
-     <span>Add a New Task</span>
-    }
-  </h2>
-  <div class="tw-flex tw-items-center">
-    @if (status === 'view') {
-      <button
-        mat-button mat-dialog-close
-        class="tw-mx-[20px]"
-        (click)="status = 'close'"
-        data-test="dialog-action-close"
-      >
-        <span>Close</span>
-      </button>
-    }
-    @else if (status === 'update') {
-      <button
-        mat-button
-        class="tw-mx-[20px]"
-        (click)="cancelUpdate()"
-        data-test="dialog-action-cancel-update"
-      >
-        <span>Cancel</span>
-      </button>
-    }
-    @else if (status === 'add') {
-      <button
-        mat-button mat-dialog-close
-        class="tw-mx-[20px]"
-        data-test="dialog-action-cancel"
-      >
-        <span>Cancel</span>
-      </button>
-    }
-
-    @if (status === 'update') {
-      <button
-        mat-flat-button
-        class="!tw-px-[50px] tw-mx-[20px]"
-        (click)="updateTask()"
-        [disabled]="taskForm.invalid"
-        data-test="dialog-action-update"
-      >
-        Update
-      </button>
-    }
-    @else if (status === 'add') {
-      <button
-        mat-flat-button
-        class="!tw-px-[50px] tw-mx-[20px]"
-        (click)="addTask()"
-        [disabled]="taskForm.invalid"
-        data-test="dialog-action-add"
-      >
-        Add
-      </button>
-    }
-  </div>
-</div> -->
-
 <form [formGroup]="taskForm" class="tw-flex tw-flex-col tw-w-full">
-  <mat-dialog-content class="mat-typography tw-h-screen !tw-max-h-[66vh]">
+  <mat-dialog-content class="mat-typography !tw-overflow-hidden">
     <div class="tw-flex tw-flex-col tw-w-full">
       <input
         formControlName="title"
@@ -82,35 +11,37 @@
         formControlName="description"
         [modules]="editorModules"
         [placeholder]="'Task description here...'"
-        [theme]="'snow'"
+        [theme]="'snow'" d
         class="tw-h-[58vh]"
         data-test="task-description-input"
       />
     </div>
   </mat-dialog-content>
 
-  <mat-dialog-actions align="end" class="!tw-py-[0]">
-    @if ((status === 'update' || status === 'view') && _DATA.status !== 'done') {
+  <mat-dialog-actions align="end" class="!tw-py-[0] !tw-my-[-10px]">
+    <!-- && _DATA.status !== 'done' -->
+    @if ((status === 'update' || status === 'view')) {
       <div class="tw-absolute tw-flex tw-items-center tw-left-[12px]">
         <button
           mat-button
-          (click)="deleteTask(_DATA, _DATA.id)"
+          (click)="deleteFn.emit(_DATA)"
           class="!tw-text-[#cb2929]"
           data-test="dialog-action-delete"
         >
           Delete
         </button>
-
         @if (_DATA.createdAt) {
           <div class="tw-flex tw-flex-row tw-w-full tw-justify-start tw-text-sm">
             <div class="tw-ml-[10px]">
               <span>
-                Created: {{ _DATA.createdAt | date: 'mediumDate' }}
+                <span class="tw-text-[#005CBB]">Created:</span>
+                {{ _DATA.createdAt | date: 'mediumDate' }}
               </span>
             </div>
             <div class="tw-ml-[24px]">
               <span>
-                Updated: {{ _DATA.updatedAt | date: 'mediumDate' }}
+                <span class="tw-text-[#005CBB]">Updated:</span>
+                {{ _DATA.updatedAt | date: 'mediumDate' }}
               </span>
             </div>
           </div>
@@ -118,23 +49,37 @@
       </div>
     }
 
-    <div class="datepicker">
-      <span class="tw-mr-[4px]" data-test="due-date-label">Due Date:</span>
-        <input
-          matInput
-          [matDatepicker]="picker"
-          formControlName="dueDate"
-          readonly
-          (click)="picker.open()"
-          class="!tw-rounded-lg !tw-cursor-pointer !tw-h-[55px] !tw-text-sm !tw-hover:!tw-text-red-50"
-          data-test="due-date-input"
-        >
-        <mat-datepicker #picker></mat-datepicker>
+    <div class="datepicker tw-flex tw-items-center">
+      <span class="tw-mr-[4px] tw-text-[#005CBB] tw-text-sm" data-test="due-date-label">
+        Due Date:
+      </span>
+      <input
+        matInput
+        [matDatepicker]="picker"
+        [min]="dueDateMin"
+        formControlName="dueDate"
+        readonly
+        (click)="picker.open()"
+        class="!tw-rounded-lg !tw-cursor-pointer !tw-h-[55px] !tw-w-[130px] !tw-text-sm !tw-hover:!tw-text-red-50"
+        data-test="due-date-input"
+      >
+      <mat-datepicker #picker></mat-datepicker>
     </div>
 
-    <div>
-      <span class="tw-mr-[4px]" data-test="priority-label">Priority:</span>
-      <mat-button-toggle-group formControlName="priority" class="!tw-rounded-lg add-form-btn-toggle">
+    <div class="tw-items-center">
+      <span class="tw-mr-[4px] tw-text-[#005CBB] tw-text-sm" data-test="priority-label">
+        Priority:
+      </span>
+
+      <mat-form-field class="form-priority tw-mt-[16px]">
+        <mat-select formControlName="priority">
+          <mat-option value="low" data-test="priority-selection-low">Low</mat-option>
+          <mat-option value="medium" data-test="priority-selection-medium">Medium ⚠️</mat-option>
+          <mat-option value="high" data-test="priority-selection-high">High ❗️</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <!-- <mat-button-toggle-group formControlName="priority" class="!tw-rounded-lg add-form-btn-toggle">
         <mat-button-toggle value="low" data-test="priority-selection-low">
           Low
         </mat-button-toggle>
@@ -144,7 +89,7 @@
         <mat-button-toggle value="high" data-test="priority-selection-high">
           High ❗️
         </mat-button-toggle>
-      </mat-button-toggle-group>
+      </mat-button-toggle-group> -->
     </div>
   </mat-dialog-actions>
 </form>

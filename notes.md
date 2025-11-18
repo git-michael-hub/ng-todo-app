@@ -38,3 +38,10 @@ Testing
 
 Run specific test on Jasmine
  npx ng test --include=**/task-list.component.spec.ts
+
+
+
+
+DATA TRASNFER
+- See Task form and Dialog for data trasnfer
+- See for using signal.form.state

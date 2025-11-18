@@ -1,40 +1,65 @@
 <div class="!tw-bg-[#ffffff] tw-flex tw-flex-row tw-w-full tw-justify-between ">
   <h2 mat-dialog-title data-test="dialog-title">
-    @if (status === 'view') {
+    @if (taskFormComponent.status === 'view') {
       <span>Task Detail</span>
-      @if (_DATA.status === 'done') {
-        <span class="tw-px-[12px] tw-ml-[4px] tw-text-md tw-text-[#1aa318]">DONE</span>
+
+      <mat-checkbox
+        [checked]="_DATA?.status === 'done' ? true : false"
+        (click)="markAsComplete()"
+        class="example-margin tw-ml-[12px]"
+        aria-label="Mark {{ _DATA?.title }} as {{
+          _DATA?.status === 'done'
+            ? 'Completed Task'
+            : 'Not completed yet'
+        }}"
+        data-test="list-checkbox-complete"
+      />
+
+      @if (_DATA?.status === 'done') {
+        <span class="tw-text-[16px] tw-text-[#1aa318]">DONE</span>
       }
     }
-    @else if (status === 'update') {
+    @else if (taskFormComponent.status === 'update') {
       <span>Update Task</span>
     }
-    @else if (status === 'add') {
+    @else if (taskFormComponent.status === 'add') {
      <span>Add a New Task</span>
     }
   </h2>
   <div class="tw-flex tw-items-center">
-    @if (status === 'view') {
+    @if (taskFormComponent.status === 'view') {
+
+      <!-- @if (_DATA.status !== 'done') {
+        <button
+          mat-button
+          (click)="deleteTask(_DATA, _DATA.id)"
+          class="!tw-text-[#cb2929]"
+          data-test="dialog-action-delete"
+        >
+          Delete
+        </button>
+      } -->
+
       <button
-        mat-button mat-dialog-close
+        mat-flat-button mat-dialog-close
         class="tw-mx-[20px]"
-        (click)="status = 'close'"
+        (click)="taskFormComponent.status = 'close'"
         data-test="dialog-action-close"
       >
         <span>Close</span>
       </button>
     }
-    @else if (status === 'update') {
+    @else if (taskFormComponent.status === 'update') {
       <button
         mat-button
         class="tw-mx-[20px]"
-        (click)="cancelUpdate()"
+        (click)="cancelUpdate(taskFormComponent.taskForm); taskFormComponent.status = 'view';"
         data-test="dialog-action-cancel-update"
       >
         <span>Cancel</span>
       </button>
     }
-    @else if (status === 'add') {
+    @else if (taskFormComponent.status === 'add') {
       <button
         mat-button mat-dialog-close
         class="tw-mx-[20px]"
@@ -44,23 +69,23 @@
       </button>
     }
 
-    @if (status === 'update') {
+    @if (taskFormComponent.status === 'update') {
       <button
         mat-flat-button
         class="!tw-px-[50px] tw-mx-[20px]"
-        (click)="updateTask()"
-        [disabled]="taskForm.invalid"
+        (click)="updateTask(taskFormComponent.taskForm); taskFormComponent.status = 'view'; taskFormComponent.taskForm.markAsPristine();"
+        [disabled]="taskFormComponent.taskForm.invalid"
         data-test="dialog-action-update"
       >
         Update
       </button>
     }
-    @else if (status === 'add') {
+    @else if (taskFormComponent.status === 'add') {
       <button
         mat-flat-button
         class="!tw-px-[50px] tw-mx-[20px]"
-        (click)="addTask()"
-        [disabled]="taskForm.invalid"
+        (click)="addTask(taskFormComponent.taskForm)"
+        [disabled]="taskFormComponent.taskForm.invalid"
         data-test="dialog-action-add"
       >
         Add
@@ -70,4 +95,8 @@
 </div>
 
 
-<ui-task-form></ui-task-form>
+<ui-task-form
+  #taskFormComponent
+  [isDone]="_DATA?.status === 'done'"
+  (deleteFn)="deleteTask($event)"
+/>

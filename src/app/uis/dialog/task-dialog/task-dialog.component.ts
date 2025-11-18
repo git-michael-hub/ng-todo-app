@@ -4,7 +4,7 @@ import {
   Signal,
   computed
 } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 
 // Material
@@ -25,6 +25,7 @@ import { TTask } from '../../../utils/models/task.model';
 import { TaskService } from '../../../features/task/task.service';
 import { STORE_TOKEN } from '../../../data-access/state/state.store';
 import { TaskFormComponent } from '../../forms/task-form/task-form.component';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 
 const MOMENT = _rollupMoment || _moment;
@@ -59,85 +60,38 @@ const MY_FORMATS = {
     MatButtonToggleModule,
     MatInputModule,
     DatePipe,
-    TaskFormComponent
+    TaskFormComponent,
+    MatCheckboxModule,
   ],
 })
-export class TaskDialogComponent implements OnInit {
-
-  // @TODO: remove DI for UI
+export class TaskDialogComponent {
 
   // - di
   private readonly _STORE = inject(STORE_TOKEN);
   private readonly _TASK_SERVICE = inject(TaskService);
-  private readonly _FORM_BUILDER = inject(FormBuilder);
+  // private readonly _FORM_BUILDER = inject(FormBuilder);
   private readonly _CD = inject(ChangeDetectorRef);
-  readonly _DATA: TTask & {date: _moment.Moment} = inject(MAT_DIALOG_DATA);
+  _DATA: TTask & {date: _moment.Moment} = inject(MAT_DIALOG_DATA);
 
   // - reactivity
   private readonly IS_SERVER_DOWN: Signal<boolean> = this._STORE().isServerDown;
   private readonly $_IS_SERVER_DOWN: Signal<boolean> = computed(() => this.IS_SERVER_DOWN());
 
-  // editor config
-  editorModules = {
-    toolbar: false, // Disable toolbar
-    // toolbar: {
-    //   container: [
-    //     // ['bold', 'italic', 'underline'], // Formatting options
-    //     // ['link', 'image', 'video'], // Media options
-    //   ],
-    //   // handlers: {
-    //   //   image: this.imageHandler.bind(this), // Custom handler for images
-    //   // },
-    // },
-  };
-
-  taskForm = this._FORM_BUILDER.group({
-    title: ['', Validators.required],
-    description: ['', Validators.required],
-    dueDate: [MOMENT(Date.now()), Validators.required],
-    priority: ["low", Validators.required],
-  });
-  status: 'view' | 'add' | 'update' | 'close' = 'view';
-
-
-  ngOnInit(): void {
-    this.status = this._DATA?.title
-      ? 'view'
-      : 'add';
-
-    if (this.status === 'view') {
-      this.taskForm.setValue({
-        title: this._DATA?.title,
-        description: this._DATA?.description,
-        dueDate: MOMENT(this._DATA?.dueDate),
-        priority: this._DATA?.priority
-      });
-    }
-
-    if (this._DATA?.date) this.taskForm.controls.dueDate.setValue(this._DATA.date);
-
-    this.taskForm.valueChanges.subscribe(() => {
-      if (this.status === 'close') return;
-      if (this.status === 'view') this.status = 'update';
-    });
-  }
-
 
   // - actions
-  addTask(): void {
-    if (this.taskForm.invalid) return;
+  addTask(form: FormGroup<any>): void {
+    if (form.invalid) return;
 
-    this._TASK_SERVICE.addTask(this.taskForm.value as unknown as TTask);
+    this._TASK_SERVICE.addTask(form.value as unknown as TTask);
   }
 
-  updateTask(): void {
-    if (this.taskForm.invalid || !this._DATA?.id) return;
+  updateTask(form: FormGroup<any>): void {
+    if (form.invalid || !this._DATA?.id) return;
 
     const CALLBACK = () => {
-      this.status = 'view';
       this._CD.markForCheck();
     };
-    let valueForm: TTask = this.taskForm.value as unknown as TTask;
+    let valueForm: TTask = form.value as unknown as TTask;
 
     if (this.$_IS_SERVER_DOWN()) {
       valueForm = {
@@ -158,53 +112,30 @@ export class TaskDialogComponent implements OnInit {
     this._TASK_SERVICE.deleteTask(task, id);
   }
 
-  cancelUpdate(): void {
-    this.taskForm.setValue({
+  cancelUpdate(form: FormGroup<any>): void {
+    form.setValue({
       title: this._DATA.title,
       description: this._DATA.description,
       dueDate: MOMENT(this._DATA.dueDate),
       priority: this._DATA.priority
     });
 
-    this.status = 'view';
     this._CD.markForCheck();
   }
 
+  markAsComplete(): void {
+    if (!this._DATA || !this._DATA.id) return;
 
-  // - editor
-  // triggered when content changes in the editor
-  onContentChanged(event: any): void {
-    this.taskForm.controls.description.setValue(event.html);
+    if (this._DATA.status === 'done') {
+      this._DATA = {...this._DATA, status: 'todo'};
+
+      this._TASK_SERVICE.updateTask(this._DATA, this._DATA.id || '', () => {}, false);
+    }
+    else {
+      this._DATA = {...this._DATA, status: 'done'};
+      this._TASK_SERVICE.markAsComplete(this._DATA);
+    }
   }
 
-  imageHandler(): void {
-    const input = document.createElement('input');
-    input.setAttribute('type', 'file');
-    input.setAttribute('accept', 'image/*');
-    input.click();
-
-    input.onchange = async () => {
-      const file = input.files ? input.files[0] : null;
-      if (file) {
-        const formData = new FormData();
-        formData.append('file', file);
-
-        console.log('FORM data:', formData)
-
-        // Upload the image to the backend
-        // this.http.post('http://localhost:3000/api/upload-image', formData).subscribe(
-        //   (response: any) => {
-        //     const imageUrl = response.url; // Get the uploaded image URL
-        //     const editor = document.querySelector('.ql-editor') as HTMLElement;
-        //     const range = this.quillEditor.getSelection();
-        //     this.quillEditor.insertEmbed(range.index, 'image', imageUrl); // Insert the image into the editor
-        //   },
-        //   (error) => {
-        //     console.error('Image upload failed:', error);
-        //   }
-        // );
-      }
-    };
-  }
 
 }

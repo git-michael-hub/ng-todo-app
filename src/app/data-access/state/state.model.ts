@@ -25,6 +25,7 @@ export interface IState {
     toString: () => any
   },
   task: TAPI & {
+    // @TODO: make it one
     list: WritableSignal<TTask[]>, // the data content of the list
     getList: Signal<TTask[]>,
 

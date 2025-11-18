@@ -63,7 +63,7 @@ export class TaskService {
 
   // - tasks requests
   getTasks(): void {
-    this._STORE().task.list.set([]);
+    // this._STORE().task.list.set([]);
 
     this._TASK_API.getTasks()
       .subscribe({
@@ -103,6 +103,7 @@ export class TaskService {
     // });
 
     // return;
+    console.log('task:', task);
 
     if (_.isEmpty(task)) return;
 
@@ -195,10 +196,12 @@ export class TaskService {
               (task?.title.slice(0, 20) as any).length >= 20 ? '...': ''
             ))()
           }
-        `
+        `,
+        false
       );
     }
     else {
+      console.log('UPDATE:task:', task);
       this._TASK_API.updateTask(update_task_id, JSON.stringify(task) as unknown as TTask)
         .subscribe({
           next: (response) => {
@@ -225,7 +228,8 @@ export class TaskService {
                     (task?.title.slice(0, 20) as any).length >= 20 ? '...': ''
                   ))()
                 }
-              `
+              `,
+              false
             );
           },
           error: (error) => {
@@ -359,8 +363,8 @@ export class TaskService {
 
 
   // - notification
-  notify(title: string, ): void {
-    this.dialogRef?.close();
+  notify(title: string, isCloseDialog = true): void {
+    if (isCloseDialog) this.dialogRef?.close();
 
     this._SNACK_BAR.open(
       title,

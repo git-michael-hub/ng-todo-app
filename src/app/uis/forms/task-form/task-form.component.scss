@@ -43,3 +43,33 @@ input:focus-visible {
     border: unset !important;
   }
 }
+
+
+:host ::ng-deep .form-priority {
+  &.mat-mdc-form-field {
+    height: 50px !important;
+    width: 150px !important;
+    // --mdc-outlined-text-field-container-height: 36px;
+    // font-size: 13px;
+  }
+  & .mat-mdc-form-field-infix {
+    padding-bottom: 0 !important;
+    padding-top: 4px !important;
+  }
+
+  // & .mdc-text-field {
+  //   top: 8px !important;
+  // }
+  // & .mat-mdc-select-trigger {
+  //   top: -12px !important;
+  // }
+  // & .ng-touched .mat-mdc-select-trigger {
+  //   top: -2px !important;
+  // }
+  // & .mdc-line-ripple {
+  //   display: none !important;
+  // }
+  // & .mat-mdc-form-field-focus-overlay  {
+  //   height: 40px !important;
+  // }
+}

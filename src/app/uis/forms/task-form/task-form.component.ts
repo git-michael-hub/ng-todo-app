@@ -2,7 +2,10 @@
 import {
   Component, OnInit, ChangeDetectionStrategy, inject, ChangeDetectorRef,
   Signal,
-  computed
+  computed,
+  output,
+  input,
+  Input
 } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { DatePipe } from '@angular/common';
@@ -14,6 +17,7 @@ import { MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { provideMomentDateAdapter } from '@angular/material-moment-adapter';
 import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
 
 // Third party
 import { QuillModule } from 'ngx-quill';
@@ -57,23 +61,31 @@ const MY_FORMATS = {
     MatDatepickerModule,
     MatButtonToggleModule,
     MatInputModule,
-    DatePipe
+    DatePipe,
+    MatSelectModule
   ],
 })
 export class TaskFormComponent implements OnInit {
 
-  // @TODO: remove DI for UI
+
+  // TODO: create a store form?
+
+  deleteFn = output<TTask>();
+  @Input() isDone = false;
+
 
   // - di
-  private readonly _STORE = inject(STORE_TOKEN);
+  // private readonly _STORE = inject(STORE_TOKEN);
   private readonly _TASK_SERVICE = inject(TaskService);
   private readonly _FORM_BUILDER = inject(FormBuilder);
-  private readonly _CD = inject(ChangeDetectorRef);
+  // private readonly _CD = inject(ChangeDetectorRef);
   readonly _DATA: TTask & {date: _moment.Moment} = inject(MAT_DIALOG_DATA);
 
+  readonly dueDateMin = new Date();
+
   // - reactivity
-  private readonly IS_SERVER_DOWN: Signal<boolean> = this._STORE().isServerDown;
-  private readonly $_IS_SERVER_DOWN: Signal<boolean> = computed(() => this.IS_SERVER_DOWN());
+  // private readonly IS_SERVER_DOWN: Signal<boolean> = this._STORE().isServerDown;
+  // private readonly $_IS_SERVER_DOWN: Signal<boolean> = computed(() => this.IS_SERVER_DOWN());
 
   // editor config
   editorModules = {
@@ -97,6 +109,10 @@ export class TaskFormComponent implements OnInit {
   });
   status: 'view' | 'add' | 'update' | 'close' = 'view';
 
+  ngOnChanges(): void {
+    if (this.isDone) this.taskForm.disable();
+    else this.taskForm.enable();
+  }
 
   ngOnInit(): void {
     this.status = this._DATA?.title
@@ -112,60 +128,21 @@ export class TaskFormComponent implements OnInit {
       });
     }
 
+    console.log('taskForm:', this.taskForm);
+
     if (this._DATA?.date) this.taskForm.controls.dueDate.setValue(this._DATA.date);
 
-    this.taskForm.valueChanges.subscribe(() => {
+    this.taskForm.valueChanges.subscribe((data) => {
+      console.log('taskform:data:', data)
+
       if (this.status === 'close') return;
-      if (this.status === 'view') this.status = 'update';
+      if (this.status === 'view' && this.taskForm.dirty) this.status = 'update';
     });
-  }
 
-
-  // - actions
-  addTask(): void {
-    if (this.taskForm.invalid) return;
-
-    this._TASK_SERVICE.addTask(this.taskForm.value as unknown as TTask);
-  }
-
-  updateTask(): void {
-    if (this.taskForm.invalid || !this._DATA?.id) return;
-
-    const CALLBACK = () => {
-      this.status = 'view';
-      this._CD.markForCheck();
-    };
-    let valueForm: TTask = this.taskForm.value as unknown as TTask;
-
-    if (this.$_IS_SERVER_DOWN()) {
-      valueForm = {
-        ...valueForm,
-        id: this._DATA?.id,
-        status: this._DATA?.status,
-        createdAt: this._DATA?.createdAt,
-        updatedAt: this._DATA?.updatedAt
-      } as unknown as TTask
+    if (this._DATA?.status === 'done') {
+      this.taskForm.disable();
     }
 
-    this._TASK_SERVICE.updateTask(valueForm as unknown as TTask, this._DATA?.id, CALLBACK);
-  }
-
-  deleteTask(task: TTask, id?: string): void {
-    if (!task || !id) return;
-
-    this._TASK_SERVICE.deleteTask(task, id);
-  }
-
-  cancelUpdate(): void {
-    this.taskForm.setValue({
-      title: this._DATA.title,
-      description: this._DATA.description,
-      dueDate: MOMENT(this._DATA.dueDate),
-      priority: this._DATA.priority
-    });
-
-    this.status = 'view';
-    this._CD.markForCheck();
   }
 
 

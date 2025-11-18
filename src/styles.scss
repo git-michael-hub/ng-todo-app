@@ -44,3 +44,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     opacity: 1;
   }
 }
+
+.mat-mdc-dialog-surface {
+  overflow: hidden !important;
+}
